@@ -1,0 +1,16 @@
+export const colors={
+    white:'#ffffff',
+    primary:'#fff0f3',
+    primary100:'#ffccd5',
+    primary200:'#ffb3c1',
+    primary300:'#ff8fa3',
+    primary400:'#ff758f',
+    primary400rgb:'rgba(255, 117, 143,1)',
+    primary500:'#ff4d6d',
+    primary500rgb:'rgba(255, 77, 109,1)',
+    primary600:'#c9184a',
+    primary600rgb:'rgba(201, 24, 74,1)',
+    primary700:'#a4133c',
+    primary800:'#800f2f',
+    primary900:'#23030c',
+}
