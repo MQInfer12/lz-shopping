@@ -4,14 +4,34 @@ import { colors } from '../../style/variables';
 
 const HandIcon = () => {
   return (
-    <IconsContainer>
-      <i className="fa-regular fa-square"></i>
-      <i className="fa-solid fa-hand-pointer"></i>
-    </IconsContainer>
+    <Container>
+      <IconsContainer>
+        <i className="fa-regular fa-square"></i>
+        <i className="fa-solid fa-hand-pointer"></i>
+      </IconsContainer>
+      <p>Selecciona una prenda para pedir su reserva.</p>
+    </Container>
   )
 }
 
 export default HandIcon
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 5rem;
+
+  & > p {
+    max-width: 60%;
+    text-align: center;
+    color: ${colors.gray400};
+    font-size: 1.4rem;
+    line-height: 2.2rem;
+  }
+`;
 
 const IconsContainer = styled.div`
   position: relative;

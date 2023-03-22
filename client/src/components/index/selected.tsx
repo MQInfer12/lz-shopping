@@ -1,32 +1,22 @@
-import { useState } from 'react';
 import styled from 'styled-components'
-import { Product } from '../../interfaces/product';
-import { colors } from '../../style/variables'
+import { useCloth } from '../../context/cloth';
 import Booking from './booking';
 import HandIcon from './handIcon'
 
 const Selected = () => {
-  const [selected, setSelected] = useState<Product>({
-    nombre: "Jean blanco simple",
-    precio: 35,
-    foto: "https://media.vogue.mx/photos/622a4c9e2259bde1e77828e0/master/w_552,h_851,c_limit/jeans-blancos-citizen-of-humanity.png"
-  });
+  const { selected, removeCloth } = useCloth();
 
   return (
     <SelectedContainer>
       {
         Object.keys(selected).length ?
         <>
-          <Booking selected={selected} />
-          <button onClick={() => setSelected({})}><i className="fa-solid fa-xmark"></i></button>
+          <Booking key={selected.id} />
+          <button onClick={removeCloth}><i className="fa-solid fa-xmark"></i></button>
         </>
         :
-        <>
         <HandIcon />
-        <p>Selecciona una prenda para reservarla.</p>
-        </>
       }
-      
     </SelectedContainer>
   )
 }
@@ -38,7 +28,6 @@ const SelectedContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 5rem;
   position: relative;
 
@@ -53,14 +42,6 @@ const SelectedContainer = styled.div`
         opacity: 1;
       }
     }
-  }
-
-  & > p {
-    max-width: 60%;
-    text-align: center;
-    color: ${colors.gray400};
-    font-size: 1.4rem;
-    line-height: 2.2rem;
   }
 
   & > button {

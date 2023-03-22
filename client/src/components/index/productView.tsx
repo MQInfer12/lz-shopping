@@ -1,13 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Product } from '../../interfaces/product'
+import styled from 'styled-components';
+import { useCloth } from '../../context/cloth'
 import { colors } from '../../style/variables'
 
-interface Props {
-  product: Product
-}
+const ProductView = () => {
+  const { selected: product } = useCloth();
 
-const ProductView = ({ product }: Props) => {
   return (
     <ProductViewContainer>
       <div className="img-container">

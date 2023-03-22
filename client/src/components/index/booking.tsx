@@ -1,18 +1,12 @@
-import React from 'react'
 import styled from 'styled-components'
-import { Product } from '../../interfaces/product'
-import { Button, StyledA } from '../../style/buttons'
+import { StyledA } from '../../style/buttons'
 import { colors } from '../../style/variables'
 import ProductView from './productView'
 
-interface Props {
-  selected: Product
-}
-
-const Booking = ({ selected }: Props) => {
+const Booking = () => {
   return (
     <ColumnContainer>
-      <ProductView product={selected} />
+      <ProductView />
       <p>¡Pide tu reserva ahora!</p>
       <StyledA>
         Contáctame <i className="fa-brands fa-whatsapp"></i>
@@ -24,6 +18,7 @@ const Booking = ({ selected }: Props) => {
 export default Booking
 
 const ColumnContainer = styled.div`
+  padding-top: 6rem;
   display: flex;
   flex-direction: column;
   gap: 3rem;
