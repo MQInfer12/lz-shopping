@@ -11,13 +11,12 @@ interface Props{
 const Bubbles = ({top, left, mirror=false}:Props) => {
   return (
     <Possitioner top={top} left={left}>
-      
-    <Bubble mirror={mirror} >
-      <Circles size='4rem' top='1rem' left='1rem'></Circles>
-      <Circles size='2rem' top='6.5rem' left='1.7rem'></Circles>
-      <Circles size='2rem' top='3rem' left='8rem'></Circles>
-      <Circles size='3rem' top='4.5rem' left='4.8rem'></Circles>
-    </Bubble>
+      <Bubble mirror={mirror} >
+        <Circles size='4rem' top='1rem' left='1rem'></Circles>
+        <Circles size='2rem' top='6.5rem' left='1.7rem'></Circles>
+        <Circles size='2rem' top='3rem' left='8rem'></Circles>
+        <Circles size='3rem' top='4.5rem' left='4.8rem'></Circles>
+      </Bubble>
     </Possitioner>
   )
 }

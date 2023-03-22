@@ -4,7 +4,9 @@ import {useNavigate} from 'react-router-dom';
 import styled from "styled-components";
 import Bubbles from "../components/bubbles";
 import { colors } from "../style/variables";
-
+import LoginImg from "../assets/login.jpg";
+import { Button } from "../style/buttons";
+import { Inputcontainer } from "../style/input";
 
 const Login = () => { 
     const [email, setEmail] = useState('');
@@ -24,7 +26,7 @@ const Autenticate =()=>{
   return (
     <Container>
       <Firstcolumn>
-        <Picture src="https://cdn.pixabay.com/photo/2017/08/06/15/13/woman-2593366_1280.jpg" alt="" />       
+        <Picture src={LoginImg} alt="login" />       
       </Firstcolumn>
       <SecondColumn>
         <Bubbles top='0.5rem' left='0.5rem'/>
@@ -50,7 +52,7 @@ const Autenticate =()=>{
 export default Login;
 
 const Container=styled.div`
-  height: 100dvh;
+  height: 100%;
   display:grid;
   grid-template-columns: 1fr 1fr;
 `;
@@ -79,32 +81,12 @@ const Htwo=styled.h2`
   text-align: center;
   font-size: 2rem;
   font-weight: 500;
+  color: ${colors.gray900};
 `;
-const Inputcontainer=styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  &>input{
-    width: 100%;
-    padding: 0.5rem 1rem;
-    border-radius:1.5rem ;
-    border:1px solid black;
-    outline: none;
-  }
-  &>label{
-    padding-left: 1rem;
-  }
-`;
-const Button=styled.button`
-  width: 80%;
-  padding: 0.5rem 0;
-  border-radius: 1.5rem;
-  border:none;
-  cursor:pointer;
-  font-weight: 500;
-`;
+
 const Picture=styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0.6;
 `;

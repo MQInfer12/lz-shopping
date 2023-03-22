@@ -13,4 +13,16 @@ export const colors={
     primary700:'#a4133c',
     primary800:'#800f2f',
     primary900:'#23030c',
+    gray50: "#F0F1F3",
+    gray100: "#E6E8EB",
+    gray200: "#C3C7CE",
+    gray300: "#A5ACB5",
+    gray400: "#87909D",
+    gray500: "#697484",
+    gray600: "#556070",
+    gray700: "#424E60",
+    gray800: "#2B384C",
+    gray900: "#132238",
+    shadow: "0px 3px 18px -6px rgba(0,0,0,0.2)",
+    shadow100: "0px 0px 30px 3px rgba(0,0,0,0.4)"
 }
