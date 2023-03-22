@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useCloth } from '../../context/cloth'
+import { Product } from '../../interfaces/product';
 import { colors } from '../../style/variables'
 
 const ProductView = () => {
@@ -13,7 +14,13 @@ const ProductView = () => {
         <img src={product.photo} />
       </div>
       <div className='desc-container'>
-        <small>{new Intl.ListFormat('es').format(categories)}</small>
+        <small>
+          {
+            categories.length ?
+            new Intl.ListFormat('es').format(categories) :
+            "Sin categoría"
+          }
+        </small>
         <h3>{product.name}</h3>
       </div>
       <p>{product.price} Bs.</p>

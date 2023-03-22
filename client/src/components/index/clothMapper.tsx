@@ -13,7 +13,7 @@ const ClothMapper = () => {
     const filtered = productJson.filter(product => {
       let productFlag = false;
       product.categories.forEach(category => {
-        const idCategoriesSelected: (number | undefined)[] = categoriesSelected.map(category => category.id);
+        const idCategoriesSelected: number[] = categoriesSelected.map(category => category.id);
         if(idCategoriesSelected.includes(category.id)) {
           productFlag =  true
         };
