@@ -18,6 +18,7 @@ const A = styled(Link)`
   display: flex;
   gap: .5rem;
   font-size: 1.25rem;
+  font-weight: 700;
   align-items: center;
   text-decoration: none;
   color: ${colors.gray900};

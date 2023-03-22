@@ -12,6 +12,10 @@ export const Button = styled.button`
   background-color: ${colors.primary600};
   transition: all 0.3s;
   font-size: 1rem;
+  width: max-content;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 
   &:hover {
     background-color: ${colors.primary800};
@@ -29,6 +33,26 @@ export const StyledLink = styled(Link)`
   transition: all 0.3s;
   font-size: 1rem;
   text-decoration: none;
+
+  &:hover {
+    background-color: ${colors.primary800};
+  }
+`;
+
+export const StyledA = styled.a`
+  padding: 0.5rem 3rem;
+  border-radius: 1.5rem;
+  border:none;
+  cursor:pointer;
+  font-weight: 500;
+  color: ${colors.white};
+  background-color: ${colors.primary600};
+  transition: all 0.3s;
+  font-size: 1rem;
+  text-decoration: none;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 
   &:hover {
     background-color: ${colors.primary800};
