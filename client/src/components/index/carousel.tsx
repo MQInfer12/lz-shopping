@@ -86,6 +86,10 @@ const CarouselItem = styled.div<CarouselActiveProps>`
 
   & > h2 {
     font-size: 3rem;
+
+    @media screen and (max-width: 660px) {
+      font-size: 2rem;
+    }
   }
 
   & > img {

@@ -16,4 +16,5 @@ export default Index
 const TwoColumns = styled.div`
   height: 100%;
   display: flex;
+  position: relative;
 `;

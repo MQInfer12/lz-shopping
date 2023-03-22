@@ -1,22 +1,30 @@
 import styled from 'styled-components'
 import { useCloth } from '../../context/cloth';
+import { useWidth } from '../../hooks/useWidth';
+import { colors } from '../../style/variables';
 import Booking from './booking';
 import HandIcon from './handIcon'
 
 const Selected = () => {
-  const { selected, removeCloth } = useCloth();
+  const { selected, removeCloth, open } = useCloth();
+  const width = useWidth();
+
+  if((width < 1110 && !open)) return <></>;
 
   return (
     <SelectedContainer>
       {
         Object.keys(selected).length ?
-        <>
-          <Booking key={selected.id} />
-          <button onClick={removeCloth}><i className="fa-solid fa-xmark"></i></button>
-        </>
+        <Booking key={selected.id} />
         :
         <HandIcon />
-      }
+      }   
+      { 
+        Object.keys(selected).length ? 
+        <button className="icon-button" onClick={removeCloth}>
+          <i className="fa-solid fa-xmark"></i>
+        </button> : <></> 
+      } 
     </SelectedContainer>
   )
 }
@@ -30,6 +38,24 @@ const SelectedContainer = styled.div`
   align-items: center;
   gap: 5rem;
   position: relative;
+  background-color: white;
+
+  & > .icon-button {
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+    font-size: 1.8rem;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 5;
+    color: ${colors.gray900};
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
 
   & > * {
     animation: appear 1s ease;
@@ -44,19 +70,8 @@ const SelectedContainer = styled.div`
     }
   }
 
-  & > button {
+  @media screen and (max-width: 1110px) {
     position: absolute;
-    top: 2rem;
-    left: 2rem;
-    font-size: 1.8rem;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-      transform: scale(1.2);
-    }
+    inset: 0;
   }
 `;
-
