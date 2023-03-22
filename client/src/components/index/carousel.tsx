@@ -53,7 +53,7 @@ export default Carousel
 const CarouselContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 16rem;
+  min-height: 16rem;
   box-shadow: ${colors.shadow100};
   overflow: hidden;
   border-radius: 1rem;

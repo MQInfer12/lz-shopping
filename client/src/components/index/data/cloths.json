@@ -1,0 +1,32 @@
+[{
+  "id": 1,
+  "name": "Jean blanco simple con perlas",
+  "price": 35,
+  "photo": "https://media.vogue.mx/photos/622a4c9e2259bde1e77828e0/master/w_552,h_851,c_limit/jeans-blancos-citizen-of-humanity.png",
+  "categories": [
+    {
+      "id": 1,
+      "name": "Destacados"
+    },{
+      "id": 8,
+      "name": "Jeans"
+    }
+  ]
+}, {
+  "id": 2,
+  "name": "Chamarra de cuero negra para hombre",
+  "price": 80,
+  "photo": "https://s1.abcstatics.com/media/MM/2018/10/04/9Saint%20Laurent-k0AE--862x900@abc.jpg",
+  "categories": [
+    {
+      "id": 1,
+      "name": "Destacados"
+    },{
+      "id": 6,
+      "name": "Deportivos"
+    },{
+      "id": 10,
+      "name": "Cuero"
+    }
+  ]
+}]

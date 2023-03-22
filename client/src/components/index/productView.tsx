@@ -5,13 +5,18 @@ import { colors } from '../../style/variables'
 const ProductView = () => {
   const { selected: product } = useCloth();
 
+  const categories: string[] = product.categories?.map(categorie => categorie.name) || [];
+
   return (
     <ProductViewContainer>
       <div className="img-container">
-        <img src={product.foto} />
+        <img src={product.photo} />
       </div>
-      <h3>{product.nombre}</h3>
-      <p>{product.precio} Bs.</p>
+      <div className='desc-container'>
+        <small>{new Intl.ListFormat('es').format(categories)}</small>
+        <h3>{product.name}</h3>
+      </div>
+      <p>{product.price} Bs.</p>
     </ProductViewContainer>
   )
 }
@@ -43,12 +48,28 @@ const ProductViewContainer = styled.div`
     }
   }
 
-  & > h3 {
-    max-width: 100%;
-    text-align: center;
-    font-size: 2rem;
-    line-height: 2.2rem;
-    color: ${colors.gray900};
+  & > .desc-container {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    & > small {
+      text-transform: uppercase;
+      font-size: .875rem;
+      color: ${colors.gray400};
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    & > h3 {
+      max-width: 100%;
+      text-align: center;
+      font-size: 2rem;
+      line-height: 2.2rem;
+      color: ${colors.gray900};
+    }
   }
 
   & > p {

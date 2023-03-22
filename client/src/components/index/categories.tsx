@@ -1,22 +1,23 @@
-import React from 'react'
 import styled from 'styled-components'
+import { useCloth } from '../../context/cloth';
 import { colors } from '../../style/variables'
+import categoriesJson from './data/categories.json';
 
 const Categories = () => {
+  const { categoriesSelected, selectCategory } = useCloth();
+
   return (
     <CategoriesContainer>
       <div>
-        <button>Destacados</button>
-        <button>Nuevos</button>
-        <button>Camisas</button>
-        <button>Poleras</button>
-        <button>Deportivos</button>
-        <button>Busos</button>
-        <button>Jeans</button>
-        <button>Faldas</button>
-        <button>Vestidos</button>
-        <button>Promoción</button>
-        <button>Varios</button>
+        {
+          categoriesJson.map((v, i) => (
+            <CategorieButton 
+              key={v.id} 
+              onClick={() => selectCategory(v)}
+              active={categoriesSelected.includes(v)}
+            >{v.name}</CategorieButton>
+          ))
+        }
       </div>
     </CategoriesContainer>
   )
@@ -28,26 +29,12 @@ const CategoriesContainer = styled.div`
   overflow: auto;
   padding-bottom: 0.2rem;
   display: flex;
+  min-height: 3.5rem;
 
   & > div {
     display: flex;
     gap: 1rem;
     margin: auto;
-
-    & > button {
-      font-size: 1rem;
-      padding: .75rem 1rem;
-      color: ${colors.white};
-      background-color: ${colors.primary500};
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: all 0.3s;
-
-      &:hover {
-        background-color: ${colors.primary600};
-      }
-    }
   }
 
   &::-webkit-scrollbar {
@@ -61,5 +48,24 @@ const CategoriesContainer = styled.div`
   &::-webkit-scrollbar-thumb {
     background-color: ${colors.primary500};
     border-radius: .1875rem;
+  }
+`;
+
+interface CategoriesButtonProps {
+  active: boolean
+}
+
+const CategorieButton = styled.button<CategoriesButtonProps>`
+  font-size: 1rem;
+  padding: .75rem 1rem;
+  color: ${colors.white};
+  background-color: ${props => props.active ? colors.primary500 : colors.primary400};
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    opacity: 0.9;
   }
 `;
