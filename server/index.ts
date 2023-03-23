@@ -7,19 +7,25 @@ dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json())
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server!');
 });
 
-app.get('/category', async (req: Request, res:Response)=>{
-  const categories=await prisma.category.findMany();
+app.get('/category', async (req: Request, res:Response) => {
+  const categories = await prisma.category.findMany();
   res.json( categories )
 });
 
-app.post('/category', async (req:Request, res:Response)=>{
-  const category=await prisma.category.create({
-    data: req.body
+app.post('/category', async (req:Request, res:Response) => {
+  console.log(req.body);
+  const category = await prisma.category.create({
+    data: {
+      name: req.body.name
+    }
   });
   res.json({
     message:'create sucessfull', category

@@ -19,6 +19,9 @@ const prisma = new client_1.PrismaClient();
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.get('/', (req, res) => {
     res.send('Express + TypeScript Server!');
 });
@@ -27,8 +30,11 @@ app.get('/category', (req, res) => __awaiter(void 0, void 0, void 0, function* (
     res.json(categories);
 }));
 app.post('/category', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     const category = yield prisma.category.create({
-        data: req.body
+        data: {
+            name: req.body.name
+        }
     });
     res.json({
         message: 'create sucessfull', category
