@@ -1,40 +1,48 @@
-import React from 'react'
 import styled from 'styled-components';
 import { useCloth } from '../../context/cloth';
 import { useWidth } from '../../hooks/useWidth';
 import { IconButton, IconLink, StyledLink } from '../../style/buttons';
-import { IconInputText } from '../../style/input';
 import { colors } from '../../style/variables';
 import Logo from './logo';
 
 const Navbar = () => {
-  const { changeOpen } = useCloth();
+  const { changeOpen, focused, handleFocus, handleBlur, search, changeSearch, handleCloseSearch } = useCloth();
   const width = useWidth();
 
   return (
     <Nav>
-      <Logo />
+      {((width > 620) || (width < 620 && !(focused || search))) && <Logo />}
       <div className="right-nav">
+        <IconInputText>
+          <input 
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            type="text"
+            value={search}
+            onChange={e => changeSearch(e)}
+            required
+          />
+          <label 
+            className={(focused || search) ? "fa-solid fa-xmark" : "fa-solid fa-magnifying-glass"}
+            style={{
+              cursor: (focused || search) ? "pointer" : "auto",
+              pointerEvents: (focused || search) ? "all" : "none"
+            }}
+            onClick={handleCloseSearch}
+          ></label>
+        </IconInputText>
         {
-          !(width < 1110) &&
-          <IconInputText>
-            <input type="text" />
-            <label className="fa-solid fa-magnifying-glass"></label>
-          </IconInputText>
-        }
-        {
-          width < 1110 && 
-          <IconButton>
-            <i className="fa-solid fa-magnifying-glass"></i>
-          </IconButton>}
-        {
-          width < 1110 && 
+          ((width < 1110 && width > 620) || (width < 620 && !(focused || search))) && 
           <IconButton onClick={changeOpen}>
             <i className="fa-solid fa-hand-pointer"></i>
-          </IconButton>}
+          </IconButton>
+        }
         {
-          width < 1110 ?
-          <IconLink to="/user"><i className="fa-solid fa-right-to-bracket"></i></IconLink> :
+          ((width < 1110 && width > 620) || (width < 620 && !(focused || search))) &&
+          <IconLink to="/user"><i className="fa-solid fa-right-to-bracket"></i></IconLink>
+        }
+        {
+          !(width < 1110) &&
           <StyledLink to="/user">Inicia sesión</StyledLink>
         }
       </div>
@@ -58,5 +66,54 @@ const Nav = styled.nav`
   .right-nav {
     display: flex;
     gap: .5rem;
+  }
+`;
+
+const IconInputText = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  &>input{
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    width: 0;
+    border-radius:1.5rem;
+    border:1px solid ${colors.gray500};
+    outline: none;
+    color: ${colors.gray900};
+    background-color: ${colors.primary600};
+    border: 1px solid ${colors.primary600};
+    transition: all 0.3s;
+    font-size: 1rem;
+
+    &:focus, &:valid {
+      width: 300px;
+      background-color: ${colors.white};
+      border: 1px solid ${colors.gray400};
+
+      @media screen and (max-width: 620px) {
+        width: 350px;
+      }
+    }
+
+    &:focus + label, &:valid + label {
+      color: ${colors.gray900};
+      left: 1rem;
+      transform: translateY(-50%);
+    }
+  }
+
+  &>label{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    left: 50%;
+    color: ${colors.white};
+    transition: all 0.3s;
+    pointer-events: none;
+
+    &:hover {
+      opacity: 0.7;
+    }
   }
 `;

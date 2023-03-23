@@ -5,9 +5,13 @@ import ClothCard from './clothCard'
 import productJson from './data/cloths.json'
 
 const ClothMapper = () => {
-  const { categoriesSelected } = useCloth();
+  const { categoriesSelected, search, focused } = useCloth();
 
   const filterByCategories = () => {
+    if((focused || search)) {
+      return productJson.filter(product => product.name.toLowerCase().includes(search.toLowerCase()));
+    }
+
     if(!categoriesSelected.length) return productJson;
 
     const filtered = productJson.filter(product => {
