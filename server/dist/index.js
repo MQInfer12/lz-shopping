@@ -14,14 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
 app.get('/', (req, res) => {
     res.send('Express + TypeScript Server!');
 });
@@ -37,7 +37,39 @@ app.post('/category', (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
     });
     res.json({
-        message: 'create sucessfull', category
+        message: 'sucessfully created', data: category
+    });
+}));
+app.put('/category/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(req.params.id);
+    const updated = yield prisma.category.update({
+        data: {
+            name: req.body.name
+        },
+        where: {
+            id: id
+        }
+    });
+    res.json({
+        message: 'successfully updated', data: updated
+    });
+}));
+app.get('/category/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(req.params.id);
+    const category = yield prisma.category.findUnique({
+        where: {
+            id: id
+        }
+    });
+    res.json(category);
+}));
+app.delete('/category/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(req.params.id);
+    const deleted = yield prisma.category.delete({
+        where: { id: id }
+    });
+    res.json({
+        message: 'succesfully deleted', data: deleted
     });
 }));
 app.listen(port, () => {

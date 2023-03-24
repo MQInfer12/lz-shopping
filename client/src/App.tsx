@@ -18,7 +18,6 @@ function App() {
         <Route element={<Home />} path='/home' />
       </Routes>
     </HashRouter>
-    
   );
 }
 
