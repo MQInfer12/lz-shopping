@@ -1,0 +1,28 @@
+{
+  "Prisma Controller": {
+    "scope": "typescript",
+    "prefix": "cprisma",
+    "body": [
+      "import { Router, Request, Response } from 'express';",
+      "import { PrismaClient } from '@prisma/client'",
+      "",
+      "const app = Router();",
+      "const prisma = new PrismaClient();",
+      "",
+      "$0",
+      "",
+      "module.exports = app;"
+    ],
+    "description": "Generate controller file for prisma"
+  },
+  "Route function for prisma controller": {
+    "scope": "typescript",
+    "prefix": ["appf", "apf"],
+    "body": [
+      "app.${1|get,post,put,delete|}('/$TM_FILENAME_BASE$2', async (req: Request, res: Response) => {",
+      "\t$3",
+      "});"
+    ],
+    "description": "Create an app route function for prisma controllers"
+  }
+}
