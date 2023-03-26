@@ -34,6 +34,10 @@ const ClothsSection = styled.section`
   padding: 3rem;
   gap: 2rem;
 
+  @media screen and (max-width: 1110px) {
+    min-width: 100%;
+  }
+
   &::-webkit-scrollbar {
     width: .375rem;
     height: .375rem;

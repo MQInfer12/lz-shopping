@@ -13,6 +13,18 @@ const express_1 = require("express");
 const client_1 = require("@prisma/client");
 const app = (0, express_1.Router)();
 const prisma = new client_1.PrismaClient();
+app.get('/index', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const products = yield prisma.product.findMany({
+        include: {
+            categories: true
+        }
+    });
+    const categories = yield prisma.category.findMany();
+    res.json({
+        products,
+        categories
+    });
+}));
 app.get('/product', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const products = yield prisma.product.findMany({
         include: {

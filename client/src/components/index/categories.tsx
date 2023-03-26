@@ -1,16 +1,21 @@
 import styled from 'styled-components'
 import { useCloth } from '../../context/cloth';
+import { useData } from '../../context/data';
 import { colors } from '../../style/variables'
-import categoriesJson from './data/categories.json';
 
 const Categories = () => {
-  const { categoriesSelected, selectCategory } = useCloth();
+  const { categories } = useData();
+  const { categoriesSelected, selectCategory, emptyCategories } = useCloth();
 
   return (
     <CategoriesContainer>
       <div>
+        <CategorieButton 
+          onClick={emptyCategories}
+          active={!categoriesSelected.length}
+        >Ver todos</CategorieButton>
         {
-          categoriesJson.map((v, i) => (
+          categories.map((v, i) => (
             <CategorieButton 
               key={v.id} 
               onClick={() => selectCategory(v)}
@@ -59,7 +64,7 @@ const CategorieButton = styled.button<CategoriesButtonProps>`
   font-size: 1rem;
   padding: .75rem 1rem;
   color: ${colors.white};
-  background-color: ${props => props.active ? colors.primary500 : colors.primary400};
+  background-color: ${props => props.active ? colors.primary500 : colors.primary300};
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;

@@ -4,6 +4,19 @@ import { PrismaClient } from '@prisma/client'
 const app = Router();
 const prisma = new PrismaClient();
 
+app.get('/index', async (req: Request, res: Response) => {
+  const products = await prisma.product.findMany({
+    include: {
+      categories: true
+    }
+  });
+  const categories = await prisma.category.findMany();
+  res.json({
+    products,
+    categories
+  });
+});
+
 app.get('/product', async (req: Request, res: Response) => {
   const products = await prisma.product.findMany({
     include: {

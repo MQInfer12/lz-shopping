@@ -14,6 +14,7 @@ const client_1 = require("@prisma/client");
 const app = (0, express_1.Router)();
 const prisma = new client_1.PrismaClient();
 app.post('/product/category/:idProduct', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    //SELECTING THE CURRENT CATEGORIES
     const product = yield prisma.product.findUnique({
         where: {
             id: parseInt(req.params.idProduct)
@@ -26,8 +27,11 @@ app.post('/product/category/:idProduct', (req, res) => __awaiter(void 0, void 0,
             }
         },
     });
+    //THE BODY CONTAINS THE SELECTED CATEGORIES
     const connectIds = req.body;
+    //WE FILTER THE CURRENT CATEGORIES TO FIND THE OLD ONES
     const disconnectIds = product === null || product === void 0 ? void 0 : product.categories.filter(category => !connectIds.includes(category.id));
+    //CONNECT THE SELECTED CATEGORIES AND DISCONNECT THE OLD ONES
     yield prisma.product.update({
         where: {
             id: parseInt(req.params.idProduct)

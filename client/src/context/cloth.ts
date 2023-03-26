@@ -17,6 +17,7 @@ type Action = {
   changeSearch: (e: React.FormEvent<HTMLInputElement>) => void
   handleFocus: () => void
   handleBlur: () => void
+  emptyCategories: () => void
   selectCategory: (category: Category) => void
   handleCloseSearch: () => void
 }
@@ -33,6 +34,10 @@ export const useCloth = create<State & Action>((set) => ({
   changeSearch: (e) => set(state => ({...state, search: e.currentTarget.value })),
   handleFocus: () => set(state => ({...state, focused: true})),
   handleBlur: () => set(state => ({...state, focused: false})),
+  emptyCategories: () => set(state => ({
+    ...state,
+    categoriesSelected: []
+  })),
   selectCategory: (categorie) => set(state => {
     if(state.categoriesSelected.includes(categorie)) {
       return {
