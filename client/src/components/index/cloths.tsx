@@ -1,23 +1,27 @@
 import styled from 'styled-components'
 import { useCloth } from '../../context/cloth'
+import { useData } from '../../context/data'
 import { colors } from '../../style/variables'
+import Loading from '../global/loading'
 import Carousel from './carousel'
 import Categories from './categories'
 import ClothMapper from './clothMapper'
 
 const Cloths = () => {
+  const { loadingIndex } = useData();
   const { search, focused } = useCloth();
 
   return (
     <ClothsSection>
-      {
-        !(focused || search) && 
+      {!(focused || search) && <Carousel />}
+      { 
+        loadingIndex ?
+        <Loading /> :
         <>
-        <Carousel />
-        <Categories />
+        {!(focused || search) && <Categories />}
+        <ClothMapper />
         </>
       }
-      <ClothMapper />
     </ClothsSection>
   )
 }

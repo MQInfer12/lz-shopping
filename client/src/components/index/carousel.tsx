@@ -86,8 +86,12 @@ const CarouselItem = styled.div<CarouselActiveProps>`
 
   & > h2 {
     font-size: 3rem;
+  }
 
-    @media screen and (max-width: 660px) {
+  @media screen and (max-width: 660px) {
+    padding: 2rem;
+
+    & > h2 {
       font-size: 2rem;
     }
   }

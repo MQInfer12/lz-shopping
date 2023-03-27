@@ -8,6 +8,9 @@ app.get('/index', async (req: Request, res: Response) => {
   const products = await prisma.product.findMany({
     include: {
       categories: true
+    },
+    orderBy: {
+      id: "asc"
     }
   });
   const categories = await prisma.category.findMany();
@@ -33,7 +36,8 @@ app.post('/product', async (req: Request, res: Response) => {
       price: req.body.price,
       stock: req.body.stock,
       photo: req.body.photo,
-      discount: req.body.discount ? req.body.discount : null
+      discount: req.body.discount ? req.body.discount : null,
+      size: req.body.size ? req.body.size : null
     }
   });
   res.json({ message: 'created succesfully', data: product });
@@ -46,7 +50,8 @@ app.put('/product/:id', async (req: Request, res: Response) => {
       price: req.body.price,
       stock: req.body.stock,
       photo: req.body.photo,
-      discount: req.body.discount ? req.body.discount : null
+      discount: req.body.discount ? req.body.discount : null,
+      size: req.body.size ? req.body.size : null
     },
     where: {
       id: parseInt(req.params.id)

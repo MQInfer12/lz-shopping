@@ -1,16 +1,20 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useCloth } from '../../context/cloth'
-import { Product } from '../../interfaces/product';
 import { colors } from '../../style/variables'
 
 const ProductView = () => {
+  const [viewImage, setViewImage] = useState(false);
   const { selected: product } = useCloth();
 
   const categories: string[] = product.categories?.map(categorie => categorie.name) || [];
 
   return (
     <ProductViewContainer>
-      <div className="img-container">
+      <div 
+        onClick={() => setViewImage(old => !old)} 
+        className={`img-container${viewImage ? " fullscreen" : ""}`}
+      >
         <img src={product.photo} />
       </div>
       <div className='desc-container'>
@@ -23,7 +27,10 @@ const ProductView = () => {
         </small>
         <h3>{product.name}</h3>
       </div>
-      <p>{product.price} Bs.</p>
+      <div className='text'>
+        {product.discount && <p className='not'>{product.price} Bs.</p>}
+        <p className='featured'>{product.discount ? product.discount : product.price} Bs.</p>
+      </div>
     </ProductViewContainer>
   )
 }
@@ -40,12 +47,15 @@ const ProductViewContainer = styled.div`
   & > .img-container {
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: 50%;
     max-width: 80%;
     min-width: 270px;
     height: 270px;
     background-color: ${colors.primary100};
     border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: absolute;
 
     & > img {
       width: 90%;
@@ -54,11 +64,24 @@ const ProductViewContainer = styled.div`
       box-shadow: ${colors.shadow};
     }
   }
+  
+  & > .fullscreen {
+    top: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: 6;
+
+    & > img {
+      width: 100%;
+      object-fit: contain;
+    }
+  }
 
   & > .desc-container {
     display: flex;
     flex-direction: column;
     gap: .5rem;
+    padding-top: 18.5rem;
 
     & > small {
       text-transform: uppercase;
@@ -79,12 +102,24 @@ const ProductViewContainer = styled.div`
     }
   }
 
-  & > p {
+  & > .text {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
     font-size: 1.4rem;
-    align-self: flex-end;
-    padding: .5rem 1rem;
-    background-color: ${colors.primary500};
-    color: ${colors.white};
-    border-radius: .5rem;
+    justify-content: flex-end;
+
+    & > .not {
+      text-decoration: line-through;
+    }
+
+    & > .featured {
+      align-self: flex-end;
+      padding: .5rem 1rem;
+      background-color: ${colors.primary500};
+      color: ${colors.white};
+      border-radius: .5rem;
+    }
   }
 `;

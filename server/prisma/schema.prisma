@@ -22,6 +22,7 @@ model Product{
   price       Int       
   discount    Int?
   stock       Int
+  size        String?                     @db.VarChar(4)
   photo       String                      @db.VarChar(255)
   categories  Category[]
   clients     Sale[]

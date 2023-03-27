@@ -53,9 +53,11 @@ export const StyledLink = styled(Link)`
   transition: all 0.3s;
   font-size: 1rem;
   text-decoration: none;
+  border: 1px solid ${colors.primary600};
 
   &:hover {
     background-color: ${colors.primary800};
+  border: 1px solid ${colors.primary800};
   }
 `;
 

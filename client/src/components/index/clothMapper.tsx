@@ -52,10 +52,7 @@ const ClothContainer = styled.div`
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;
-
-  @media screen and (max-width: 1110px) {
-    justify-content: space-around;
-  }
+  justify-content: space-around;
 `;
 
 const CenterText = styled.div`

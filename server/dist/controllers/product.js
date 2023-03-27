@@ -17,6 +17,9 @@ app.get('/index', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const products = yield prisma.product.findMany({
         include: {
             categories: true
+        },
+        orderBy: {
+            id: "asc"
         }
     });
     const categories = yield prisma.category.findMany();
@@ -40,7 +43,8 @@ app.post('/product', (req, res) => __awaiter(void 0, void 0, void 0, function* (
             price: req.body.price,
             stock: req.body.stock,
             photo: req.body.photo,
-            discount: req.body.discount ? req.body.discount : null
+            discount: req.body.discount ? req.body.discount : null,
+            size: req.body.size ? req.body.size : null
         }
     });
     res.json({ message: 'created succesfully', data: product });

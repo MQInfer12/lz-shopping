@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCloth } from '../../context/cloth';
 import { useWidth } from '../../hooks/useWidth';
@@ -8,31 +9,35 @@ import Logo from './logo';
 const Navbar = () => {
   const { changeOpen, focused, handleFocus, handleBlur, search, changeSearch, handleCloseSearch } = useCloth();
   const width = useWidth();
+  const location = useLocation();
 
   return (
     <Nav>
       {((width > 620) || (width < 620 && !(focused || search))) && <Logo />}
       <div className="right-nav">
-        <IconInputText>
-          <input 
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            type="text"
-            value={search}
-            onChange={e => changeSearch(e)}
-            required
-          />
-          <label 
-            className={(focused || search) ? "fa-solid fa-xmark" : "fa-solid fa-magnifying-glass"}
-            style={{
-              cursor: (focused || search) ? "pointer" : "auto",
-              pointerEvents: (focused || search) ? "all" : "none"
-            }}
-            onClick={handleCloseSearch}
-          ></label>
-        </IconInputText>
         {
-          ((width < 1110 && width > 620) || (width < 620 && !(focused || search))) && 
+          location.pathname === "/" &&
+          <IconInputText>
+            <input 
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              type="text"
+              value={search}
+              onChange={e => changeSearch(e)}
+              required
+            />
+            <label 
+              className={(focused || search) ? "fa-solid fa-xmark" : "fa-solid fa-magnifying-glass"}
+              style={{
+                cursor: (focused || search) ? "pointer" : "auto",
+                pointerEvents: (focused || search) ? "all" : "none"
+              }}
+              onClick={handleCloseSearch}
+            ></label>
+          </IconInputText>
+        }
+        {
+          (((width < 1110 && width > 620) || (width < 620 && !(focused || search))) && location.pathname === "/") && 
           <IconButton onClick={changeOpen}>
             <i className="fa-solid fa-hand-pointer"></i>
           </IconButton>

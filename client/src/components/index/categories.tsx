@@ -69,6 +69,7 @@ const CategorieButton = styled.button<CategoriesButtonProps>`
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.3s;
+  white-space: nowrap;
 
   &:hover {
     opacity: 0.9;
