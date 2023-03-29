@@ -18,7 +18,7 @@ const Booking = () => {
 export default Booking
 
 const ColumnContainer = styled.div`
-  padding: 4.5rem 0;
+  padding: 4.5rem 0 3rem;
   display: flex;
   flex-direction: column;
   gap: 3rem;

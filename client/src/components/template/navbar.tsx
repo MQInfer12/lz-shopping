@@ -7,43 +7,64 @@ import { colors } from '../../style/variables';
 import Logo from './logo';
 
 const Navbar = () => {
-  const { changeOpen, focused, handleFocus, handleBlur, search, changeSearch, handleCloseSearch } = useCloth();
+  const { 
+    changeOpen, 
+    focused, 
+    handleFocus, 
+    search, 
+    sizeSearch, 
+    changeSizeSearch, 
+    changeSearch, 
+    handleCloseSearch 
+  } = useCloth();
   const width = useWidth();
   const location = useLocation();
 
   return (
     <Nav>
-      {((width > 620) || (width < 620 && !(focused || search))) && <Logo />}
+      {((width > 620) || (width < 620 && !focused)) && <Logo />}
       <div className="right-nav">
         {
           location.pathname === "/" &&
           <IconInputText>
             <input 
               onFocus={handleFocus}
-              onBlur={handleBlur}
               type="text"
+              className={focused ? "active" : ""}
               value={search}
               onChange={e => changeSearch(e)}
-              required
             />
             <label 
-              className={(focused || search) ? "fa-solid fa-xmark" : "fa-solid fa-magnifying-glass"}
+              className={focused ? "fa-solid fa-xmark" : "fa-solid fa-magnifying-glass"}
               style={{
-                cursor: (focused || search) ? "pointer" : "auto",
-                pointerEvents: (focused || search) ? "all" : "none"
+                cursor: focused ? "pointer" : "auto",
+                pointerEvents: focused ? "all" : "none"
               }}
               onClick={handleCloseSearch}
             ></label>
           </IconInputText>
         }
         {
-          (((width < 1110 && width > 620) || (width < 620 && !(focused || search))) && location.pathname === "/") && 
+          (focused && location.pathname === "/") &&
+          <Select value={sizeSearch} onChange={e => changeSizeSearch(e)}>
+            <option value="">Talla</option>
+            <option value="XS">XS</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="XXL">XXL</option>
+            <option value="XXXL">XXXL</option>
+          </Select>
+        }
+        {
+          (((width < 1110 && width > 620) || (width < 620 && !focused)) && location.pathname === "/") && 
           <IconButton onClick={changeOpen}>
             <i className="fa-solid fa-hand-pointer"></i>
           </IconButton>
         }
         {
-          ((width < 1110 && width > 620) || (width < 620 && !(focused || search))) &&
+          ((width < 1110 && width > 620) || (width < 620 && !focused)) &&
           <IconLink to="/user"><i className="fa-solid fa-right-to-bracket"></i></IconLink>
         }
         {
@@ -78,8 +99,10 @@ const IconInputText = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  justify-content: center;
+  align-items: center;
 
-  &>input{
+  & > input {
     padding: 0.5rem 1rem 0.5rem 2.5rem;
     width: 0;
     border-radius:1.5rem;
@@ -90,35 +113,53 @@ const IconInputText = styled.div`
     border: 1px solid ${colors.primary600};
     transition: all 0.3s;
     font-size: 1rem;
+    cursor: pointer;
 
-    &:focus, &:valid {
+    &:hover {
+      background-color: ${colors.primary800};
+      border: 1px solid ${colors.primary800};
+    }
+
+    &:focus, &[class='active'] {
       width: 300px;
       background-color: ${colors.white};
       border: 1px solid ${colors.gray400};
-
-      @media screen and (max-width: 620px) {
-        width: 350px;
-      }
+      cursor: text;
     }
 
-    &:focus + label, &:valid + label {
+    &:focus + label, &[class='active'] + label {
       color: ${colors.gray900};
       left: 1rem;
-      transform: translateY(-50%);
     }
   }
 
   &>label{
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%) translateX(-50%);
-    left: 50%;
     color: ${colors.white};
     transition: all 0.3s;
     pointer-events: none;
 
     &:hover {
+      scale: 1.2;
       opacity: 0.7;
+    }
+  }
+`;
+
+const Select = styled.select`
+  border-radius:1.5rem;
+  font-size: 0.8rem;
+  text-align: center;
+  animation: appearSelect 0.5s;
+  border: 1px solid ${colors.gray400};
+  font-weight: 500;
+
+  @keyframes appearSelect {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
     }
   }
 `;

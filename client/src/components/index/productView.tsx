@@ -26,6 +26,7 @@ const ProductView = () => {
           }
         </small>
         <h3>{product.name}</h3>
+        {product.size && <small className='right'>Talla {product.size}</small>}
       </div>
       <div className='text'>
         {product.discount && <p className='not'>{product.price} Bs.</p>}
@@ -78,6 +79,7 @@ const ProductViewContainer = styled.div`
   }
 
   & > .desc-container {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: .5rem;
@@ -91,6 +93,12 @@ const ProductViewContainer = styled.div`
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    & > .right {
+      padding-top: .5rem;
+      max-width: unset;
+      text-align: end;
     }
 
     & > h3 {

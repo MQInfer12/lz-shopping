@@ -8,4 +8,5 @@ export interface Product {
   photo?: string
   discount?: number
   categories?: Category[]
+  size?: string
 }

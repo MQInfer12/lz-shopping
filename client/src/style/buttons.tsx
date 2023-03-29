@@ -57,7 +57,7 @@ export const StyledLink = styled(Link)`
 
   &:hover {
     background-color: ${colors.primary800};
-  border: 1px solid ${colors.primary800};
+    border: 1px solid ${colors.primary800};
   }
 `;
 

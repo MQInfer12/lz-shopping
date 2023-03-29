@@ -6,6 +6,7 @@ interface State {
   selected: Product
   open: boolean
   search: string
+  sizeSearch: string
   focused: boolean
   categoriesSelected: Category[]
 }
@@ -15,8 +16,8 @@ type Action = {
   removeCloth: () => void
   changeOpen: () => void
   changeSearch: (e: React.FormEvent<HTMLInputElement>) => void
+  changeSizeSearch: (e: React.ChangeEvent<HTMLSelectElement>) => void
   handleFocus: () => void
-  handleBlur: () => void
   emptyCategories: () => void
   selectCategory: (category: Category) => void
   handleCloseSearch: () => void
@@ -26,14 +27,15 @@ export const useCloth = create<State & Action>((set) => ({
   selected: {},
   open: false,
   search: '',
+  sizeSearch: '',
   focused: false,
   categoriesSelected: [],
   changeOpen: () => set(state => ({...state, open: !state.open })),
   selectCloth: (cloth) => set(state => ({...state, selected: cloth, open: true })),
   removeCloth: () => set(state => ({...state, selected: {}, open: !(window.innerWidth < 1110)})),
   changeSearch: (e) => set(state => ({...state, search: e.currentTarget.value })),
+  changeSizeSearch: (e) => set(state => ({...state, sizeSearch: e.target.value })),
   handleFocus: () => set(state => ({...state, focused: true})),
-  handleBlur: () => set(state => ({...state, focused: false})),
   emptyCategories: () => set(state => ({
     ...state,
     categoriesSelected: []
@@ -51,13 +53,11 @@ export const useCloth = create<State & Action>((set) => ({
     };
   }),
   handleCloseSearch: () => {
-    var tmp = document.createElement("input");
-    document.body.appendChild(tmp);
-    tmp.focus();
-    document.body.removeChild(tmp);
     set(state => ({
       ...state,
-      search: ""
+      search: "",
+      focused: false,
+      sizeSearch: ""
     }));
   }
 }));

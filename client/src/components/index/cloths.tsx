@@ -42,6 +42,10 @@ const ClothsSection = styled.section`
     min-width: 100%;
   }
 
+  @media screen and (max-width: 450px) {
+    padding: 1.5rem 1rem;
+  }
+
   &::-webkit-scrollbar {
     width: .375rem;
     height: .375rem;

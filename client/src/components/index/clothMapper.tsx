@@ -6,11 +6,13 @@ import ClothCard from './clothCard'
 
 const ClothMapper = () => {
   const { products: productJson } = useData();
-  const { categoriesSelected, search, focused } = useCloth();
+  const { categoriesSelected, search, sizeSearch, focused } = useCloth();
 
   const filterByCategories = () => {
     if((focused || search)) {
-      return productJson.filter(product => product.name?.toLowerCase().includes(search.toLowerCase()));
+      return productJson
+        .filter(product => product.name?.toLowerCase().includes(search.toLowerCase()))
+        .filter(product => sizeSearch ? product.size === sizeSearch : true);
     }
 
     if(!categoriesSelected.length) return productJson;
@@ -24,7 +26,7 @@ const ClothMapper = () => {
         };
       })
       return productFlag;
-    });
+    }).filter(product => product.size?.includes(sizeSearch));
 
     return filtered;
   }
@@ -53,6 +55,10 @@ const ClothContainer = styled.div`
   gap: 2rem;
   flex-wrap: wrap;
   justify-content: space-around;
+
+  @media screen and (max-width: 450px) {
+    gap: 1rem;
+  }
 `;
 
 const CenterText = styled.div`
