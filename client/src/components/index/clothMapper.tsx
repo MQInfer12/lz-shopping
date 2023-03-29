@@ -9,7 +9,7 @@ const ClothMapper = () => {
   const { categoriesSelected, search, sizeSearch, focused } = useCloth();
 
   const filterByCategories = () => {
-    if((focused || search)) {
+    if(focused) {
       return productJson
         .filter(product => product.name?.toLowerCase().includes(search.toLowerCase()))
         .filter(product => sizeSearch ? product.size === sizeSearch : true);

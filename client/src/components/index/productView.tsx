@@ -3,8 +3,12 @@ import styled from 'styled-components';
 import { useCloth } from '../../context/cloth'
 import { colors } from '../../style/variables'
 
-const ProductView = () => {
-  const [viewImage, setViewImage] = useState(false);
+interface Props {
+  viewImage: boolean
+  setViewImage: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const ProductView = ({ setViewImage, viewImage }: Props) => {
   const { selected: product } = useCloth();
 
   const categories: string[] = product.categories?.map(categorie => categorie.name) || [];
