@@ -3,8 +3,13 @@ import { useCloth } from '../../context/cloth'
 import { useData } from '../../context/data'
 import { colors } from '../../style/variables'
 import ClothCard from './clothCard'
+import { Product } from '../../interfaces/product'
 
-const ClothMapper = () => {
+interface Props {
+  products?: Product[]
+}
+
+const ClothMapper = ({ products }: Props) => {
   const { products: productJson } = useData();
   const { categoriesSelected, search, sizeSearch, focused } = useCloth();
 
@@ -34,15 +39,23 @@ const ClothMapper = () => {
   return (
     <ClothContainer>
       {
-        filterByCategories().map((v, i) => (
-          <ClothCard key={v.id} product={v} />
-        ))
-      }
-      {
-        !filterByCategories().length && 
-        <CenterText>
-          <p>Pronto tendremos productos en este apartado ♡</p>
-        </CenterText>
+        products ?
+        products.map((product, i) => (
+          <ClothCard key={product.id} product={product} />
+        )) :
+        <>
+          {
+            filterByCategories().map((v, i) => (
+              <ClothCard key={v.id} product={v} />
+            ))
+          }
+          {
+            !filterByCategories().length && 
+            <CenterText>
+              <p>Pronto tendremos productos en este apartado ♡</p>
+            </CenterText>
+          }
+        </>
       }
     </ClothContainer>
    )
@@ -51,6 +64,7 @@ const ClothMapper = () => {
 export default ClothMapper
 
 const ClothContainer = styled.div`
+  max-width: 1300px;
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;

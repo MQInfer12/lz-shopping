@@ -56,7 +56,8 @@ app.put('/product/:id', (req, res) => __awaiter(void 0, void 0, void 0, function
             price: req.body.price,
             stock: req.body.stock,
             photo: req.body.photo,
-            discount: req.body.discount ? req.body.discount : null
+            discount: req.body.discount ? req.body.discount : null,
+            size: req.body.size ? req.body.size : null
         },
         where: {
             id: parseInt(req.params.id)

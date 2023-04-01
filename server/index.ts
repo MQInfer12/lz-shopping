@@ -6,6 +6,7 @@ var cors = require('cors');
 const category = require('./controllers/category');
 const product = require('./controllers/product');
 const product_category = require('./controllers/product_category');
+const user = require('./controllers/user');
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(cors());
 app.use(category);
 app.use(product);
 app.use(product_category);
+app.use(user);
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

@@ -5,6 +5,7 @@ import { useWidth } from '../../hooks/useWidth';
 import { IconButton, IconLink, StyledLink } from '../../style/buttons';
 import { colors } from '../../style/variables';
 import Logo from './logo';
+import { useUser } from '../../context/user';
 
 const Navbar = () => {
   const { 
@@ -17,6 +18,7 @@ const Navbar = () => {
     changeSearch, 
     handleCloseSearch 
   } = useCloth();
+  const { user } = useUser();
   const width = useWidth();
   const location = useLocation();
 
@@ -69,7 +71,7 @@ const Navbar = () => {
         }
         {
           !(width < 1110) &&
-          <StyledLink to="/user">Inicia sesión</StyledLink>
+          <StyledLink to="/user">{ user ? "Mis compras" : "Inicia sesión"}</StyledLink>
         }
       </div>
     </Nav>
