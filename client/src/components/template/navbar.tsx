@@ -69,7 +69,7 @@ const Navbar = () => {
         }
         {
           !(width < 1110) &&
-          <StyledLink to="/user">Inicia sesión</StyledLink>
+          <StyledLink to="/login">Inicia sesión</StyledLink>
         }
       </div>
     </Nav>
