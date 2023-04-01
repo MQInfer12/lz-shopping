@@ -13,12 +13,17 @@ export const Button = styled.button`
   transition: all 0.3s;
   font-size: 1rem;
   width: max-content;
+  height: max-content;
   display: flex;
   gap: 1rem;
   align-items: center;
 
   &:hover {
     background-color: ${colors.primary800};
+  }
+
+  &:disabled {
+    pointer-events: none;
   }
 `;
 
