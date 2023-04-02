@@ -16,7 +16,7 @@ const Login = () => {
 const Autenticate =()=>{
     if(email === 'josh@gmail.com'){
       if(password==='123456'){
-        navigate('/home')
+        navigate('/crud')
       }
     }
     else{

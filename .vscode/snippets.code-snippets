@@ -24,5 +24,13 @@
       "});"
     ],
     "description": "Create an app route function for prisma controllers"
+  },
+  "Create usestate": {
+    "scope": "typescript",
+    "prefix": ["ust", "usestate"],
+    "body": [
+      "const [${1:name}, set${1:Name}] = useState($2);"
+    ],
+    "description": "Create an app route function for prisma controllers"
   }
 }

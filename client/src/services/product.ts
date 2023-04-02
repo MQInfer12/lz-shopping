@@ -1,5 +1,4 @@
-import { http } from '../../env';
-
+import { http } from "../../env";
 export const getProductsAndCategories = async () => {
   const res = await fetch(`${http}index`, {
     method: "GET",
