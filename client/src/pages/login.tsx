@@ -7,22 +7,20 @@ import { colors } from "../style/variables";
 import LoginImg from "../assets/login.jpg";
 import { Button } from "../style/buttons";
 import { Inputcontainer } from "../style/input";
+import { useUser } from "../context/user";
 
 const Login = () => { 
-    const [email, setEmail] = useState('');
-    const navigate=useNavigate();
-    const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+  const [password, setPassword] = useState('');
+  const { activateAdmin } = useUser();
 
-const Autenticate =()=>{
-    if(email === 'josh@gmail.com'){
-      if(password==='123456'){
-        navigate('/crud')
-      }
-    }
-    else{
-      alert('Nel perro')
-    }
-}
+  const Autenticate = () => {
+    if(email != "admin@gmail.com" || password != '123456') return alert('Datos incorrectos');
+    activateAdmin();
+    navigate('/home');
+  }
+
   return (
     <Container>
       <Firstcolumn>
@@ -32,7 +30,7 @@ const Autenticate =()=>{
         <Bubbles top='0.5rem' left='0.5rem'/>
         <Bubbles top='0.5rem' left='100%' mirror/>
         <Loginconteiner>
-          <Htwo>Tienda de Ropa</Htwo>
+          <Htwo>LZ Shopping</Htwo>
           <Inputcontainer>
             <label htmlFor="email">E-mail* </label>
             <input type="email" value={email} onChange={(e)=> setEmail(e.target.value)} required/>
@@ -70,7 +68,7 @@ const SecondColumn=styled.div`
   justify-content: center;
   position: relative;
 `;
-const Loginconteiner=styled.div`
+const Loginconteiner=styled.form`
   width: 300px;
   display: flex;
   flex-direction: column;

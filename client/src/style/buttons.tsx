@@ -47,6 +47,28 @@ export const IconButton = styled.button`
   }
 `;
 
+export const MiniIconButton = styled.button`
+  min-width: 2rem;
+  min-height: 2rem;
+  border-radius: 1rem;
+  border:none;
+  cursor:pointer;
+  color: ${colors.white};
+  background-color: ${colors.primary600};
+  transition: all 0.3s;
+  font-size: 1rem;
+  width: max-content;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+
+  &:hover {
+    background-color: ${colors.primary800};
+  }
+`;
+
 export const StyledLink = styled(Link)`
   padding: 0.5rem 3rem;
   border-radius: 1.5rem;

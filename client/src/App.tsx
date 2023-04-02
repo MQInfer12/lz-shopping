@@ -5,7 +5,7 @@ import Home from "./pages/home";
 import Layout from "./pages/layout";
 import Login from "./pages/login";
 import User from "./pages/user";
-import Crud from "./pages/crud";
+import ProtectedRoute from "./components/wrappers/protectedRoute";
 
 function App() {
   return (
@@ -15,9 +15,8 @@ function App() {
           <Route element={<Index />} path='/' />
           <Route element={<Login />} path='/login' />
           <Route element={<User />} path='/user' />
-          <Route element={<Crud/>} path="/crud"/>
+          <Route element={<ProtectedRoute><Home /></ProtectedRoute>} path='/home' />
         </Route>
-        <Route element={<Home />} path='/home' />
       </Routes>
     </HashRouter>
   );

@@ -67,7 +67,11 @@ const Navbar = () => {
         }
         {
           ((width < 1110 && width > 620) || (width < 620 && !focused)) &&
-          <IconLink to="/user"><i className="fa-solid fa-right-to-bracket"></i></IconLink>
+          <IconLink to="/user">
+            <i 
+              className={user ? "fa-solid fa-cart-shopping" : "fa-solid fa-right-to-bracket"}
+            ></i>
+          </IconLink>
         }
         {
           !(width < 1110) &&
