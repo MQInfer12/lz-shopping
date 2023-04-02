@@ -32,6 +32,8 @@ const Selected = () => {
 export default Selected
 
 const SelectedContainer = styled.div`
+  height: calc(100dvh - 56px);
+  overflow: auto;
   min-width: 30%;
   display: flex;
   flex-direction: column;
@@ -39,6 +41,19 @@ const SelectedContainer = styled.div`
   gap: 5rem;
   position: relative;
   background-color: white;
+
+  &::-webkit-scrollbar {
+    width: .375rem;
+    height: .375rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: ${colors.gray200};
+    border-radius: .1875rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${colors.primary500};
+    border-radius: .1875rem;
+  }
 
   & > .icon-button {
     position: absolute;
