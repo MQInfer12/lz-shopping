@@ -31,7 +31,7 @@ const CategoryCrudContainer = styled.div`
   }
 
   & > .inputsContainer {
-    width: 300px;
+    width: 340px;
     display: flex;
     flex-direction: column;
     gap: 1rem;

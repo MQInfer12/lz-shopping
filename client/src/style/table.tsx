@@ -7,7 +7,7 @@ export const Table = styled.table`
   table-layout: fixed;
   max-width: 100%;
 
-  & tr {
+  & tbody tr {
     transition: all 0.3s;
     &:hover {
       background-color: ${colors.gray100};
@@ -25,9 +25,9 @@ export const Table = styled.table`
   & td {
     text-align: start;
     color: ${colors.gray900};
-    font-weight: 600;
+    font-weight: 500;
     border-bottom: 1px solid ${colors.gray200};
-    padding: 1rem 2.5rem 1rem 0.5rem;
+    padding: 1rem 2.5rem 1rem 1rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -43,8 +43,8 @@ export const Table = styled.table`
   }
 
   & img {
-    width: 7.5rem;
-    height: 7.5rem;
+    width: 5rem;
+    height: 5rem;
     box-shadow: ${colors.shadow};
     border-radius: .5rem;
     object-fit: cover;

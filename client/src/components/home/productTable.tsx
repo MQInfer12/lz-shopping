@@ -6,7 +6,6 @@ import { Table } from '../../style/table'
 
 const ProductTable = () => {
   const { products } = useData();
-  console.log(products);
 
   return (
     <TableContainer>
@@ -33,18 +32,17 @@ const ProductTable = () => {
             <td className='center'>{product.discount ? product.discount + " Bs." : "N/A"}</td>
             <td className='center'>{product.size ? product.size : "N/A"}</td>
             <td className='center'>{product.stock}</td>
-            <td className='center padding'>
-              <ColumnContainer>
-                <p>{product.categories?.length} seleccionado(s).</p>
-                <MiniIconButton><i className="fa-regular fa-square-check"></i></MiniIconButton>
-              </ColumnContainer>
-            </td>
+            <td className='center padding'>{product.categories?.length} seleccionado(s).</td>
             <td>{product.clients?.length ? "Vendido" : "Disponible"}</td>
             <td className='center'>
               <ColumnContainer>
-                <MiniIconButton><i className="fa-solid fa-pencil"></i></MiniIconButton>
-                <MiniIconButton><i className="fa-solid fa-trash"></i></MiniIconButton>
-                <MiniIconButton><i className="fa-solid fa-pencil"></i></MiniIconButton>
+                <RowContainer>
+                  <MiniIconButton><i className="fa-solid fa-pencil"></i></MiniIconButton>
+                  <MiniIconButton><i className="fa-solid fa-trash"></i></MiniIconButton>
+                </RowContainer>
+                <RowContainer>
+                  <MiniIconButton><i className="fa-solid fa-cart-shopping"></i></MiniIconButton>
+                </RowContainer>
               </ColumnContainer>
             </td>
           </tr>
@@ -60,6 +58,12 @@ export default ProductTable
 const ColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const RowContainer = styled.div`
+  display: flex;
   gap: 0.5rem;
 `;
 

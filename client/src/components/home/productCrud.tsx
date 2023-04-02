@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useData } from '../../context/data'
 import { Button } from '../../style/buttons'
-import { Inputcontainer } from '../../style/input'
+import { Inputcontainer, InputNumber, SelectContainer } from '../../style/input'
 import Loading from '../global/loading'
+import CategorySelector from './categorySelector'
 import PageTemplate from './pageTemplate'
 import ProductTable from './productTable'
 
 const ProductCrud = () => {
+  const [stock, setStock] = useState("1");
   const { loadingIndex } = useData();
 
   return (
@@ -28,37 +30,41 @@ const ProductCrud = () => {
           />
         </Inputcontainer>
         <TwoColumns>
-          <Inputcontainer>
-            <label>Precio*</label>
-            <input
-              type="text"
-              onChange={(e) => {}}
-            />
-          </Inputcontainer>
-          <Inputcontainer>
-            <label>Descuento</label>
-            <input
-              type="text"
-              onChange={(e) => {}}
-            />
-          </Inputcontainer>
+          <InputNumber 
+            name='Precio*'
+            state=""
+            setState={() => {}}
+          />
+          <InputNumber 
+            name='Descuento*'
+            state=""
+            setState={() => {}}
+          />
         </TwoColumns>
         <TwoColumns>
-          <Inputcontainer>
+          <SelectContainer>
             <label>Talla</label>
-            <input
-              type="text"
-              onChange={(e) => {}}
-            />
-          </Inputcontainer>
-          <Inputcontainer>
-            <label>Stock*</label>
-            <input
-              type="text"
-              onChange={(e) => {}}
-            />
-          </Inputcontainer>
+            <select onChange={(e) => {}} >
+              <option value="">Sin talla</option>
+              <option value="XS">XS</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+              <option value="XXXL">XXXL</option>
+            </select>
+          </SelectContainer>
+          <InputNumber 
+            name='Stock*'
+            state={stock}
+            setState={setStock}
+          />
         </TwoColumns>
+        <Inputcontainer>
+          <label>Categorías</label>
+          <CategorySelector />
+        </Inputcontainer>
         <Button onClick={() => {}}>Agregar</Button>
       </div>
       {
