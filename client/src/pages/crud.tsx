@@ -1,45 +1,48 @@
-import React from "react";
-import styled from "styled-components";
-
-
+import React, { useEffect, useState } from "react";
+import { useData } from "../context/data";
+import { deleteCategory, postCategory } from "../services/category";
 const Crud = () => {
+  const [name, setName] = useState("");
+  const { fillProductsAndCategories, categories, addCategory, removeCategory } =
+    useData();
+  useEffect(() => {
+    fillProductsAndCategories();
+  }, []);
+  const handlesend = async () => {
+    const res = await postCategory(name);
+    addCategory(res.data);
+    setName('');
+  };
+  const handledelete = async (id: number) => {
+    const res = await deleteCategory(id);
+    removeCategory(res.data);
+  };
+  
   return (
-    <Container>
-      <Botonadd>
-        <button></button>
-      </Botonadd>
+    <div>
       <div>
         <label htmlFor="">Categoria</label>
-        <input type="text" />
-        <button>Agregar</button>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <button onClick={handlesend}>Agregar</button>
       </div>
-      <div>
-        <label htmlFor="">Producto</label>
-        <div>
-          <input type="text" />
-          <input type="text" />
+      {categories.map((v, i) => (
+        <div key={v.id}>
+          <p>{v.name}</p>
+          <button
+            onClick={() => {
+              handledelete(v.id);
+            }}
+          >
+            X
+          </button>
         </div>
-        <div>
-          <label htmlFor="">0</label>
-          <input type="text" />
-        </div>
-        <div>
-          <img src="" alt="" />
-        </div>
-      </div>
-    </Container>
+      ))}
+    </div>
   );
 };
 
 export default Crud;
-
-const Container=styled.div`
-  width:100%;
-  height:100%;
-`;
-const Botonadd=styled.div`
-  width:100%;
-  height:20%;
-  background: #000;
-  
-`
