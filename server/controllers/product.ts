@@ -60,7 +60,21 @@ app.post('/product', async (req: Request, res: Response) => {
 });
 
 app.put('/product/:id', async (req: Request, res: Response) => {
+  const product=await prisma.product.findUnique({
+    select:{
+      categories:{
+        select:{
+          id:true
+        }
+      }
+    },
+    where:{
+      id:parseInt(req.params.id)
+    }
+  })
+  
   const categories: number[] = req.body.categories;
+  const disconnectids=product?.categories.filter((v,i)=>!categories.includes(v.id))
   const updated = await prisma.product.update({
     data: {
       name: req.body.name,
@@ -70,7 +84,8 @@ app.put('/product/:id', async (req: Request, res: Response) => {
       discount: Number(req.body.discount) ? Number(req.body.discount) : null,
       size: req.body.size ? req.body.size : null,
       categories: {
-        connect: categories.map(id => ({ id }))
+        connect: categories.map(id => ({ id })),
+        disconnect:disconnectids 
       }
     },
     where: {
