@@ -40,7 +40,19 @@ export const useData = create<State & Action>((set) => ({
   removeCategory:(category)=>{
     set((state) => ({
       ...state,
-      categories:state.categories.filter(v=>v.id!=category.id),
+      categories: state.categories.filter(v => v.id != category.id),
+      products: state.products.map(product => {
+        let flag = false;
+        product.categories?.forEach(v => {
+          if(v.id === category.id) {
+            flag = true
+          };
+        })
+        if(product.categories && flag) {
+          return {...product, categories: product.categories.filter(v => v.id != category.id)}
+        }
+        return product;
+      })
     }));
   },
   addProduct: (product) => {

@@ -21,7 +21,7 @@ const AppContainer = styled.div`
   margin-top: 3.5rem;
   height: calc(100dvh - 3.5rem);
   overflow: auto;
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   
   &::-webkit-scrollbar {
     width: .375rem;

@@ -4,3 +4,33 @@
   box-sizing: border-box;
   font-family: Lora;
 }
+
+.swal2-success-line-tip, .swal2-success-line-long {
+  background-color: #c9184a !important;
+}
+
+.swal2-success-ring {
+  border: 0.25em solid #ffccd5 !important;
+}
+
+.swal2-confirm {
+  background-color: #c9184a !important;
+  transition: all 0.3s;
+}
+
+.swal2-confirm:focus {
+  box-shadow: 0 0 0 3px #ff758f !important;
+}
+
+.swal2-styled:hover {
+  background-image: none !important;
+  background-color: #800f2f !important;
+}
+
+.swal2-title {
+  color: #132238 !important;
+}
+
+.swal2-html-container {
+  color: #87909D !important;
+}

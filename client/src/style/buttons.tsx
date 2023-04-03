@@ -24,6 +24,7 @@ export const Button = styled.button`
 
   &:disabled {
     pointer-events: none;
+    background-color: ${colors.gray500};
   }
 `;
 
@@ -56,16 +57,36 @@ export const MiniIconButton = styled.button`
   color: ${colors.white};
   background-color: ${colors.primary600};
   transition: all 0.3s;
-  font-size: 1rem;
-  width: max-content;
+  font-size: 0.9rem;
   display: flex;
-  gap: 1rem;
   align-items: center;
   justify-content: center;
   margin: auto;
 
   &:hover {
     background-color: ${colors.primary800};
+  }
+
+  &:disabled {
+    pointer-events: none;
+    background-color: ${colors.gray500};
+  }
+`;
+
+export const LoadingIcon = () => {
+  return <LoadingI className="fa-solid fa-spinner"></LoadingI>
+}
+
+const LoadingI = styled.i`
+  animation: circle 1s infinite;
+
+  @keyframes circle {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 `;
 

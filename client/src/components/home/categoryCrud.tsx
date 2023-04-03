@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 import { useData } from "../../context/data";
 import { postCategory } from "../../services/category";
 import { Button } from "../../style/buttons";
@@ -10,11 +11,19 @@ import PageTemplate from "./pageTemplate";
 const CategoryCrud = () => {
   const { addCategory, loadingIndex } = useData();
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handlesend = async () => {
+    setLoading(true);
     const res = await postCategory(name);
     addCategory(res.data);
     setName('');
+    setLoading(false);
+    Swal.fire({
+      title: "Petición correcta",
+      text: "Se añadió la categoría correctamente.",
+      icon: "success"
+    });
   };
   
   return (
@@ -28,7 +37,7 @@ const CategoryCrud = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </Inputcontainer>
-        <Button onClick={handlesend}>Añadir</Button>
+        <Button disabled={loading} onClick={handlesend}>{loading ? "Cargando..." : "Añadir"}</Button>
       </div>
       {
         loadingIndex ?

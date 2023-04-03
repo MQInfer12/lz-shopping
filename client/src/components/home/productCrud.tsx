@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import { useData } from "../../context/data";
 import useCloudinary from "../../hooks/useCloudinary";
 import { postProduct, putProduct } from "../../services/product";
@@ -47,20 +48,17 @@ const ProductCrud = () => {
 
   const handleSend = async () => {
     setLoading(true);
+    let cloudinaryRes: any;
+    if (form.photo) {
+      cloudinaryRes = await sendCloudinary(form.photo);
+    }
     if (!form.id) {
-      if (form.photo) {
-        const cloudinaryRes: any = await sendCloudinary(form.photo);
-        const res = await postProduct({
-          ...form,
-          photo: cloudinaryRes.url,
-        });
-        addProduct(res.data);
-      }
+      const res = await postProduct({
+        ...form,
+        photo: cloudinaryRes.url,
+      });
+      addProduct(res.data);
     } else {
-      let cloudinaryRes: any;
-      if (form.photo) {
-        cloudinaryRes = await sendCloudinary(form.photo);
-      }
       const res = await putProduct({
         ...form,
         photo: cloudinaryRes?.url,
@@ -70,6 +68,11 @@ const ProductCrud = () => {
     setForm(initialForm);
     resetProgress();
     setLoading(false);
+    Swal.fire({
+      title: "Petición correcta",
+      text: `Se ${form.id ? "editó" : "añadió"} el producto correctamente.`,
+      icon: "success"
+    });
   };
 
   return (
@@ -194,12 +197,11 @@ const ProductCrud = () => {
           <label>Categorías</label>
           <CategorySelector form={form} setForm={setForm} />
         </Inputcontainer>
-        <Button onClick={handleSend}>
-          
+        <Button disabled={loading} onClick={handleSend}> 
           {loading ? "Cargando..." : form.id ? "Editar" : "Añadir"}
         </Button>
       </div>
-      {loadingIndex ? <Loading /> : <ProductTable setForm={setForm} />}
+      {loadingIndex ? <Loading /> : <ProductTable initialForm={initialForm} form={form} setForm={setForm} />}
     </PageTemplate>
   );
 };

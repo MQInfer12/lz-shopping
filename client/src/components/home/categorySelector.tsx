@@ -32,7 +32,7 @@ const CategorySelector = ({ form, setForm }: Props) => {
                 type="checkbox" 
                 readOnly
               />
-              <label>{ category.name }</label>
+              { category.name }
             </CategoryContainer>
           ))}
         </FlexContainer>
@@ -88,6 +88,10 @@ const CategoryContainer = styled.div`
   gap: 0.5rem;
   cursor: pointer;
   transition: all 0.3s;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
     opacity: 0.7;
