@@ -64,7 +64,20 @@ app.post('/product', (req, res) => __awaiter(void 0, void 0, void 0, function* (
     res.json({ message: 'created succesfully', data: newProduct });
 }));
 app.put('/product/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const product = yield prisma.product.findUnique({
+        select: {
+            categories: {
+                select: {
+                    id: true
+                }
+            }
+        },
+        where: {
+            id: parseInt(req.params.id)
+        }
+    });
     const categories = req.body.categories;
+    const disconnectids = product === null || product === void 0 ? void 0 : product.categories.filter((v, i) => !categories.includes(v.id));
     const updated = yield prisma.product.update({
         data: {
             name: req.body.name,
@@ -74,7 +87,8 @@ app.put('/product/:id', (req, res) => __awaiter(void 0, void 0, void 0, function
             discount: Number(req.body.discount) ? Number(req.body.discount) : null,
             size: req.body.size ? req.body.size : null,
             categories: {
-                connect: categories.map(id => ({ id }))
+                connect: categories.map(id => ({ id })),
+                disconnect: disconnectids
             }
         },
         where: {
