@@ -16,7 +16,8 @@ const prisma = new client_1.PrismaClient();
 app.get('/index', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const products = yield prisma.product.findMany({
         include: {
-            categories: true
+            categories: true,
+            clients: true
         },
         orderBy: {
             id: "asc"

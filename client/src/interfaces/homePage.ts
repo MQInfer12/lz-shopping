@@ -1,0 +1,1 @@
+export type HomePage = "category" | "product"

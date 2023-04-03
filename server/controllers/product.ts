@@ -7,7 +7,8 @@ const prisma = new PrismaClient();
 app.get('/index', async (req: Request, res: Response) => {
   const products = await prisma.product.findMany({
     include: {
-      categories: true
+      categories: true,
+      clients: true
     },
     orderBy: {
       id: "asc"

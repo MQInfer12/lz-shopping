@@ -1,4 +1,5 @@
 import { Category } from "./category"
+import { User } from "./user"
 
 export interface Product {
   id?: number
@@ -9,4 +10,5 @@ export interface Product {
   discount?: number
   categories?: Category[]
   size?: string
+  clients?: User[]
 }
