@@ -83,6 +83,7 @@ const CarouselItem = styled.div<CarouselActiveProps>`
   transition: all 1s;
   opacity: ${props => props.active ? "1"  : "0"};
   isolation: isolate;
+  border-radius: 1rem;
 
   & > h2 {
     font-size: 3rem;
@@ -104,6 +105,7 @@ const CarouselItem = styled.div<CarouselActiveProps>`
     height: 100%;
     opacity: 0.4;
     object-fit: cover;
+    border-radius: 1rem;
   }
 `;
 

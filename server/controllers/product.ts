@@ -31,34 +31,64 @@ app.get('/product', async (req: Request, res: Response) => {
 });
 
 app.post('/product', async (req: Request, res: Response) => {
+  const categories: number[] = req.body.categories;
   const product = await prisma.product.create({
     data: {
       name: req.body.name,
-      price: req.body.price,
-      stock: req.body.stock,
+      price: Number(req.body.price),
+      stock: Number(req.body.stock),
       photo: req.body.photo,
-      discount: req.body.discount ? req.body.discount : null,
-      size: req.body.size ? req.body.size : null
+      discount: Number(req.body.discount) ? Number(req.body.discount) : null,
+      size: req.body.size ? req.body.size : null,
+      categories: {
+        connect: categories.map(id => ({ id }))
+      }
     }
   });
-  res.json({ message: 'created succesfully', data: product });
+
+  const newProduct = await prisma.product.findUnique({
+    where: {
+      id: product.id
+    },
+    include: {
+      categories: true,
+      clients: true
+    }
+  });
+
+  res.json({ message: 'created succesfully', data: newProduct });
 });
 
 app.put('/product/:id', async (req: Request, res: Response) => {
+  const categories: number[] = req.body.categories;
   const updated = await prisma.product.update({
     data: {
       name: req.body.name,
-      price: req.body.price,
-      stock: req.body.stock,
-      photo: req.body.photo,
-      discount: req.body.discount ? req.body.discount : null,
-      size: req.body.size ? req.body.size : null
+      price: Number(req.body.price),
+      stock: Number(req.body.stock),
+      photo: req.body.photo || undefined,
+      discount: Number(req.body.discount) ? Number(req.body.discount) : null,
+      size: req.body.size ? req.body.size : null,
+      categories: {
+        connect: categories.map(id => ({ id }))
+      }
     },
     where: {
       id: parseInt(req.params.id)
     }
   });
-  res.json({ message: 'updated succesfully', data: updated });
+
+  const newProduct = await prisma.product.findUnique({
+    where: {
+      id: updated.id
+    },
+    include: {
+      categories: true,
+      clients: true
+    }
+  });
+
+  res.json({ message: 'updated succesfully', data: newProduct });
 });
 
 app.delete('/product/:id', async (req: Request, res: Response) => {

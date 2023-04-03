@@ -18,7 +18,7 @@ const CategoryCrud = () => {
   };
   
   return (
-    <PageTemplate title="Categorías">
+    <PageTemplate title="Añadir categoría">
       <div className="inputsContainer">
         <Inputcontainer>
           <label>Nombre*</label>
@@ -28,7 +28,7 @@ const CategoryCrud = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </Inputcontainer>
-        <Button onClick={handlesend}>Agregar</Button>
+        <Button onClick={handlesend}>Añadir</Button>
       </div>
       {
         loadingIndex ?

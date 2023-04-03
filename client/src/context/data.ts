@@ -13,6 +13,9 @@ interface Action {
   addCategory: (category: Category) => void;
   removeCategory: (category: Category) => void;
   fillProductsAndCategories: () => void;
+  addProduct: (product: Product) => void;
+  editProduct: (product: Product) => void;
+  removeProduct: (product: Product) => void;
 }
 
 export const useData = create<State & Action>((set) => ({
@@ -39,5 +42,23 @@ export const useData = create<State & Action>((set) => ({
       ...state,
       categories:state.categories.filter(v=>v.id!=category.id),
     }));
+  },
+  addProduct: (product) => {
+    set((state) => ({
+      ...state,
+      products: [...state.products, product]
+    }))
+  },
+  editProduct: (product) => {
+    set((state) => ({
+      ...state,
+      products: state.products.map(v => v.id === product.id ? product : v)
+    }))
+  },
+  removeProduct: (product) => {
+    set((state) => ({
+      ...state,
+      products: state.products.filter(v => v.id != product.id)
+    }))
   }
 }));
