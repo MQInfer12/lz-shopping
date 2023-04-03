@@ -51,11 +51,12 @@ const ProductCrud = () => {
         addProduct(res.data);
       }
     } else {
+      let url: string | File;
+
       const res = await putProduct({
         ...form,
         photo: null
       });
-      console.log(res);
       editProduct(res.data);
     }
 
