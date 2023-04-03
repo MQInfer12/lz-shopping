@@ -11,7 +11,7 @@ interface Props {
 const ProductView = ({ setViewImage, viewImage }: Props) => {
   const { selected: product } = useCloth();
 
-  const categories: string[] = product.categories?.map(categorie => categorie.name) || [];
+  const categories: string[] = product?.categories?.map(categorie => categorie.name) || [];
 
   return (
     <ProductViewContainer>
@@ -19,7 +19,7 @@ const ProductView = ({ setViewImage, viewImage }: Props) => {
         onClick={() => setViewImage(old => !old)} 
         className={`img-container${viewImage ? " fullscreen" : ""}`}
       >
-        <img src={product.photo} />
+        <img src={product?.photo} />
       </div>
       <div className='desc-container'>
         <small>
@@ -29,12 +29,12 @@ const ProductView = ({ setViewImage, viewImage }: Props) => {
             "Sin categoría"
           }
         </small>
-        <h3>{product.name}</h3>
-        {product.size && <small className='right'>Talla {product.size}</small>}
+        <h3>{product?.name}</h3>
+        {product?.size && <small className='right'>Talla {product?.size}</small>}
       </div>
       <div className='text'>
-        {product.discount && <p className='not'>{product.price} Bs.</p>}
-        <p className='featured'>{product.discount ? product.discount : product.price} Bs.</p>
+        {product?.discount && <p className='not'>{product?.price} Bs.</p>}
+        <p className='featured'>{product?.discount ? product?.discount : product?.price} Bs.</p>
       </div>
     </ProductViewContainer>
   )

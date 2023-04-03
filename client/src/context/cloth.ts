@@ -3,7 +3,7 @@ import { Category } from "../interfaces/category";
 import { Product } from "../interfaces/product";
 
 interface State {
-  selected: Product
+  selected: Product | null
   open: boolean
   search: string
   sizeSearch: string
@@ -24,7 +24,7 @@ type Action = {
 }
 
 export const useCloth = create<State & Action>((set) => ({
-  selected: {},
+  selected: null,
   open: false,
   search: '',
   sizeSearch: '',
@@ -32,7 +32,7 @@ export const useCloth = create<State & Action>((set) => ({
   categoriesSelected: [],
   changeOpen: () => set(state => ({...state, open: !state.open })),
   selectCloth: (cloth) => set(state => ({...state, selected: cloth, open: true })),
-  removeCloth: () => set(state => ({...state, selected: {}, open: !(window.innerWidth < 1110)})),
+  removeCloth: () => set(state => ({...state, selected: null, open: !(window.innerWidth < 1110)})),
   changeSearch: (e) => set(state => ({...state, search: e.currentTarget.value })),
   changeSizeSearch: (e) => set(state => ({...state, sizeSearch: e.target.value })),
   handleFocus: () => set(state => ({...state, focused: true})),

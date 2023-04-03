@@ -14,13 +14,13 @@ const Selected = () => {
   return (
     <SelectedContainer>
       {
-        Object.keys(selected).length ?
+        selected ?
         <Booking key={selected.id} />
         :
         <HandIcon />
       }   
       { 
-        Object.keys(selected).length ? 
+        selected ? 
         <button className="icon-button" onClick={removeCloth}>
           <i className="fa-solid fa-xmark"></i>
         </button> : <></> 
