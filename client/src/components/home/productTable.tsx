@@ -1,11 +1,40 @@
 import React from 'react'
 import styled from 'styled-components';
 import { useData } from '../../context/data'
+import { Product } from '../../interfaces/product';
+import { deleteProduct } from '../../services/product';
 import { MiniIconButton } from '../../style/buttons';
 import { Table } from '../../style/table'
+import { ProductForm } from './productCrud';
 
-const ProductTable = () => {
-  const { products } = useData();
+interface Props {
+  setForm: React.Dispatch<React.SetStateAction<ProductForm>>
+}
+
+const ProductTable = ({ setForm }: Props) => {
+  const { products, removeProduct } = useData();
+
+  const handleDelete = async (id: number) => {
+    const res = await deleteProduct(id);
+    removeProduct(res.data);
+  }
+
+  const handleEdit = async (product: Product) => {
+    const container = document.querySelector("#home");
+    if(container) container.scrollTop = 0;
+
+    setForm({
+      id: product.id,
+      name: product.name || "",
+      price: String(product.price) || "",
+      discount: product.discount ? String(product.discount) : "0",
+      size: product.size ? String(product.size) : "",
+      stock: String(product.stock),
+      categories: product.categories ? product.categories.map(category => category.id) : [],
+      photo: null,
+      photoName: ""
+    });
+  }
 
   return (
     <TableContainer>
@@ -37,8 +66,8 @@ const ProductTable = () => {
             <td className='center'>
               <ColumnContainer>
                 <RowContainer>
-                  <MiniIconButton><i className="fa-solid fa-pencil"></i></MiniIconButton>
-                  <MiniIconButton><i className="fa-solid fa-trash"></i></MiniIconButton>
+                  <MiniIconButton onClick={() => handleEdit(product)}><i className="fa-solid fa-pencil"></i></MiniIconButton>
+                  <MiniIconButton onClick={() => handleDelete(product.id)}><i className="fa-solid fa-trash"></i></MiniIconButton>
                 </RowContainer>
                 <RowContainer>
                   <MiniIconButton><i className="fa-solid fa-cart-shopping"></i></MiniIconButton>

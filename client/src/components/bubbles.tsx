@@ -21,7 +21,6 @@ const Bubbles = ({top, left, mirror=false}:Props) => {
   )
 }
 
-
 export default Bubbles
 
 interface CirclesProps{

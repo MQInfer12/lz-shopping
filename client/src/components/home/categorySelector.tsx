@@ -2,17 +2,36 @@ import React from 'react'
 import styled from 'styled-components'
 import { useData } from '../../context/data'
 import { colors } from '../../style/variables'
+import { ProductForm } from './productCrud'
 
-const CategorySelector = () => {
+interface Props {
+  form: ProductForm
+  setForm: React.Dispatch<React.SetStateAction<ProductForm>>
+}
+
+const CategorySelector = ({ form, setForm }: Props) => {
   const { categories } = useData();
+
+  const handleClick = (id: number) => {
+    if(!form.categories.includes(id)) {
+      setForm(old => ({...old, categories: [...old.categories, id]}))
+    } else {
+      setForm(old => ({...old, categories: old.categories.filter(v => v != id)}))
+    }
+  }
 
   return (
     <AllContainer>
       <CategorySelectorContainer>
         <FlexContainer>
           {categories.map((category, i) => (
-            <CategoryContainer className="">
-              <input id={String(category.id)} type="checkbox" />
+            <CategoryContainer onClick={() => handleClick(category.id)} key={category.id} className="">
+              <input 
+                id={String(category.id)} 
+                checked={form.categories.includes(category.id)} 
+                type="checkbox" 
+                readOnly
+              />
               <label>{ category.name }</label>
             </CategoryContainer>
           ))}
@@ -35,6 +54,7 @@ const CategorySelectorContainer = styled.div`
   background-color: ${colors.white};
   padding: 0.5rem 1rem;
   overflow: auto;
+  border-radius: 1.5rem;
 
   &::-webkit-scrollbar {
     width: .375rem;
@@ -67,6 +87,11 @@ const CategoryContainer = styled.div`
   padding: 0.2rem 0.5rem;
   gap: 0.5rem;
   cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    opacity: 0.7;
+  }
 
   & > input {
     accent-color: ${colors.primary600};

@@ -3,11 +3,14 @@ import { colors } from "./variables";
 
 interface Props {
   name: string
-  state: string
-  setState: React.Dispatch<React.SetStateAction<string>>
+  state: any
+  setState: React.Dispatch<React.SetStateAction<any>>
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handlePlus: () => void
+  handleMinus: () => void
 }
 
-export const InputNumber = ({ name, state, setState }: Props) => {
+export const InputNumber = ({ name, state, setState, handleChange, handlePlus, handleMinus }: Props) => {
   return (
     <Inputcontainer>
       <label>{ name }</label>
@@ -15,23 +18,17 @@ export const InputNumber = ({ name, state, setState }: Props) => {
         <input 
           type="number"
           value={state}
-          onChange={(e) => setState(e.target.value)}
+          onChange={handleChange}
         />
         <div className="controls">
           <button
-            onClick={() => setState(old => String(Number(old) - 5))}
-          >- 5</button>
-          <button
-            onClick={() => setState(old => String(Number(old) - 1))}
-          >- 1</button>
+            onClick={handleMinus}
+          >-</button>
         </div>
         <div className="controls">
           <button
-            onClick={() => setState(old => String(Number(old) + 1))}
-          >+ 1</button>
-          <button
-            onClick={() => setState(old => String(Number(old) + 5))}
-          >+ 5</button>
+            onClick={handlePlus}
+          >+</button>
         </div>
       </div>
     </Inputcontainer>
@@ -66,13 +63,23 @@ export const Inputcontainer = styled.div`
         border: none;
         cursor: pointer;
         transition: all 0.3s;
-        padding: 0 .3rem;
+        padding: 0 1rem;
 
-        background-color: ${colors.gray500};
+        background-color: ${colors.primary600};
         &:hover {
-          background-color: ${colors.gray600};
+          background-color: ${colors.primary800};
         }
       }
+    }
+
+    & progress {
+      width: 100%;
+      transition: all 0.2s;
+      height: 0.30rem;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      accent-color: ${colors.primary600};
     }
   }
 

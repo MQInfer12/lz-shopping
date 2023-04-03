@@ -2,7 +2,7 @@ import { Category } from "./category"
 import { User } from "./user"
 
 export interface Product {
-  id?: number
+  id: number
   name?: string
   price?: number
   stock?: number
