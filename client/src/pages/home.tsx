@@ -8,9 +8,10 @@ import { HomePage } from '../interfaces/homePage'
 import PageButtons from '../components/home/pageButtons'
 import ProductCrud from '../components/home/productCrud'
 import { useData } from '../context/data'
+import SalesCrud from '../components/home/salesCrud'
 
 const Home = () => {
-  const [page, setPage] = useState<HomePage>("product");
+  const [page, setPage] = useState<HomePage>("sales");
   const { deactivateAdmin } = useUser();
   const { fillProductsAndCategories } = useData();
 
@@ -24,8 +25,10 @@ const Home = () => {
       <PageButtons page={page} setPage={setPage} />
       {
         page === "product" ? <ProductCrud /> :
-        page === "category" && <CategoryCrud />
+        page === "category" ? <CategoryCrud />:
+        page === "sales" && <SalesCrud/> 
       }
+    
     </HomePageContainer>
   )
 }
