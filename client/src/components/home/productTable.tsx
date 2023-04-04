@@ -46,7 +46,8 @@ const ProductTable = ({ setForm, form, initialForm }: Props) => {
       stock: String(product.stock),
       categories: product.categories ? product.categories.map(category => category.id) : [],
       photo: null,
-      photoName: ""
+      photoName: "",
+      photoPreview: product.photo || ""
     });
   }
 

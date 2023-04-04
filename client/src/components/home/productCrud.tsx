@@ -14,12 +14,14 @@ import Loading from "../global/loading";
 import CategorySelector from "./categorySelector";
 import PageTemplate from "./pageTemplate";
 import ProductTable from "./productTable";
+import Placeholder from "../../assets/placeholder.png";
 
 export interface ProductForm {
   id: number | null;
   name: string;
   photoName: string;
   photo: File | null;
+  photoPreview: string;
   price: string;
   discount: string;
   size: string;
@@ -32,6 +34,7 @@ const initialForm = {
   name: "",
   photoName: "",
   photo: null,
+  photoPreview: "",
   price: "35",
   discount: "0",
   size: "",
@@ -45,6 +48,32 @@ const ProductCrud = () => {
   const [form, setForm] = useState<ProductForm>(initialForm);
   const { loadingIndex } = useData();
   const [loading, setLoading] = useState(false);
+
+  const changeInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    let dataUrl: string = "";
+    if(e.target.files) {
+      const file = e.target.files[0];
+      dataUrl = await readFile(file) as string;
+    }
+    setForm((old) => {
+      return {
+        ...old,
+        photoName: e.target.value,
+        photo: e.target.files ? e.target.files[0] : null,
+        photoPreview: dataUrl
+      }}
+    );
+  }
+
+  const readFile = async (file: File) => {
+    return new Promise((res, rej) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.addEventListener("load", () => {
+        res(fileReader.result);
+      })
+    });
+  }
 
   const handleSend = async () => {
     setLoading(true);
@@ -93,6 +122,7 @@ const ProductCrud = () => {
             }
           />
         </Inputcontainer>
+        <img src={form.photoPreview || Placeholder} />
         <Inputcontainer>
           <label>Foto*</label>
           <div className="input-relative">
@@ -100,13 +130,7 @@ const ProductCrud = () => {
               type="file"
               accept=".jpg,.png,.jpeg"
               value={form.photoName}
-              onChange={(e) =>
-                setForm((old) => ({
-                  ...old,
-                  photoName: e.target.value,
-                  photo: e.target.files ? e.target.files[0] : null,
-                }))
-              }
+              onChange={(e) => changeInputFile(e)}
             />
             <progress max="100" value={progress} />
           </div>

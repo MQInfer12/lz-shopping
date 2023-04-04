@@ -72,6 +72,7 @@ const CategoryCrudContainer = styled.div`
       height: 8rem;
       border-radius: 1rem;
       object-fit: cover;
+      box-shadow: ${colors.shadow};
     }
 
     & > h2 {
