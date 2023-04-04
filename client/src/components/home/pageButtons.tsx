@@ -19,6 +19,11 @@ const PageButtons = ({ page, setPage }: Props) => {
         active={page === "category"}
         onClick={() => setPage("category")}
       >Categorías</PageButton>
+      <PageButton 
+        disabled={!(page==="sales")}
+        active={page === "sales"}
+        onClick={() => setPage("sales")}
+      >Ventas</PageButton>
     </ButtonsContainer>
   )
 }
@@ -37,9 +42,16 @@ const PageButton = styled.button<PageButtonProps>`
   padding: .5rem 1.5rem;
   border: none;
   background-color: transparent;
-  border-bottom: 1px solid ${props => props.active ? colors.primary600 : colors.gray300};
-  color: ${props => props.active ? colors.primary600 : colors.gray300};
+  border-bottom: 1px solid ${props => props.active ? colors.primary600 : colors.gray400};
+  color: ${props => props.active ? colors.primary600 : colors.gray400};
   font-weight: 600;
   transition: all 0.3s;
   cursor: pointer;
+
+
+  &:disabled{
+    color:${colors.gray200};
+    border-bottom: 1px solid ${colors.gray200};
+    pointer-events:none;
+  }
 `;

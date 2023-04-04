@@ -1,1 +1,1 @@
-export type HomePage = "category" | "product"
+export type HomePage = "category" | "product" | "sales"
