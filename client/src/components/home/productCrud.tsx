@@ -51,15 +51,17 @@ const ProductCrud = () => {
 
   const changeInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let dataUrl: string = "";
+    const name: string = e.target.value;
+    let file: File;
     if(e.target.files) {
-      const file = e.target.files[0];
+      file = e.target.files[0];
       dataUrl = await readFile(file) as string;
     }
     setForm((old) => {
       return {
         ...old,
-        photoName: e.target.value,
-        photo: e.target.files ? e.target.files[0] : null,
+        photoName: "",
+        photo: file || null,
         photoPreview: dataUrl
       }}
     );
