@@ -31,7 +31,7 @@ export default Cloths
 const ClothsSection = styled.section`
   min-width: 70%;
   height: calc(100dvh - 3.5rem);
-  overflow: auto;
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   background-color: ${colors.gray50};
