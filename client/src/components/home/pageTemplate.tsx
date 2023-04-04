@@ -66,6 +66,26 @@ const CategoryCrudContainer = styled.div`
     flex-direction: column;
     gap: 1rem;
     align-items: center;
+
+    & > img {
+      width: 8rem;
+      height: 8rem;
+      border-radius: 1rem;
+      object-fit: cover;
+    }
+
+    & > h2 {
+      color: ${colors.gray900};
+      text-align: center;
+    }
+
+    & > p {
+      color: ${colors.white};
+      padding: 0.5rem 1rem;
+      background-color: ${colors.primary500};
+      align-self: flex-end;
+      border-radius: .5rem;
+    }
   }
 
   animation: appear 0.3s;
