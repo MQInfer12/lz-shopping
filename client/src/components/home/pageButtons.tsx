@@ -50,7 +50,6 @@ const PageButton = styled.button<PageButtonProps>`
   transition: all 0.3s;
   cursor: pointer;
 
-
   &:disabled{
     color:${colors.gray200};
     border-bottom: 1px solid ${colors.gray200};
