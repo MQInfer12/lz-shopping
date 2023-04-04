@@ -12,9 +12,11 @@ interface Props {
   form: ProductForm
   setForm: React.Dispatch<React.SetStateAction<ProductForm>>
   initialForm: ProductForm
+  setSelectedSale: React.Dispatch<React.SetStateAction<Product | null>>
+  selectedSale: Product | null
 }
 
-const ProductTable = ({ setForm, form, initialForm }: Props) => {
+const ProductTable = ({ setForm, form, initialForm, setSelectedSale, selectedSale }: Props) => {
   const { products, removeProduct } = useData();
   const [loadingDelete, setLoadingDelete] = useState<number | null>(null);
 
@@ -35,7 +37,7 @@ const ProductTable = ({ setForm, form, initialForm }: Props) => {
 
   const handleEdit = async (product: Product) => {
     const container = document.querySelector("#home");
-    if(container) container.scrollTop = 72;
+    if(container) container.scrollTop = 144;
 
     setForm({
       id: product.id,
@@ -46,7 +48,6 @@ const ProductTable = ({ setForm, form, initialForm }: Props) => {
       stock: String(product.stock),
       categories: product.categories ? product.categories.map(category => category.id) : [],
       photo: null,
-      photoName: "",
       photoPreview: product.photo || ""
     });
   }
@@ -93,7 +94,12 @@ const ProductTable = ({ setForm, form, initialForm }: Props) => {
                   </MiniIconButton>
                 </RowContainer>
                 <RowContainer>
-                  <MiniIconButton><i className="fa-solid fa-cart-shopping"></i></MiniIconButton>
+                  <MiniIconButton 
+                    onClick={() => setSelectedSale(product)}
+                    disabled={selectedSale?.id === product.id}
+                  >
+                    <i className="fa-solid fa-cart-shopping"></i>
+                  </MiniIconButton>
                 </RowContainer>
               </ColumnContainer>
             </td>

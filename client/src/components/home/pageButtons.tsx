@@ -1,14 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import { HomePage } from '../../interfaces/homePage'
+import { Product } from '../../interfaces/product'
 import { colors } from '../../style/variables'
 
 interface Props {
   page: HomePage
   setPage: React.Dispatch<React.SetStateAction<HomePage>>
+  selectedSale: Product | null
 }
 
-const PageButtons = ({ page, setPage }: Props) => {
+const PageButtons = ({ page, setPage, selectedSale }: Props) => {
   return (
     <ButtonsContainer>
       <PageButton 
@@ -20,7 +22,7 @@ const PageButtons = ({ page, setPage }: Props) => {
         onClick={() => setPage("category")}
       >Categorías</PageButton>
       <PageButton 
-        disabled={!(page==="sales")}
+        disabled={!(page==="sales") && !selectedSale}
         active={page === "sales"}
         onClick={() => setPage("sales")}
       >Ventas</PageButton>

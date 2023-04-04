@@ -15,11 +15,11 @@ import CategorySelector from "./categorySelector";
 import PageTemplate from "./pageTemplate";
 import ProductTable from "./productTable";
 import Placeholder from "../../assets/placeholder.png";
+import { Product } from "../../interfaces/product";
 
 export interface ProductForm {
   id: number | null;
   name: string;
-  photoName: string;
   photo: File | null;
   photoPreview: string;
   price: string;
@@ -32,7 +32,6 @@ export interface ProductForm {
 const initialForm = {
   id: null,
   name: "",
-  photoName: "",
   photo: null,
   photoPreview: "",
   price: "35",
@@ -42,7 +41,12 @@ const initialForm = {
   categories: [],
 };
 
-const ProductCrud = () => {
+interface Props {
+  selectedSale: Product | null
+  setSelectedSale: React.Dispatch<React.SetStateAction<Product | null>>
+}
+
+const ProductCrud = ({ setSelectedSale, selectedSale }: Props) => {
   const { sendCloudinary, progress, resetProgress } = useCloudinary();
   const { addProduct, editProduct } = useData();
   const [form, setForm] = useState<ProductForm>(initialForm);
@@ -51,7 +55,6 @@ const ProductCrud = () => {
 
   const changeInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let dataUrl: string = "";
-    const name: string = e.target.value;
     let file: File;
     if(e.target.files) {
       file = e.target.files[0];
@@ -60,7 +63,6 @@ const ProductCrud = () => {
     setForm((old) => {
       return {
         ...old,
-        photoName: "",
         photo: file || null,
         photoPreview: dataUrl
       }}
@@ -87,12 +89,14 @@ const ProductCrud = () => {
       const res = await postProduct({
         ...form,
         photo: cloudinaryRes.url,
+        photoPreview: ""
       });
       addProduct(res.data);
     } else {
       const res = await putProduct({
         ...form,
         photo: cloudinaryRes?.url,
+        photoPreview: ""
       });
       editProduct(res.data);
     }
@@ -131,7 +135,6 @@ const ProductCrud = () => {
             <input
               type="file"
               accept=".jpg,.png,.jpeg"
-              value={form.photoName}
               onChange={(e) => changeInputFile(e)}
             />
             <progress max="100" value={progress} />
@@ -227,7 +230,16 @@ const ProductCrud = () => {
           {loading ? "Cargando..." : form.id ? "Editar" : "Añadir"}
         </Button>
       </div>
-      {loadingIndex ? <Loading /> : <ProductTable initialForm={initialForm} form={form} setForm={setForm} />}
+      {loadingIndex ? 
+        <Loading /> : 
+        <ProductTable  
+          initialForm={initialForm} 
+          form={form} 
+          setForm={setForm} 
+          setSelectedSale={setSelectedSale}
+          selectedSale={selectedSale}
+        />
+      }
     </PageTemplate>
   );
 };

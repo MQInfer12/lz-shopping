@@ -78,14 +78,26 @@ const CategoryCrudContainer = styled.div`
     & > h2 {
       color: ${colors.gray900};
       text-align: center;
+      font-size: 1.3rem;
     }
 
-    & > p {
+    & > .same-line {
+      display: flex;
+      gap: .5rem;
+      align-self: flex-end;
+    }
+
+    & p {
       color: ${colors.white};
       padding: 0.5rem 1rem;
       background-color: ${colors.primary500};
-      align-self: flex-end;
       border-radius: .5rem;
+    }
+
+    & .striked {
+      background-color: transparent;
+      color: ${colors.gray900};
+      text-decoration: line-through;
     }
   }
 

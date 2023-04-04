@@ -9,9 +9,11 @@ import PageButtons from '../components/home/pageButtons'
 import ProductCrud from '../components/home/productCrud'
 import { useData } from '../context/data'
 import SalesCrud from '../components/home/salesCrud'
+import { Product } from '../interfaces/product'
 
 const Home = () => {
-  const [page, setPage] = useState<HomePage>("sales");
+  const [page, setPage] = useState<HomePage>("product");
+  const [selectedSale, setSelectedSale] = useState<Product | null>(null);
   const { deactivateAdmin } = useUser();
   const { fillProductsAndCategories } = useData();
 
@@ -19,16 +21,21 @@ const Home = () => {
     fillProductsAndCategories();
   }, []);
 
+  useEffect(() => {
+    if(selectedSale) {
+      setPage("sales");
+    }
+  }, [selectedSale]);
+
   return (
     <HomePageContainer>
       <Button onClick={deactivateAdmin}>Cerrar sesión</Button>
-      <PageButtons page={page} setPage={setPage} />
+      <PageButtons selectedSale={selectedSale} page={page} setPage={setPage} />
       {
-        page === "product" ? <ProductCrud /> :
+        page === "product" ? <ProductCrud setSelectedSale={setSelectedSale} selectedSale={selectedSale} /> :
         page === "category" ? <CategoryCrud />:
-        page === "sales" && <SalesCrud/> 
+        page === "sales" && <SalesCrud selectedSale={selectedSale} /> 
       }
-    
     </HomePageContainer>
   )
 }

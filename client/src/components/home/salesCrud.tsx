@@ -2,14 +2,22 @@ import React from 'react'
 import PageTemplate from './pageTemplate' 
 import { Inputcontainer } from '../../style/input'
 import { Button } from '../../style/buttons'
+import { Product } from '../../interfaces/product'
 
-const SalesCrud = () => {
+interface Props {
+  selectedSale: Product | null
+}
+
+const SalesCrud = ({ selectedSale }: Props) => {
   return (
-    <PageTemplate title='Reservar/Vender'>
+    <PageTemplate title='Reservar / Vender'>
        <div className="inputsContainer">
-        <img src="" alt="" /> 
-        <h2>Chamarra negra de cuero para genero no binarie</h2>
-        <p>80.50bs</p>
+        <img src={selectedSale?.photo} alt="" /> 
+        <h2>{selectedSale?.name}</h2>
+        <div className="same-line">
+          {selectedSale?.discount && <p className='striked'>{selectedSale?.price} Bs.</p>}
+          <p>{selectedSale?.discount || selectedSale?.price} Bs.</p>
+        </div>
           <Inputcontainer>
             <label>CI</label>
             <input type="text"/>
