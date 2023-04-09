@@ -35,8 +35,12 @@ export const InputNumber = ({ name, state, setState, handleChange, handlePlus, h
   )
 }
 
-export const Inputcontainer = styled.div`
-  display: flex;
+interface InputContainerProps {
+  hide?: boolean
+}
+
+export const Inputcontainer = styled.div<InputContainerProps>`
+  display: ${props => props.hide ? "none" : "flex"};
   flex-direction: column;
   width: 100%;
   
@@ -70,16 +74,6 @@ export const Inputcontainer = styled.div`
           background-color: ${colors.primary800};
         }
       }
-    }
-
-    & progress {
-      width: 100%;
-      transition: all 0.2s;
-      height: 0.30rem;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      accent-color: ${colors.primary600};
     }
   }
 

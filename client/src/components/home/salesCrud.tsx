@@ -1,14 +1,16 @@
-import React from 'react'
+import { useState } from 'react'
 import PageTemplate from './pageTemplate' 
-import { Inputcontainer } from '../../style/input'
-import { Button } from '../../style/buttons'
 import { Product } from '../../interfaces/product'
+import SaleForm from './saleForm'
+import SaleIndexChanger from './saleIndexChanger'
 
 interface Props {
   selectedSale: Product | null
 }
 
 const SalesCrud = ({ selectedSale }: Props) => {
+  const [index, setIndex] = useState(0);
+
   return (
     <PageTemplate title='Reservar / Vender'>
        <div className="inputsContainer">
@@ -18,15 +20,20 @@ const SalesCrud = ({ selectedSale }: Props) => {
           {selectedSale?.discount && <p className='striked'>{selectedSale?.price} Bs.</p>}
           <p>{selectedSale?.discount || selectedSale?.price} Bs.</p>
         </div>
-          <Inputcontainer>
-            <label>CI</label>
-            <input type="text"/>
-          </Inputcontainer>    
-          <Button>Reservar</Button>
-          <Button>Vender</Button>    
+        <SaleIndexChanger
+          index={index}
+          setIndex={setIndex}
+          stock={selectedSale?.stock || 1}   
+          clientsLength={selectedSale?.clients?.length || 0}       
+        />
+        <SaleForm 
+          key={index}
+          sale={selectedSale?.clients && selectedSale?.clients[index]}
+          idProduct={selectedSale?.id || 0}
+        />
        </div>        
     </PageTemplate>
-    )  
+  )  
 }
 
 export default SalesCrud

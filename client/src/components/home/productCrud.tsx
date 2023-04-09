@@ -118,6 +118,21 @@ const ProductCrud = ({ setSelectedSale, selectedSale }: Props) => {
       initialForm={initialForm}
     >
       <div className="inputsContainer">
+        <label className="img-wrapper" htmlFor="formFile">
+          <img src={form.photoPreview || Placeholder} />
+          <progress max="100" value={progress} />
+        </label>
+        <Inputcontainer hide>
+          <label>Foto*</label>
+          <div className="input-relative">
+            <input
+              type="file"
+              id="formFile"
+              accept=".jpg,.png,.jpeg"
+              onChange={(e) => changeInputFile(e)}
+            />
+          </div>
+        </Inputcontainer>
         <Inputcontainer>
           <label>Nombre*</label>
           <input
@@ -127,18 +142,6 @@ const ProductCrud = ({ setSelectedSale, selectedSale }: Props) => {
               setForm((old) => ({ ...old, name: e.target.value }))
             }
           />
-        </Inputcontainer>
-        <img src={form.photoPreview || Placeholder} />
-        <Inputcontainer>
-          <label>Foto*</label>
-          <div className="input-relative">
-            <input
-              type="file"
-              accept=".jpg,.png,.jpeg"
-              onChange={(e) => changeInputFile(e)}
-            />
-            <progress max="100" value={progress} />
-          </div>
         </Inputcontainer>
         <TwoColumns>
           <InputNumber

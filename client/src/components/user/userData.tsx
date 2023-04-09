@@ -4,6 +4,7 @@ import { useUser } from '../../context/user'
 import { Inputcontainer } from '../../style/input';
 import { Button } from '../../style/buttons';
 import { updateUser } from '../../services/user';
+import Swal from 'sweetalert2';
 
 const UserData = () => {
   const { user, setUser } = useUser();
@@ -24,6 +25,11 @@ const UserData = () => {
       products: user.products
     });
     setLoading(false);
+    Swal.fire({
+      title: "Petición correcta.",
+      text: "Se actualizaron tus datos correctamente.",
+      icon: 'success'
+    });
   }
 
   return (

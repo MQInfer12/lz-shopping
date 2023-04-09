@@ -15,7 +15,7 @@ const Home = () => {
   const [page, setPage] = useState<HomePage>("product");
   const [selectedSale, setSelectedSale] = useState<Product | null>(null);
   const { deactivateAdmin } = useUser();
-  const { fillProductsAndCategories } = useData();
+  const { products, fillProductsAndCategories } = useData();
 
   useEffect(() => {
     fillProductsAndCategories();
@@ -26,6 +26,14 @@ const Home = () => {
       setPage("sales");
     }
   }, [selectedSale]);
+
+  useEffect(() => {
+    products.forEach((product, i) => {
+      if(product.id === selectedSale?.id) {
+        setSelectedSale(product);
+      }
+    });
+  }, [products])
 
   return (
     <HomePageContainer>

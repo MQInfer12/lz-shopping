@@ -53,21 +53,32 @@ const Container=styled.div`
   height: 100%;
   display:grid;
   grid-template-columns: 1fr 1fr;
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 `;
+
 const Firstcolumn=styled.div`
   background:linear-gradient(0deg, ${colors.primary600rgb} 0%, ${colors.primary400rgb} 100%);
   display: flex;
   align-items: center;
   justify-content: center;
 
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
 `;
+
 const SecondColumn=styled.div`
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  padding: 0 1rem;
 `;
+
 const Loginconteiner=styled.form`
   width: 300px;
   display: flex;
@@ -75,6 +86,7 @@ const Loginconteiner=styled.form`
   gap: 2rem;
   align-items: center;
 `;
+
 const Htwo=styled.h2`
   text-align: center;
   font-size: 2rem;

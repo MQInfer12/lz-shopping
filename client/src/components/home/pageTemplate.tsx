@@ -67,7 +67,34 @@ const CategoryCrudContainer = styled.div`
     gap: 1rem;
     align-items: center;
 
-    & > img {
+    & > .img-wrapper {
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: ${colors.shadow};
+
+      & img {
+        box-shadow: none;
+      }
+
+      & progress {
+        width: 100%;
+        transition: all 0.2s;
+        height: 0.30rem;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        accent-color: ${colors.primary600};
+      }
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    & img {
       width: 8rem;
       height: 8rem;
       border-radius: 1rem;

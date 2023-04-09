@@ -1,22 +1,20 @@
-import React from 'react'
 import styled from 'styled-components'
 import { colors } from '../../style/variables'
-import { Link, useNavigate } from 'react-router-dom'
-import {useState, useEffect}  from 'react'
+import { Link } from 'react-router-dom'
+import { useState }  from 'react'
 
 const Logo = () => {
-  const [cont, setCont] = useState(0)
-  let timer;
-  const handledoubleclick = ()=>{ 
-    setCont(old=>old+1)
+  const [cont, setCont] = useState(0);
 
-    timer=setTimeout(()=>{
-      setCont(0)
-    },250)
+  const handleDoubleClick = ()=>{ 
+    setCont(old => old + 1);
+    setTimeout(() => {
+      setCont(0);
+    }, 250);
   }
-  console.log(cont)
+
   return (
-    <A onClick={handledoubleclick} to={cont===2?'/home':"/"}>
+    <A onClick={handleDoubleClick} to={cont === 1 ? '/home' : "/"}>
       <p className='circle'>LZ</p>
       Shopping
     </A>

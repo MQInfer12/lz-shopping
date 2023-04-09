@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Category } from "../interfaces/category";
 import { Product } from "../interfaces/product";
+import { Sale } from "../interfaces/sale";
 import { getProductsAndCategories } from "../services/product";
 
 interface State {
@@ -16,6 +17,8 @@ interface Action {
   addProduct: (product: Product) => void;
   editProduct: (product: Product) => void;
   removeProduct: (product: Product) => void;
+  handleReserve: (sale: Sale, productId: number) => void;
+  handleCancelReserve: (sale: Sale, productId: number) => void;
 }
 
 export const useData = create<State & Action>((set) => ({
@@ -71,6 +74,30 @@ export const useData = create<State & Action>((set) => ({
     set((state) => ({
       ...state,
       products: state.products.filter(v => v.id != product.id)
+    }))
+  },
+  handleReserve: (sale, productId) => {
+    set(state => ({
+      ...state,
+      products: state.products.map((product, i) => {
+        const newProduct = {...product};
+        if(newProduct.id === productId) {
+          newProduct.clients?.push(sale);
+        }
+        return newProduct;
+      })
+    }))
+  },
+  handleCancelReserve: (sale, productId) => {
+    set(state => ({
+      ...state,
+      products: state.products.map((product, i) => {
+        const newProduct = {...product};
+        if(newProduct.id === productId) {
+          newProduct.clients = newProduct.clients?.filter(client => client.id != sale.id);
+        }
+        return newProduct;
+      })
     }))
   }
 }));
