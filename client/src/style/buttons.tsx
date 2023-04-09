@@ -61,7 +61,6 @@ export const MiniIconButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: auto;
 
   &:hover {
     background-color: ${colors.primary800};

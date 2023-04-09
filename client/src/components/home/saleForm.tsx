@@ -55,7 +55,7 @@ const SaleForm = ({ sale, idProduct }: Props) => {
       <Button 
         onClick={handleSendReserve}
       >
-        {sale?.reserved ? "Cancelar reserva" : "Reservar"}
+        {sale?.reserved ? "Cancelar reserva" : "Añadir reserva"}
       </Button>
       <Button>Vender</Button> 
     </>

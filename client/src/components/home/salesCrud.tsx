@@ -24,7 +24,7 @@ const SalesCrud = ({ selectedSale }: Props) => {
           index={index}
           setIndex={setIndex}
           stock={selectedSale?.stock || 1}   
-          clientsLength={selectedSale?.clients?.length || 0}       
+          clients={selectedSale?.clients}       
         />
         <SaleForm 
           key={index}
