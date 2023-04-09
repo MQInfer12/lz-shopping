@@ -46,6 +46,7 @@ app.post('/sale/reserve/:id', (req, res) => __awaiter(void 0, void 0, void 0, fu
                     }
                 },
                 reserved: true,
+                amount: Number(req.body.amount),
                 client: (user === null || user === void 0 ? void 0 : user.ci) ? {
                     connect: {
                         ci: user.ci

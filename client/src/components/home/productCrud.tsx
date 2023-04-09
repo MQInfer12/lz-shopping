@@ -16,6 +16,7 @@ import PageTemplate from "./pageTemplate";
 import ProductTable from "./productTable";
 import Placeholder from "../../assets/placeholder.png";
 import { Product } from "../../interfaces/product";
+import { HomePage } from "../../interfaces/homePage";
 
 export interface ProductForm {
   id: number | null;
@@ -26,6 +27,7 @@ export interface ProductForm {
   discount: string;
   size: string;
   stock: string;
+  quantitySold: number;
   categories: number[];
 }
 
@@ -38,15 +40,17 @@ const initialForm = {
   discount: "0",
   size: "",
   stock: "1",
+  quantitySold: 0,
   categories: [],
 };
 
 interface Props {
   selectedSale: Product | null
   setSelectedSale: React.Dispatch<React.SetStateAction<Product | null>>
+  setPage: React.Dispatch<React.SetStateAction<HomePage>>
 }
 
-const ProductCrud = ({ setSelectedSale, selectedSale }: Props) => {
+const ProductCrud = ({ setSelectedSale, selectedSale, setPage }: Props) => {
   const { sendCloudinary, progress, resetProgress } = useCloudinary();
   const { addProduct, editProduct } = useData();
   const [form, setForm] = useState<ProductForm>(initialForm);
@@ -95,6 +99,7 @@ const ProductCrud = ({ setSelectedSale, selectedSale }: Props) => {
     } else {
       const res = await putProduct({
         ...form,
+        stock: String(Number(form.stock) + form.quantitySold),
         photo: cloudinaryRes?.url,
         photoPreview: ""
       });
@@ -143,11 +148,10 @@ const ProductCrud = ({ setSelectedSale, selectedSale }: Props) => {
             }
           />
         </Inputcontainer>
-        <TwoColumns>
+        <div className="two-columns">
           <InputNumber
             name="Precio*"
             state={form.price}
-            setState={() => {}}
             handleChange={(e) =>
               setForm((old) => ({ ...old, price: e.target.value }))
             }
@@ -167,7 +171,6 @@ const ProductCrud = ({ setSelectedSale, selectedSale }: Props) => {
           <InputNumber
             name="Descuento"
             state={form.discount}
-            setState={() => {}}
             handleChange={(e) =>
               setForm((old) => ({ ...old, discount: e.target.value }))
             }
@@ -184,8 +187,8 @@ const ProductCrud = ({ setSelectedSale, selectedSale }: Props) => {
               }))
             }
           />
-        </TwoColumns>
-        <TwoColumns>
+        </div>
+        <div className="two-columns">
           <SelectContainer>
             <label>Talla</label>
             <select
@@ -207,7 +210,6 @@ const ProductCrud = ({ setSelectedSale, selectedSale }: Props) => {
           <InputNumber
             name="Stock*"
             state={form.stock}
-            setState={() => {}}
             handleChange={(e) =>
               setForm((old) => ({ ...old, stock: e.target.value }))
             }
@@ -224,7 +226,7 @@ const ProductCrud = ({ setSelectedSale, selectedSale }: Props) => {
               }))
             }
           />
-        </TwoColumns>
+        </div>
         <Inputcontainer>
           <label>Categorías</label>
           <CategorySelector form={form} setForm={setForm} />
@@ -236,6 +238,7 @@ const ProductCrud = ({ setSelectedSale, selectedSale }: Props) => {
       {loadingIndex ? 
         <Loading /> : 
         <ProductTable  
+          setPage={setPage}
           initialForm={initialForm} 
           form={form} 
           setForm={setForm} 
@@ -248,8 +251,3 @@ const ProductCrud = ({ setSelectedSale, selectedSale }: Props) => {
 };
 
 export default ProductCrud;
-
-const TwoColumns = styled.div`
-  display: flex;
-  gap: 1rem;
-`;

@@ -36,6 +36,7 @@ app.post('/sale/reserve/:id', async (req: Request, res: Response) => {
           }
         },
         reserved: true,
+        amount: Number(req.body.amount),
         client: user?.ci ? {
           connect: {
             ci: user.ci

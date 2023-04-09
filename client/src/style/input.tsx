@@ -4,13 +4,12 @@ import { colors } from "./variables";
 interface Props {
   name: string
   state: any
-  setState: React.Dispatch<React.SetStateAction<any>>
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   handlePlus: () => void
   handleMinus: () => void
 }
 
-export const InputNumber = ({ name, state, setState, handleChange, handlePlus, handleMinus }: Props) => {
+export const InputNumber = ({ name, state, handleChange, handlePlus, handleMinus }: Props) => {
   return (
     <Inputcontainer>
       <label>{ name }</label>
@@ -95,6 +94,11 @@ export const Inputcontainer = styled.div<InputContainerProps>`
       -webkit-appearance: none;
       margin: 0;
     }
+
+    &:disabled {
+      background-color: ${colors.gray100};
+      border:1px solid ${colors.gray400};
+    }
   }
 
   & > label {
@@ -103,10 +107,15 @@ export const Inputcontainer = styled.div<InputContainerProps>`
   }
 `;
 
-export const SelectContainer = styled.div`
+interface SelectContainerProps {
+  small?: boolean
+}
+
+export const SelectContainer = styled.div<SelectContainerProps>`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: ${props => props.small && "110px"};
 
   & > select {
     width: 100%;
@@ -116,6 +125,10 @@ export const SelectContainer = styled.div`
     outline: none;
     font-size: 1rem;
     color: ${colors.gray900};
+
+    &:disabled {
+      background-color: ${colors.gray100};
+    }
   }
 
   & > label {

@@ -3,6 +3,7 @@ import { http } from "../../env";
 export const reserveProduct = async (form: {
   saleId: number | undefined
   ci: string
+  amount: string
 }, idProduct: number) => {
   const res = await fetch(`${http}sale/reserve/${idProduct}`, {
     method: "POST",

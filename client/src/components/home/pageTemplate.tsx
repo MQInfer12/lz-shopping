@@ -94,6 +94,11 @@ const CategoryCrudContainer = styled.div`
       }
     }
 
+    & > .two-columns {
+      display: flex;
+      gap: 1rem;
+    }
+
     & img {
       width: 8rem;
       height: 8rem;

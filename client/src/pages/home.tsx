@@ -21,11 +21,11 @@ const Home = () => {
     fillProductsAndCategories();
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if(selectedSale) {
       setPage("sales");
     }
-  }, [selectedSale]);
+  }, [selectedSale]); */
 
   useEffect(() => {
     products.forEach((product, i) => {
@@ -40,7 +40,7 @@ const Home = () => {
       <Button onClick={deactivateAdmin}>Cerrar sesión</Button>
       <PageButtons selectedSale={selectedSale} page={page} setPage={setPage} />
       {
-        page === "product" ? <ProductCrud setSelectedSale={setSelectedSale} selectedSale={selectedSale} /> :
+        page === "product" ? <ProductCrud setPage={setPage} setSelectedSale={setSelectedSale} selectedSale={selectedSale} /> :
         page === "category" ? <CategoryCrud />:
         page === "sales" && <SalesCrud selectedSale={selectedSale} /> 
       }

@@ -4,4 +4,5 @@ export interface Sale {
   id: number
   productId: number
   reserved: boolean
+  amount: number
 }

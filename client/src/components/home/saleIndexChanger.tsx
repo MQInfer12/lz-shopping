@@ -13,6 +13,7 @@ interface Props {
 
 const SaleIndexChanger = ({ clients, stock, index, setIndex }: Props) => {
   const clientsLength = clients?.length;
+  const quantitySold = clients && clients?.reduce((ac, sale) => ac + sale.amount, 0);
 
   return (
     <ButtonsContainer>
@@ -23,11 +24,14 @@ const SaleIndexChanger = ({ clients, stock, index, setIndex }: Props) => {
       <CirclesContainer>
         {clients?.map((v, i) => (
           <CircleButton 
+            key={i}
             active={index === i} 
             onClick={() => setIndex(i)}
-          >1</CircleButton>
+          >{v.amount}</CircleButton>
         ))}
-        {clientsLength != stock && 
+        {
+          clientsLength != stock && 
+          quantitySold != stock &&
           <CircleButton 
             active={index === clientsLength}
             onClick={() => setIndex(clientsLength || 0)}
@@ -37,7 +41,11 @@ const SaleIndexChanger = ({ clients, stock, index, setIndex }: Props) => {
         }
       </CirclesContainer>
       <MiniIconButton 
-        disabled={index === clientsLength || (clientsLength === stock && index === clientsLength - 1)}
+        disabled={
+          index === clientsLength || 
+          (clientsLength === stock && index === clientsLength - 1) ||
+          (quantitySold === stock && (!!clientsLength && index === clientsLength - 1))
+        }
         onClick={() => setIndex(old => old + 1)}
       ><i className="fa-solid fa-chevron-right"></i></MiniIconButton> 
     </ButtonsContainer>

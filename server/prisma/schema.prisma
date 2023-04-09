@@ -38,6 +38,7 @@ model Sale {
   clientCi  Int?
   reserved  Boolean  @default(false)
   datetime  DateTime @default(now())
+  amount    Int      @default(1)
   client    Client?  @relation(fields: [clientCi], references: [ci])
   product   Product  @relation(fields: [productId], references: [id])
 

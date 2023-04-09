@@ -4,21 +4,27 @@ import { useData } from '../../context/data'
 import { Sale } from '../../interfaces/sale'
 import { reserveProduct } from '../../services/sale'
 import { Button } from '../../style/buttons'
-import { Inputcontainer } from '../../style/input'
+import { Inputcontainer, SelectContainer } from '../../style/input'
 
 interface Props {
   sale: Sale | undefined
   idProduct: number
+  quantitySold: number
+  stock: number
 }
 
-const SaleForm = ({ sale, idProduct }: Props) => {
+const SaleForm = ({ sale, idProduct, quantitySold, stock }: Props) => {
   const [ci, setCi] = useState(sale?.clientCi ? String(sale.clientCi) : "");
+  const [amount, setAmount] = useState(sale?.amount ? String(sale.amount) : "1");
+  const [loading, setLoading] = useState(false);
   const { handleReserve, handleCancelReserve } = useData();
-  
+
   const handleSendReserve = async () => {
+    setLoading(true);
     const res = await reserveProduct({
       saleId: sale?.id,
-      ci: ci
+      ci,
+      amount
     }, idProduct);
     if(sale?.reserved) {
       handleCancelReserve(res.data, idProduct);
@@ -35,6 +41,7 @@ const SaleForm = ({ sale, idProduct }: Props) => {
         icon: 'success'
       });
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -43,21 +50,41 @@ const SaleForm = ({ sale, idProduct }: Props) => {
 
   return (
     <>
-      <Inputcontainer>
-        <label>CI</label>
-        <input 
-          style={{ textAlign: "center" }} 
-          value={ci} 
-          onChange={(e) => setCi(e.target.value)} 
-          type="text" 
-        />
-      </Inputcontainer>    
+      <div className='two-columns'>
+        <SelectContainer small>
+          <label>Cantidad*</label>
+          <select 
+            disabled={!!sale}
+            value={amount} 
+            onChange={e => setAmount(e.target.value)}
+          >
+            {
+              sale ?
+              <option>{sale?.amount}</option> :
+              new Array(stock - quantitySold).fill("option").map((v, i) => (
+                <option key={i} value={i + 1}>{i + 1}</option>
+              ))
+            }
+          </select>
+        </SelectContainer>
+        <Inputcontainer>
+          <label>CI</label>
+          <input 
+            disabled={!!sale}
+            style={{ textAlign: "center" }} 
+            value={ci} 
+            onChange={(e) => setCi(e.target.value)} 
+            type="text" 
+          />
+        </Inputcontainer>  
+      </div>  
       <Button 
         onClick={handleSendReserve}
+        disabled={loading}
       >
-        {sale?.reserved ? "Cancelar reserva" : "Añadir reserva"}
+        {loading ? "Cargando..." : sale?.reserved ? "Cancelar reserva" : "Añadir reserva"}
       </Button>
-      <Button>Vender</Button> 
+      {/* <Button>Vender</Button>  */}
     </>
   )
 }

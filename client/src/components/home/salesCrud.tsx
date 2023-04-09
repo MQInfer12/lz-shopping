@@ -12,7 +12,7 @@ const SalesCrud = ({ selectedSale }: Props) => {
   const [index, setIndex] = useState(0);
 
   return (
-    <PageTemplate title='Reservar / Vender'>
+    <PageTemplate title='Reservar producto'>
        <div className="inputsContainer">
         <img src={selectedSale?.photo} alt="" /> 
         <h2>{selectedSale?.name}</h2>
@@ -27,9 +27,11 @@ const SalesCrud = ({ selectedSale }: Props) => {
           clients={selectedSale?.clients}       
         />
         <SaleForm 
-          key={index}
+          key={selectedSale?.clients && (selectedSale?.clients[index]?.id || index)}
           sale={selectedSale?.clients && selectedSale?.clients[index]}
           idProduct={selectedSale?.id || 0}
+          quantitySold={selectedSale?.clients?.reduce((ac, sale) => ac + sale.amount, 0) || 0}
+          stock={selectedSale?.stock || 1}   
         />
        </div>        
     </PageTemplate>
