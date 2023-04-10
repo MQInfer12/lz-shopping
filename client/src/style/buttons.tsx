@@ -139,6 +139,7 @@ export const StyledA = styled.a`
   display: flex;
   gap: 1rem;
   align-items: center;
+  width: max-content;
 
   &:hover {
     background-color: ${colors.primary800};

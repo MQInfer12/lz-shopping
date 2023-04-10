@@ -6,6 +6,7 @@ import Layout from "./pages/layout";
 import Login from "./pages/login";
 import User from "./pages/user";
 import ProtectedRoute from "./components/wrappers/protectedRoute";
+import Reserve from "./pages/reserve";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route element={<Login />} path='/login' />
           <Route element={<User />} path='/user' />
           <Route element={<ProtectedRoute><Home /></ProtectedRoute>} path='/home' />
+          <Route element={<Reserve />} path='/reserve/:idProduct/:quantity/:ci' />
         </Route>
       </Routes>
     </HashRouter>

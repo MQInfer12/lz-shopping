@@ -120,7 +120,7 @@ export const SelectContainer = styled.div<SelectContainerProps>`
   & > select {
     width: 100%;
     padding: 0.5rem 1rem;
-    border-radius:1.5rem ;
+    border-radius: 1.5rem;
     border:1px solid ${colors.gray500};
     outline: none;
     font-size: 1rem;
@@ -134,5 +134,6 @@ export const SelectContainer = styled.div<SelectContainerProps>`
   & > label {
     color: ${colors.gray500};
     padding-left: 1rem;
+    padding-right: ${props => props.small && "1rem"};
   }
 `;

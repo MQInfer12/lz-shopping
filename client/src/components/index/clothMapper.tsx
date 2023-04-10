@@ -69,12 +69,12 @@ const ClothMapper = ({ products }: Props) => {
 export default ClothMapper
 
 const ClothContainer = styled.div`
-  max-width: 1300px;
+  /* max-width: 1300px; */
   gap: 2rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 
-  @media screen and (max-width: 450px) {
+  @media screen and (max-width: 915px) {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
   }
