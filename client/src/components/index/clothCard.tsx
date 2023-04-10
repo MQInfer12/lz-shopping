@@ -34,10 +34,7 @@ const ClothCard = ({ product }: Props) => {
 export default ClothCard
 
 const ClothCardContainer = styled.div`
-  height: max-content;
-  flex: 1;
   padding: 1rem;
-  max-width: calc(25% - 1.5rem);
   background-color: ${colors.white};
   box-shadow: ${colors.shadow};
   border-radius: .5rem;
@@ -46,17 +43,6 @@ const ClothCardContainer = styled.div`
   gap: .5rem;
   cursor: pointer;
   transition: opacity 0.3s;
-
-  @media screen and (max-width: 830px) {
-    max-width: calc(33% - 2rem);
-    gap: .2rem;
-  }
-  @media screen and (max-width: 675px) {
-    max-width: calc(50% - 1rem);
-  }
-  @media screen and (max-width: 450px) {
-    max-width: calc(50% - .5rem);
-  }
 
   &:hover {
     opacity: 0.6;

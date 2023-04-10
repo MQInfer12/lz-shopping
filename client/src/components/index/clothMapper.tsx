@@ -70,12 +70,12 @@ export default ClothMapper
 
 const ClothContainer = styled.div`
   max-width: 1300px;
-  display: flex;
   gap: 2rem;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 
   @media screen and (max-width: 450px) {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
   }
 `;
