@@ -10,11 +10,17 @@ app.post('/user', async (req: Request, res: Response) => {
   let user = await prisma.client.findUnique({
     where: { ci },
     include: {
-      products: true
+      products: {
+        include: {
+          product: true
+        }
+      }
     }
   });
 
-  if(user) return res.json({ message: "logged succesfully", data: user });
+  const products = user?.products.map(v => v.product);
+
+  if(user) return res.json({ message: "logged succesfully", data: {...user, bookings: products } });
 
   const newUser = await prisma.client.create({
     data: { ci }

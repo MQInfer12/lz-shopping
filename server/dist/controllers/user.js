@@ -18,11 +18,16 @@ app.post('/user', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let user = yield prisma.client.findUnique({
         where: { ci },
         include: {
-            products: true
+            products: {
+                include: {
+                    product: true
+                }
+            }
         }
     });
+    const products = user === null || user === void 0 ? void 0 : user.products.map(v => v.product);
     if (user)
-        return res.json({ message: "logged succesfully", data: user });
+        return res.json({ message: "logged succesfully", data: Object.assign(Object.assign({}, user), { bookings: products }) });
     const newUser = yield prisma.client.create({
         data: { ci }
     });

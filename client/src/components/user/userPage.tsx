@@ -3,13 +3,20 @@ import { useUser } from '../../context/user'
 import UserData from './userData';
 import { Button } from '../../style/buttons';
 import UserProducts from './userProducts';
+import { useEffect } from 'react';
 
 const UserPage = () => {
-  const { setUser } = useUser();
+  const { user, setUser, getUserData } = useUser();
 
   const handleLogout = () => {
     setUser(undefined);
   }
+
+  useEffect(() => {
+    if(user) {
+      getUserData(String(user.ci));
+    }
+  }, []);
 
   return (
     <Container>

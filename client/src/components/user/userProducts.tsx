@@ -9,12 +9,12 @@ const UserProducts = () => {
 
   return (
     <Container>
-      <h2>Mis productos</h2>
+      <h2>Mis productos reservados</h2>
       {
         user?.products.length ?
-        <ClothMapper products={user?.products || []} /> :
+        <ClothMapper products={user?.bookings || []} /> :
         <CenterText>
-          <p>¡Danos tu CI cuando compres un producto y aparecerá aquí!</p>
+          <p>¡Cuando tu reserva se confirme aparecerá aquí!</p>
         </CenterText>
       }
     </Container>
@@ -27,6 +27,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
 
   & > h2 {
     text-align: center;

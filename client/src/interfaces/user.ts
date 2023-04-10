@@ -1,8 +1,10 @@
 import { Product } from './product';
+import { Sale } from './sale';
 
 export interface User {
   ci: number,
   phone?: number,
   name?: string,
-  products: Product[]
+  products: Sale[],
+  bookings: Product[]
 }

@@ -10,10 +10,15 @@ interface Props {
 }
 
 const ClothMapper = ({ products }: Props) => {
-  const { products: productJson } = useData();
+  const { products: allProducts } = useData();
   const { categoriesSelected, search, sizeSearch, focused } = useCloth();
 
   const filterByCategories = () => {
+    const productJson = allProducts.filter(product => {
+      const sold = product.clients?.reduce((prev, sale) => prev + sale.amount, 0) || 0;
+      return product.stock && product.stock - sold != 0;
+    });
+
     if(focused) {
       return productJson
         .filter(product => product.name?.toLowerCase().includes(search.toLowerCase()))

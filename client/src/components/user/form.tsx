@@ -3,18 +3,16 @@ import styled from 'styled-components'
 import { Button } from '../../style/buttons';
 import { Inputcontainer } from '../../style/input';
 import { colors } from '../../style/variables';
-import { postCi } from '../../services/user';
 import { useUser } from '../../context/user';
 
 const Form = () => {
   const [ci, setCi] = useState("");
   const [loading, setLoading] = useState(false);
-  const { setUser } = useUser();
+  const { getUserData } = useUser();
 
   const handleSend = async () => {
     setLoading(true);
-    const res = await postCi(ci);
-    setUser(res.data);
+    getUserData(ci);
   }
 
   return (

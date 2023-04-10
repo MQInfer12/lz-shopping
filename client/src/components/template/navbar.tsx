@@ -75,7 +75,7 @@ const Navbar = () => {
         }
         {
           !(width < 1110) &&
-          <StyledLink to="/user">{ user ? "Mis compras" : "Inicia sesión"}</StyledLink>
+          <StyledLink to="/user">{ user ? "Mis reservas" : "Inicia sesión"}</StyledLink>
         }
       </div>
     </Nav>

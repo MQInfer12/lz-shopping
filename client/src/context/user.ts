@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { User } from "../interfaces/user";
+import { postCi } from "../services/user";
 
 interface State {
   user: User | undefined
@@ -10,6 +11,7 @@ interface Action {
   setUser: (newUser: User | undefined) => void
   activateAdmin: () => void
   deactivateAdmin: () => void
+  getUserData: (ci: string) => void
 }
 
 export const useUser = create<State & Action>(set => {
@@ -27,6 +29,13 @@ export const useUser = create<State & Action>(set => {
     deactivateAdmin: () => {
       localStorage.removeItem("lz-admin");
       set(state => ({...state, admin: false }))
+    },
+    getUserData: async (ci) => {
+      const res = await postCi(ci);
+      set(state => ({
+        ...state,
+        user: res.data
+      }));
     }
   }
 })
