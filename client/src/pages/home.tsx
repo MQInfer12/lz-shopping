@@ -10,22 +10,19 @@ import ProductCrud from '../components/home/productCrud'
 import { useData } from '../context/data'
 import SalesCrud from '../components/home/salesCrud'
 import { Product } from '../interfaces/product'
+import { useParams } from 'react-router-dom'
+import decipher from '../utilities/decipher'
 
 const Home = () => {
   const [page, setPage] = useState<HomePage>("product");
   const [selectedSale, setSelectedSale] = useState<Product | null>(null);
   const { deactivateAdmin } = useUser();
   const { products, fillProductsAndCategories } = useData();
+  const { idProduct, quantity, ci } = useParams();
 
   useEffect(() => {
     fillProductsAndCategories();
   }, []);
-
-  /* useEffect(() => {
-    if(selectedSale) {
-      setPage("sales");
-    }
-  }, [selectedSale]); */
 
   useEffect(() => {
     products.forEach((product, i) => {
@@ -35,6 +32,17 @@ const Home = () => {
     });
   }, [products])
 
+  useEffect(() => {
+    if(products && idProduct) {
+      const id = Number(decipher(idProduct));
+      const product = products.find(product => product.id === id);
+      if(product) {
+        setSelectedSale(product);
+        setPage("sales");
+      }
+    }
+  }, [products]);
+
   return (
     <HomePageContainer>
       <Button onClick={deactivateAdmin}>Cerrar sesión</Button>
@@ -42,7 +50,7 @@ const Home = () => {
       {
         page === "product" ? <ProductCrud setPage={setPage} setSelectedSale={setSelectedSale} selectedSale={selectedSale} /> :
         page === "category" ? <CategoryCrud />:
-        page === "sales" && <SalesCrud selectedSale={selectedSale} /> 
+        page === "sales" && <SalesCrud quantity={decipher(quantity || "")} ci={ci} selectedSale={selectedSale} /> 
       }
     </HomePageContainer>
   )

@@ -6,10 +6,16 @@ import SaleIndexChanger from './saleIndexChanger'
 
 interface Props {
   selectedSale: Product | null
+  quantity: string | undefined
+  ci: string | undefined
 }
 
-const SalesCrud = ({ selectedSale }: Props) => {
-  const [index, setIndex] = useState(0);
+const SalesCrud = ({ selectedSale, quantity, ci }: Props) => {
+  const quantitySold = selectedSale?.clients?.reduce((ac, sale) => ac + sale.amount, 0);
+  const [index, setIndex] = useState(
+    (selectedSale?.stock && quantitySold) && selectedSale.stock - quantitySold ? 
+      (quantity && ci) && selectedSale?.clients?.length || 0 : 0
+  );
 
   return (
     <PageTemplate title='Reservar producto'>
@@ -24,14 +30,16 @@ const SalesCrud = ({ selectedSale }: Props) => {
           index={index}
           setIndex={setIndex}
           stock={selectedSale?.stock || 1}   
-          clients={selectedSale?.clients}       
+          clients={selectedSale?.clients}
         />
         <SaleForm 
           key={selectedSale?.clients && (selectedSale?.clients[index]?.id || index)}
           sale={selectedSale?.clients && selectedSale?.clients[index]}
           idProduct={selectedSale?.id || 0}
-          quantitySold={selectedSale?.clients?.reduce((ac, sale) => ac + sale.amount, 0) || 0}
+          quantitySold={quantitySold || 0}
           stock={selectedSale?.stock || 1}   
+          quantityUrl={quantity}
+          ciUrl={ci}
         />
        </div>        
     </PageTemplate>

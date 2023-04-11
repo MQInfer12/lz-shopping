@@ -18,6 +18,8 @@ function App() {
           <Route element={<User />} path='/user' />
           <Route element={<ProtectedRoute><Home /></ProtectedRoute>} path='/home' />
           <Route element={<Reserve />} path='/reserve/:idProduct/:quantity/:ci' />
+          <Route element={<ProtectedRoute><Home /></ProtectedRoute>} path='/home/:idProduct/:quantity/:ci' />
+          <Route element={<Index />} path='/view/:idProduct' />
         </Route>
       </Routes>
     </HashRouter>

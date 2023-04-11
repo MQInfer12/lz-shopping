@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
-import { StyledA } from '../../style/buttons';
+import { Button, StyledA } from '../../style/buttons';
 import { Inputcontainer, SelectContainer } from '../../style/input';
 import { useCloth } from '../../context/cloth';
 import code from '../../utilities/code';
@@ -13,10 +13,13 @@ const BookingForm = () => {
   const [quantity, setQuantity] = useState("1");
   const { selected } = useCloth();
 
-  const codedProductId = code(String(selected?.id));
-  const codedQuantity = code(quantity);
-
-  const message = `Hola!%20quiero%20reservar%20este%20producto:%0a${selected?.name}%0ahttps://lz-shopping.web.app/reserve/${codedProductId}/${codedQuantity}/${ci}`;
+  const handleToWhatsapp = () => {
+    const codedProductId = code(String(selected?.id));
+    const codedQuantity = code(quantity);
+    const baseUrl = window.location.origin;
+    const message = `Hola!%20quiero%20reservar%20este%20producto:%0a*${selected?.name}*%0a${baseUrl}/%23/reserve/${codedProductId}/${codedQuantity}/${ci}`;
+    window.open(`https://wa.me/59175955048?text=${message}`, "_blank");
+  }
 
   return (
     <FormContainer>
@@ -44,12 +47,11 @@ const BookingForm = () => {
           </SelectContainer>
         }
       </div>
-      <StyledA 
-        href={`https://wa.me/59176407344?text=${message}`}
-        target="_blank"
+      <Button 
+        onClick={handleToWhatsapp}
       >
         Contáctame <i className="fa-brands fa-whatsapp"></i>
-      </StyledA>
+      </Button>
     </FormContainer>
   )
 }

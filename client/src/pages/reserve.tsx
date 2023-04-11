@@ -9,9 +9,9 @@ const Reserve = () => {
 
   useEffect(() => {
     if(admin) {
-      navigate("/home");
+      navigate(`/home/${idProduct}/${quantity}/${ci}`);
     } else {
-      navigate("/");
+      navigate(`/view/${idProduct}`);
     }
   })
 
