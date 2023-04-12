@@ -27,7 +27,7 @@ const Navbar = () => {
       {((width > 620) || (width < 620 && !focused)) && <Logo />}
       <div className="right-nav">
         {
-          location.pathname === "/" &&
+          (location.pathname === "/" || location.pathname.includes("/view/")) &&
           <IconInputText>
             <input 
               onFocus={handleFocus}
@@ -47,7 +47,7 @@ const Navbar = () => {
           </IconInputText>
         }
         {
-          (focused && location.pathname === "/") &&
+          (focused && (location.pathname === "/" || location.pathname.includes("/view/"))) &&
           <Select value={sizeSearch} onChange={e => changeSizeSearch(e)}>
             <option value="">Talla</option>
             <option value="XS">XS</option>

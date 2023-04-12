@@ -38,13 +38,21 @@ const BookingForm = () => {
     return newErrors;
   }
 
+  const createEmojis = () => {
+    const emojis: string[] = [];
+    if(selected?.name?.toLowerCase().includes('vestido')) {
+      emojis.push('%F0%9F%91%97');
+    }
+    return emojis.join("%20");
+  }
+
   const handleToWhatsapp = () => {
     const nullErrors = checkNulls();
     if(!Object.keys(nullErrors).length && !Object.keys(errors).length) {
       const codedProductId = code(String(selected?.id));
       const codedQuantity = code(quantity);
       const baseUrl = window.location.origin;
-      const message = `Hola!%20quiero%20reservar%20este%20producto:%0a*${selected?.name}*%0a${baseUrl}/%23/reserve/${codedProductId}/${codedQuantity}/${ci}`;
+      const message = `Hola!%20quiero%20reservar%20este%20producto:%0a*${selected?.name}*%20${createEmojis()}%0a${baseUrl}/%23/reserve/${codedProductId}/${codedQuantity}/${ci}`;
       window.open(`https://wa.me/59176407344?text=${message}`, "_blank");
     } else {
       setErrors({...checkNulls(), ...checkErrors()});

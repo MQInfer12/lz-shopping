@@ -34,11 +34,15 @@ app.post('/user', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.json({ message: "created succesfully", data: Object.assign(Object.assign({}, newUser), { products: [] }) });
 }));
 app.put('/user/:ci', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const existingCi = yield prisma.client.findUnique({
-        where: {
-            ci: Number(req.body.ci)
-        }
-    });
+    let existingCi;
+    if (req.body.ci != req.body.currentCi) {
+        existingCi = yield prisma.client.findUnique({
+            where: {
+                ci: Number(req.body.ci)
+            }
+        });
+    }
+    console.log(req.body.ci, req.body.currentCi);
     if (!existingCi) {
         const user = yield prisma.client.update({
             where: {

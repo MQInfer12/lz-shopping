@@ -20,6 +20,7 @@ export const updateUser = async (ci: string, form: {
   name: string
   phone: string
   ci: string
+  currentCi: string
 }) => {
   const res = await fetch(`${http}user/${ci}`, {
     method: "PUT",
@@ -30,7 +31,8 @@ export const updateUser = async (ci: string, form: {
     body: JSON.stringify({ 
       name: form.name,
       phone: form.phone,
-      ci: form.ci
+      ci: form.ci,
+      currentCi: form.currentCi
     })
   });
   if(res.ok) {

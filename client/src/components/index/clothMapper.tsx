@@ -42,28 +42,30 @@ const ClothMapper = ({ sales }: Props) => {
   }
 
   return (
-    <ClothContainer>
+    <>
       {
-        sales ?
-        sales.map((sale, i) => (
-          sale.product &&
-          <ClothCard key={sale.id} sale={sale} product={sale.product} />
-        )) :
-        <>
-          {
-            filterByCategories().map((v, i) => (
-              <ClothCard key={v.id} product={v} />
-            ))
-          }
-          {
-            !filterByCategories().length && 
-            <CenterText>
-              <p>Pronto tendremos productos en este apartado ♡</p>
-            </CenterText>
-          }
-        </>
+        !filterByCategories().length && 
+        <CenterText>
+          <p>Pronto tendremos productos en este apartado ♡</p>
+        </CenterText>
       }
-    </ClothContainer>
+      <ClothContainer>
+        {
+          sales ?
+          sales.map((sale, i) => (
+            sale.product &&
+            <ClothCard key={sale.id} sale={sale} product={sale.product} />
+          )) :
+          <>
+            {
+              filterByCategories().map((v, i) => (
+                <ClothCard key={v.id} product={v} />
+              ))
+            }
+          </>
+        }
+      </ClothContainer>
+    </>
    )
 }
 

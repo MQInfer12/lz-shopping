@@ -14,7 +14,7 @@ const UserData = () => {
   const [form, setForm] = useState({
     name: user?.name || "",
     phone: user?.phone ? String(user?.phone) : "",
-    ci: String(user?.ci)
+    ci: String(user?.ci),
   });
 
   const checkErrors = () => {
@@ -34,7 +34,10 @@ const UserData = () => {
     if(!Object.keys(errors).length) {
       if(!user?.ci) return;
       setLoading(true);
-      const res = await updateUser(String(user?.ci), form);
+      const res = await updateUser(String(user.ci), {
+        ...form,
+        currentCi: String(user.ci)
+      });
       if(res.error) {
         Swal.fire({
           title: "Error",
