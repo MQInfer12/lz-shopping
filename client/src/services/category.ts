@@ -1,4 +1,5 @@
-import { http } from "../../env";
+const http = import.meta.env.VITE_HTTP;
+
 export const getCategories = async () => {
   const res = await fetch(`${http}category`, {
     method: "GET",

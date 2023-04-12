@@ -11,7 +11,8 @@ interface Props {
 }
 
 const SalesCrud = ({ selectedSale, quantity, ci }: Props) => {
-  const quantitySold = selectedSale?.clients?.reduce((ac, sale) => ac + sale.amount, 0);
+  const quantitySold = selectedSale?.clients?.reduce((ac, sale) => ac + sale.amount, 0) || 0;
+  const quantityLeft = selectedSale?.stock && (selectedSale.stock - quantitySold);
   const [index, setIndex] = useState(
     (selectedSale?.stock && quantitySold) && selectedSale.stock - quantitySold ? 
       (quantity && ci) && selectedSale?.clients?.length || 0 : 0
@@ -22,10 +23,14 @@ const SalesCrud = ({ selectedSale, quantity, ci }: Props) => {
        <div className="inputsContainer">
         <img src={selectedSale?.photo} alt="" /> 
         <h2>{selectedSale?.name}</h2>
-        <div className="same-line">
-          {selectedSale?.discount && <p className='striked'>{selectedSale?.price} Bs.</p>}
-          <p>{selectedSale?.discount || selectedSale?.price} Bs.</p>
-        </div>
+        {
+          quantityLeft ?
+          <div className="same-line">
+            {selectedSale?.discount && <p className='striked'>{selectedSale?.price} Bs.</p>}
+            <p>{selectedSale?.discount || selectedSale?.price} Bs.</p>
+          </div> :
+          <p>Producto agotado</p>
+        }
         <SaleIndexChanger
           index={index}
           setIndex={setIndex}

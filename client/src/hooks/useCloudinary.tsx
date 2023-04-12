@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { cloudinaryEnvironment, cloudinaryUploadPreset } from '../../env';
+import { useState } from 'react'
+const cloudinaryUploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+const cloudinaryEnvironment = import.meta.env.VITE_CLOUDINARY_ENVIRONMENT;
 
 const useCloudinary = () => {
   const [progress, setProgress] = useState(0);

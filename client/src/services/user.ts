@@ -1,5 +1,4 @@
-import { http } from "../../env";
-import { User } from "../interfaces/user";
+const http = import.meta.env.VITE_HTTP;
 
 export const postCi = async (ci: string) => {
   const res = await fetch(`${http}user`, {

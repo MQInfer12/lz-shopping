@@ -1,5 +1,5 @@
-import { http } from "../../env";
 import { ProductForm } from "../components/home/productCrud";
+const http = import.meta.env.VITE_HTTP;
 
 export const getProductsAndCategories = async () => {
   const res = await fetch(`${http}index`, {

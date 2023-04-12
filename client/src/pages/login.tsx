@@ -15,8 +15,9 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const { activateAdmin } = useUser();
 
-  const Autenticate = () => {
-    if(email != "admin@gmail.com" || password != '123456') return alert('Datos incorrectos');
+  const Autenticate = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    if(email != import.meta.env.VITE_ADMIN_EMAIL || password != import.meta.env.VITE_ADMIN_PASSWORD) return alert('Datos incorrectos');
     activateAdmin();
     navigate('/home');
   }

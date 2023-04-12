@@ -1,4 +1,4 @@
-import { http } from "../../env";
+const http = import.meta.env.VITE_HTTP;
 
 export const reserveProduct = async (form: {
   saleId: number | undefined

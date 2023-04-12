@@ -9,6 +9,7 @@ import { useUser } from '../../context/user';
 import InputText from '../global/inputText';
 import { InputSelect } from '../global/inputSelect';
 import Swal from 'sweetalert2';
+import { createEmojis } from '../../utilities/createEmojis';
 
 const BookingForm = () => {
   const { user } = useUser();
@@ -38,21 +39,13 @@ const BookingForm = () => {
     return newErrors;
   }
 
-  const createEmojis = () => {
-    const emojis: string[] = [];
-    if(selected?.name?.toLowerCase().includes('vestido')) {
-      emojis.push('%F0%9F%91%97');
-    }
-    return emojis.join("%20");
-  }
-
   const handleToWhatsapp = () => {
     const nullErrors = checkNulls();
     if(!Object.keys(nullErrors).length && !Object.keys(errors).length) {
       const codedProductId = code(String(selected?.id));
       const codedQuantity = code(quantity);
       const baseUrl = window.location.origin;
-      const message = `Hola!%20quiero%20reservar%20este%20producto:%0a*${selected?.name}*%20${createEmojis()}%0a${baseUrl}/%23/reserve/${codedProductId}/${codedQuantity}/${ci}`;
+      const message = `Hola!%20quiero%20reservar%20este%20producto:%0a*${selected?.name}*%20${createEmojis(selected)}%0a${baseUrl}/%23/reserve/${codedProductId}/${codedQuantity}/${ci}`;
       window.open(`https://wa.me/59176407344?text=${message}`, "_blank");
     } else {
       setErrors({...checkNulls(), ...checkErrors()});
@@ -70,39 +63,43 @@ const BookingForm = () => {
 
   return (
     <FormContainer>
-      <p>¡Pide tu reserva ahora!</p>
-      <div className="row">
-        {
-          !user &&
-          <InputText 
-            text='Ingresa tu CI*'
-            state={ci || ""}
-            handleChange={(e) => setCi(e.target.value)}
-            error={errors.ci}
-            style={{ textAlign: "center" }}
-          />
-        }
-        {
-          quantityLeft != 1 &&
-          <InputSelect 
-            text='Cantidad*'
-            state={quantity}
-            handleChange={(e) => setQuantity(e.target.value)}
-            options={
-              Array.from(Array(quantityLeft).keys()).map(v => ({
-                value: v + 1,
-                text: v + 1
-              }))
-            }
-            small
-          />
-        }
-      </div>
-      <Button 
-        onClick={handleToWhatsapp}
-      >
-        Contáctame <i className="fa-brands fa-whatsapp"></i>
-      </Button>
+      {
+        quantityLeft ?
+        <><p>¡Pide tu reserva ahora!</p>
+        <div className="row">
+          {
+            !user &&
+            <InputText 
+              text='Ingresa tu CI*'
+              state={ci || ""}
+              handleChange={(e) => setCi(e.target.value)}
+              error={errors.ci}
+              style={{ textAlign: "center" }}
+            />
+          }
+          {
+            quantityLeft != 1 &&
+            <InputSelect 
+              text='Cantidad*'
+              state={quantity}
+              handleChange={(e) => setQuantity(e.target.value)}
+              options={
+                Array.from(Array(quantityLeft).keys()).map(v => ({
+                  value: v + 1,
+                  text: v + 1
+                }))
+              }
+              small
+            />
+          }
+        </div>
+        <Button 
+          onClick={handleToWhatsapp}
+        >
+          Contáctame <i className="fa-brands fa-whatsapp"></i>
+        </Button></> :
+        <p>El producto está agotado</p>
+      }
     </FormContainer>
   )
 }
