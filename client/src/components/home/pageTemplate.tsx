@@ -74,6 +74,7 @@ const CategoryCrudContainer = styled.div`
       border-radius: 1rem;
       overflow: hidden;
       box-shadow: ${colors.shadow};
+      border: 1px solid ${colors.gray100};
 
       & img {
         box-shadow: none;
@@ -92,6 +93,10 @@ const CategoryCrudContainer = styled.div`
       &:hover {
         opacity: 0.8;
       }
+    }
+
+    & > .img-error {
+      border: 1px solid ${colors.primary600};
     }
 
     & > .two-columns {

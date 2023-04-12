@@ -3,13 +3,13 @@ import { useCloth } from '../../context/cloth'
 import { useData } from '../../context/data'
 import { colors } from '../../style/variables'
 import ClothCard from './clothCard'
-import { Product } from '../../interfaces/product'
+import { Sale } from '../../interfaces/sale'
 
 interface Props {
-  products?: Product[]
+  sales?: Sale[]
 }
 
-const ClothMapper = ({ products }: Props) => {
+const ClothMapper = ({ sales }: Props) => {
   const { products: allProducts } = useData();
   const { categoriesSelected, search, sizeSearch, focused } = useCloth();
 
@@ -44,9 +44,10 @@ const ClothMapper = ({ products }: Props) => {
   return (
     <ClothContainer>
       {
-        products ?
-        products.map((product, i) => (
-          <ClothCard key={product.id} product={product} />
+        sales ?
+        sales.map((sale, i) => (
+          sale.product &&
+          <ClothCard key={sale.id} sale={sale} product={sale.product} />
         )) :
         <>
           {

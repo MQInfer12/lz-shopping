@@ -1,39 +1,6 @@
 import styled from "styled-components";
 import { colors } from "./variables";
 
-interface Props {
-  name: string
-  state: any
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  handlePlus: () => void
-  handleMinus: () => void
-}
-
-export const InputNumber = ({ name, state, handleChange, handlePlus, handleMinus }: Props) => {
-  return (
-    <Inputcontainer>
-      <label>{ name }</label>
-      <div className="input-relative">
-        <input 
-          type="number"
-          value={state}
-          onChange={handleChange}
-        />
-        <div className="controls">
-          <button
-            onClick={handleMinus}
-          >-</button>
-        </div>
-        <div className="controls">
-          <button
-            onClick={handlePlus}
-          >+</button>
-        </div>
-      </div>
-    </Inputcontainer>
-  )
-}
-
 interface InputContainerProps {
   hide?: boolean
   error?: boolean
@@ -51,7 +18,7 @@ export const Inputcontainer = styled.div<InputContainerProps>`
     top: 0.1rem;
     right: 1rem;
     font-size: 1rem;
-    animation: appearIcon .3s ease;
+    animation: appearIcon .5s ease;
     &:hover ~ small {
       opacity: 1;
     }
@@ -80,7 +47,7 @@ export const Inputcontainer = styled.div<InputContainerProps>`
     width: calc(100% - 1.3rem);
     position: absolute;
     top: 1.28rem;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     background-color: white;
     border-radius: 0.5rem 0 .5rem .5rem;
     box-shadow: ${colors.shadow};
@@ -88,6 +55,7 @@ export const Inputcontainer = styled.div<InputContainerProps>`
     color: ${colors.gray500};
     transition: all 0.3s;
     pointer-events: none;
+    z-index: 1;
   }
   
   & > .input-relative {
@@ -173,7 +141,7 @@ export const SelectContainer = styled.div<SelectContainerProps>`
     top: 0.1rem;
     right: ${props => props.small ? ".3rem" : "1rem"};
     font-size: 1rem;
-    animation: appearIcon .3s ease;
+    animation: appearIcon .5s ease;
 
     &:hover ~ small {
       opacity: 1;

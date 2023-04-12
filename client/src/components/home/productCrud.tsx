@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useData } from "../../context/data";
@@ -7,7 +7,6 @@ import { postProduct, putProduct } from "../../services/product";
 import { Button } from "../../style/buttons";
 import {
   Inputcontainer,
-  InputNumber,
   SelectContainer,
 } from "../../style/input";
 import Loading from "../global/loading";
@@ -17,10 +16,13 @@ import ProductTable from "./productTable";
 import Placeholder from "../../assets/placeholder.png";
 import { Product } from "../../interfaces/product";
 import { HomePage } from "../../interfaces/homePage";
+import InputText from "../global/inputText";
+import InputNumber from "../global/inputNumber";
+import { InputSelect } from "../global/inputSelect";
 
 export interface ProductForm {
   id: number | null;
-  name: string;
+  name: string | null;
   photo: File | null;
   photoPreview: string;
   price: string;
@@ -33,7 +35,7 @@ export interface ProductForm {
 
 const initialForm = {
   id: null,
-  name: "",
+  name: null,
   photo: null,
   photoPreview: "",
   price: "35",
@@ -56,6 +58,43 @@ const ProductCrud = ({ setSelectedSale, selectedSale, setPage }: Props) => {
   const [form, setForm] = useState<ProductForm>(initialForm);
   const { loadingIndex } = useData();
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<any>({});
+
+  const checkNulls = () => {
+    const nullErrors: any = {};
+    if(form.name === null) {
+      nullErrors.name = "Este espacio es requerido";
+      setForm(old => ({...old, name: ""}));
+    }
+    if(form.photo === null) {
+      nullErrors.img = "Este espacio es requerido";
+    }
+    return nullErrors;
+  }
+
+  const checkErrors = () => {
+    let newErrors: any = {};
+    if(form.name != null && !form.name.trim()) {
+      newErrors.name = "Este espacio es requerido";
+    } 
+    if(!form.price.trim()) {
+      newErrors.price = "Este espacio es requerido";
+    } else if(Number(form.price) <= 0) {
+      newErrors.price = "Este precio no es válido";
+    }
+    if(Number(form.discount) >= Number(form.price)) {
+      newErrors.discount = "El descuento tiene que ser menor que el precio";
+    } 
+    if(Number(form.discount) < 0) {
+      newErrors.discount = "Este descuento no es válido";
+    }
+    if(!form.stock.trim()) {
+      newErrors.stock = "Este espacio es requerido";
+    } else if (Number(form.stock) < 0) {
+      newErrors.stock = "El stock tiene que ser cero o más";
+    }
+    return newErrors;
+  }
 
   const changeInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let dataUrl: string = "";
@@ -84,36 +123,50 @@ const ProductCrud = ({ setSelectedSale, selectedSale, setPage }: Props) => {
   }
 
   const handleSend = async () => {
-    setLoading(true);
-    let cloudinaryRes: any;
-    if (form.photo) {
-      cloudinaryRes = await sendCloudinary(form.photo);
-    }
-    if (!form.id) {
-      const res = await postProduct({
-        ...form,
-        photo: cloudinaryRes.url,
-        photoPreview: ""
+    const nullErrors = checkNulls();
+    if(!Object.keys(nullErrors).length && !Object.keys(errors).length) {
+      setLoading(true);
+      let cloudinaryRes: any;
+      if (form.photo) {
+        cloudinaryRes = await sendCloudinary(form.photo);
+      }
+      if (!form.id) {
+        const res = await postProduct({
+          ...form,
+          photo: cloudinaryRes.url,
+          photoPreview: ""
+        });
+        addProduct(res.data);
+      } else {
+        const res = await putProduct({
+          ...form,
+          stock: String(Number(form.stock) + form.quantitySold),
+          photo: cloudinaryRes?.url,
+          photoPreview: ""
+        });
+        editProduct(res.data);
+      }
+      setForm(initialForm);
+      resetProgress();
+      setLoading(false);
+      Swal.fire({
+        title: "Petición correcta",
+        text: `Se ${form.id ? "editó" : "añadió"} el producto correctamente.`,
+        icon: "success"
       });
-      addProduct(res.data);
     } else {
-      const res = await putProduct({
-        ...form,
-        stock: String(Number(form.stock) + form.quantitySold),
-        photo: cloudinaryRes?.url,
-        photoPreview: ""
+      setErrors({...checkNulls(), ...checkErrors()});
+      Swal.fire({
+        title: "Error al enviar",
+        text: "Comprueba que no existan errores en el formulario.",
+        icon: "error"
       });
-      editProduct(res.data);
     }
-    setForm(initialForm);
-    resetProgress();
-    setLoading(false);
-    Swal.fire({
-      title: "Petición correcta",
-      text: `Se ${form.id ? "editó" : "añadió"} el producto correctamente.`,
-      icon: "success"
-    });
   };
+
+  useEffect(() => {
+    setErrors(checkErrors());
+  }, [form]);
 
   return (
     <PageTemplate
@@ -123,108 +176,68 @@ const ProductCrud = ({ setSelectedSale, selectedSale, setPage }: Props) => {
       initialForm={initialForm}
     >
       <div className="inputsContainer">
-        <label className="img-wrapper" htmlFor="formFile">
+        <label className={`img-wrapper${errors.img ? " img-error" : ""}`} htmlFor="formFile">
           <img src={form.photoPreview || Placeholder} />
           <progress max="100" value={progress} />
+          <Inputcontainer hide>
+            <label>Foto*</label>
+            <div className="input-relative">
+              <input
+                type="file"
+                id="formFile"
+                accept=".jpg,.png,.jpeg"
+                onChange={(e) => changeInputFile(e)}
+              />
+            </div>
+          </Inputcontainer>
         </label>
-        <Inputcontainer hide>
-          <label>Foto*</label>
-          <div className="input-relative">
-            <input
-              type="file"
-              id="formFile"
-              accept=".jpg,.png,.jpeg"
-              onChange={(e) => changeInputFile(e)}
-            />
-          </div>
-        </Inputcontainer>
-        <Inputcontainer>
-          <label>Nombre*</label>
-          <input
-            type="text"
-            value={form.name}
-            onChange={(e) =>
-              setForm((old) => ({ ...old, name: e.target.value }))
-            }
-          />
-        </Inputcontainer>
+        <InputText 
+          text="Nombre*"
+          state={form.name || ""}
+          handleChange={(e) => setForm((old) => ({ ...old, name: e.target.value }))}
+          error={errors.name}
+        />
         <div className="two-columns">
           <InputNumber
             name="Precio*"
             state={form.price}
-            handleChange={(e) =>
-              setForm((old) => ({ ...old, price: e.target.value }))
-            }
-            handlePlus={() =>
-              setForm((old) => ({
-                ...old,
-                price: String(Number(old.price) + 1),
-              }))
-            }
-            handleMinus={() =>
-              setForm((old) => ({
-                ...old,
-                price: String(Number(old.price) - 1),
-              }))
-            }
+            handleChange={(e) => setForm((old) => ({ ...old, price: e.target.value }))}
+            handlePlus={() => setForm((old) => ({...old, price: String(Number(old.price) + 1)}))}
+            handleMinus={() => setForm((old) => ({...old, price: String(Number(old.price) - 1)}))}
+            error={errors.price}
           />
           <InputNumber
             name="Descuento"
             state={form.discount}
-            handleChange={(e) =>
-              setForm((old) => ({ ...old, discount: e.target.value }))
-            }
-            handlePlus={() =>
-              setForm((old) => ({
-                ...old,
-                discount: String(Number(old.discount) + 1),
-              }))
-            }
-            handleMinus={() =>
-              setForm((old) => ({
-                ...old,
-                discount: String(Number(old.discount) - 1),
-              }))
-            }
+            handleChange={(e) => setForm((old) => ({ ...old, discount: e.target.value }))}
+            handlePlus={() => setForm((old) => ({...old, discount: String(Number(old.discount) + 1)}))}
+            handleMinus={() => setForm((old) => ({...old, discount: String(Number(old.discount) - 1)}))}
+            error={errors.discount}
           />
         </div>
         <div className="two-columns">
-          <SelectContainer>
-            <label>Talla</label>
-            <select
-              value={form.size}
-              onChange={(e) =>
-                setForm((old) => ({ ...old, size: e.target.value }))
-              }
-            >
-              <option value="">Sin talla</option>
-              <option value="XS">XS</option>
-              <option value="S">S</option>
-              <option value="M">M</option>
-              <option value="L">L</option>
-              <option value="XL">XL</option>
-              <option value="XXL">XXL</option>
-              <option value="XXXL">XXXL</option>
-            </select>
-          </SelectContainer>
+          <InputSelect 
+            text="Talla"
+            state={form.size}
+            handleChange={(e) => setForm((old) => ({ ...old, size: e.target.value }))}
+            options={[
+              { text: "Sin talla", value: ""},
+              { text: "XS", value: "XS"},
+              { text: "S", value: "S"},
+              { text: "M", value: "M"},
+              { text: "L", value: "L"},
+              { text: "XL", value: "XL"},
+              { text: "XXL", value: "XXL"},
+              { text: "XXXL", value: "XXXL"},
+            ]}
+          />
           <InputNumber
             name="Stock*"
             state={form.stock}
-            handleChange={(e) =>
-              setForm((old) => ({ ...old, stock: e.target.value }))
-            }
-            handlePlus={() =>
-              setForm((old) => ({
-                ...old,
-                stock: String(Number(old.stock) + 1),
-              }))
-            }
-            handleMinus={() =>
-              setForm((old) => ({
-                ...old,
-                stock: String(Number(old.stock) - 1),
-              }))
-            }
+            handleChange={(e) => setForm((old) => ({ ...old, stock: e.target.value }))}
+            handlePlus={() => setForm((old) => ({...old, stock: String(Number(old.stock) + 1)}))}
+            handleMinus={() => setForm((old) => ({...old, stock: String(Number(old.stock) - 1)}))}
+            error={errors.stock}
           />
         </div>
         <Inputcontainer>

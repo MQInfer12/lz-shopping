@@ -34,16 +34,26 @@ app.post('/user', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.json({ message: "created succesfully", data: Object.assign(Object.assign({}, newUser), { products: [] }) });
 }));
 app.put('/user/:ci', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield prisma.client.update({
+    const existingCi = yield prisma.client.findUnique({
         where: {
-            ci: Number(req.params.ci)
-        },
-        data: {
-            name: req.body.name,
-            phone: Number(req.body.phone),
             ci: Number(req.body.ci)
         }
     });
-    res.json({ message: "updated succesfully", data: user });
+    if (!existingCi) {
+        const user = yield prisma.client.update({
+            where: {
+                ci: Number(req.params.ci)
+            },
+            data: {
+                name: req.body.name,
+                phone: Number(req.body.phone),
+                ci: Number(req.body.ci)
+            }
+        });
+        res.json({ message: "updated succesfully", data: user });
+    }
+    else {
+        res.json({ message: "error", error: "Ya existe un usuario con este CI" });
+    }
 }));
 module.exports = app;

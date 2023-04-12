@@ -1,3 +1,5 @@
+import { Product } from "./product"
+
 export interface Sale {
   clientCi: number | null
   datetime: string
@@ -5,4 +7,5 @@ export interface Sale {
   productId: number
   reserved: boolean
   amount: number
+  product?: Product
 }

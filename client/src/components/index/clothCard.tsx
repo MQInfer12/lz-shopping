@@ -3,12 +3,14 @@ import styled from 'styled-components'
 import { useCloth } from '../../context/cloth'
 import { Product } from '../../interfaces/product'
 import { colors } from '../../style/variables'
+import { Sale } from '../../interfaces/sale'
 
 interface Props {
   product: Product
+  sale?: Sale
 }
 
-const ClothCard = ({ product }: Props) => {
+const ClothCard = ({ product, sale }: Props) => {
   const { selectCloth } = useCloth(); 
   let discountPercentage: number = 0;
   if(product.discount && product.price) {
@@ -16,24 +18,46 @@ const ClothCard = ({ product }: Props) => {
   }
 
   return (
-    <ClothCardContainer onClick={() => selectCloth(product)}>
+    <ClothCardContainer noHover={!!sale} onClick={() => selectCloth(product)}>
       <div className='imgContainer'>
         <img src={product.photo} />
-        {product.discount && <b className='discount'>{discountPercentage}% OFF</b>}
+        {!sale && product.discount && <b className='discount'>{discountPercentage}% OFF</b>}
         {product.size && <b className='size'>{product.size}</b>}
       </div>
       <h3>{product.name}</h3>
-      <div className="text">
-        {product.discount && <p>Bs. {product.discount}</p>}
-        <P striked={!!product.discount}>Bs. {product.price}</P>
-      </div>
+      {
+        !sale &&
+        <div className="text">
+          {product.discount && <p>Bs. {product.discount}</p>}
+          <P striked={!!product.discount}>Bs. {product.price}</P>
+        </div>
+      }
+      {
+        sale &&
+        <>
+        <div className="text">
+          <p>{sale.amount} unidad{sale.amount > 1 && "es"}</p>
+        </div>
+        <div className="text">
+          <p>{
+            new Date(sale.datetime).getDate() + "-" + 
+            (new Date(sale.datetime).getMonth() + 1) + "-" +
+            new Date(sale.datetime).getFullYear()
+          }</p>
+        </div>
+        </>
+      }
     </ClothCardContainer>
   )
 }
 
 export default ClothCard
 
-const ClothCardContainer = styled.div`
+interface ClothCardContainerProps {
+  noHover: boolean
+}
+
+const ClothCardContainer = styled.div<ClothCardContainerProps>`
   padding: 1rem;
   background-color: ${colors.white};
   box-shadow: ${colors.shadow};
@@ -41,11 +65,11 @@ const ClothCardContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: .5rem;
-  cursor: pointer;
+  cursor: ${props => props.noHover ? "auto" : "pointer"};
   transition: opacity 0.3s;
 
   &:hover {
-    opacity: 0.6;
+    opacity: ${props => props.noHover ? "0.8" : "0.6"};
   }
 
   & > .imgContainer {

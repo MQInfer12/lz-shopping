@@ -26,7 +26,7 @@ interface AppContainerProps {
 const AppContainer = styled.div<AppContainerProps>`
   margin-top: 3.5rem;
   height: calc(100dvh - 3.5rem);
-  overflow-y: ${props => props.path === "/home" ? "scroll" : "auto"};
+  overflow-y: ${props => props.path.includes("/home") ? "scroll" : "auto"};
   
   &::-webkit-scrollbar {
     width: .375rem;

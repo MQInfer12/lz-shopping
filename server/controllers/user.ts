@@ -32,18 +32,27 @@ app.post('/user', async (req: Request, res: Response) => {
 });
 
 app.put('/user/:ci', async (req: Request, res: Response) => {
-  const user = await prisma.client.update({
+  const existingCi = await prisma.client.findUnique({
     where: {
-      ci: Number(req.params.ci)
-    },
-    data: {
-      name: req.body.name,
-      phone: Number(req.body.phone),
       ci: Number(req.body.ci)
     }
-  })
-
-  res.json({ message: "updated succesfully", data: user });
+  });
+  if(!existingCi) {
+    const user = await prisma.client.update({
+      where: {
+        ci: Number(req.params.ci)
+      },
+      data: {
+        name: req.body.name,
+        phone: Number(req.body.phone),
+        ci: Number(req.body.ci)
+      }
+    })
+  
+    res.json({ message: "updated succesfully", data: user });
+  } else {
+    res.json({ message: "error", error: "Ya existe un usuario con este CI" });
+  }
 });
 
 module.exports = app;

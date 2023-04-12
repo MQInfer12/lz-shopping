@@ -39,6 +39,7 @@ const CategoryTable = () => {
                   handledelete(v.id);
                 }}
                 disabled={loadingDelete === v.id}
+                style={{ margin: "auto" }}
               >
                 {loadingDelete === v.id ? <LoadingIcon /> : <i className="fa-solid fa-trash"></i> }
               </MiniIconButton>

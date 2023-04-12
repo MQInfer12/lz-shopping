@@ -15,7 +15,7 @@ const UserProducts = () => {
         loadingUserdata ?
         <Loading /> :
         user?.products.length ?
-        <ClothMapper products={user?.bookings || []} /> :
+        <ClothMapper sales={user?.products || []} /> :
         <CenterText>
           <p>¡Cuando tu reserva se confirme aparecerá aquí!</p>
         </CenterText>
