@@ -18,7 +18,7 @@ const BookingForm = () => {
     const codedQuantity = code(quantity);
     const baseUrl = window.location.origin;
     const message = `Hola!%20quiero%20reservar%20este%20producto:%0a*${selected?.name}*%0a${baseUrl}/%23/reserve/${codedProductId}/${codedQuantity}/${ci}`;
-    window.open(`https://wa.me/59175955048?text=${message}`, "_blank");
+    window.open(`https://wa.me/59176407344?text=${message}`, "_blank");
   }
 
   return (
@@ -43,6 +43,7 @@ const BookingForm = () => {
             <select value={quantity} onChange={(e) => setQuantity(e.target.value)}>
               <option value="1">1</option>
               <option value="2">2</option>
+              <option value="3">3</option>
             </select>
           </SelectContainer>
         }

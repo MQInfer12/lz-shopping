@@ -34,3 +34,11 @@
 .swal2-html-container {
   color: #87909D !important;
 }
+
+.swal2-error {
+  border-color: #c9184a !important;
+}
+
+.swal2-error [class^=swal2-x-mark-line] {
+  background-color: #c9184a !important;
+}

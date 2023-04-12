@@ -22,7 +22,7 @@ const UserPage = () => {
     <Container>
       <Button onClick={handleLogout}>Cerrar sesión</Button>
       <UserData />
-      <UserProducts />
+      <UserProducts  />
     </Container>
   )
 }

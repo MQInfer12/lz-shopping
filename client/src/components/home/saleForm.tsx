@@ -4,8 +4,9 @@ import { useData } from '../../context/data'
 import { Sale } from '../../interfaces/sale'
 import { reserveProduct } from '../../services/sale'
 import { Button } from '../../style/buttons'
-import { Inputcontainer, SelectContainer } from '../../style/input'
 import { useNavigate } from 'react-router-dom'
+import InputText from '../global/inputText'
+import { InputSelect } from '../global/inputSelect'
 
 interface Props {
   sale: Sale | undefined
@@ -18,74 +19,110 @@ interface Props {
 
 const SaleForm = ({ sale, idProduct, quantitySold, stock, quantityUrl, ciUrl }: Props) => {
   const navigate = useNavigate();
-  const [ci, setCi] = useState(sale ? String(sale.clientCi) : ciUrl || "");
-  const [amount, setAmount] = useState(sale ? String(sale.amount) : quantityUrl || "");
+  const [ci, setCi] = useState<string | null>(sale ? (sale.clientCi ? String(sale.clientCi) : null) : (ciUrl || null));
+  const quantityLeft = stock - quantitySold;
+  const [amount, setAmount] = useState(
+    sale ? String(sale.amount) : 
+    (Number(quantityUrl) > (quantityLeft) ? String(quantityLeft) : quantityUrl || "1")
+  );
   const [loading, setLoading] = useState(false);
   const { handleReserve, handleCancelReserve } = useData();
+  const [errors, setErrors] = useState<any>({});
+
+  const checkNulls = () => {
+    const nullErrors: any = {};
+    if(ci === null) {
+      nullErrors.ci = "Este espacio es requerido";
+    }
+    return nullErrors;
+  }
+
+  const checkErrors = () => {
+    let newErrors: any = {};
+    if(ci != null && !ci.trim()) {
+      newErrors.ci = "Este espacio es requerido";
+    } else if(ci != null && !/^\d+$/.test(ci)) {
+      newErrors.ci = "Este espacio solo puede tener números";
+    }
+    return newErrors;
+  }
 
   const handleSendReserve = async () => {
-    setLoading(true);
-    const res = await reserveProduct({
-      saleId: sale?.id,
-      ci,
-      amount
-    }, idProduct);
-    if(sale?.reserved) {
-      handleCancelReserve(res.data, idProduct);
-      Swal.fire({
-        title: "Petición correcta.",
-        text: "Reserva cancelada correctamente.",
-        icon: 'success'
-      });
+    const nullErrors = checkNulls();
+    if(!Object.keys(nullErrors).length && !Object.keys(errors).length) {
+      setLoading(true);
+      const res = await reserveProduct({
+        saleId: sale?.id,
+        ci: ci || "",
+        amount
+      }, idProduct);
+      if(sale?.reserved) {
+        handleCancelReserve(res.data, idProduct);
+        Swal.fire({
+          title: "Petición correcta.",
+          text: "Reserva cancelada correctamente.",
+          icon: 'success'
+        });
+      } else {
+        handleReserve(res.data, idProduct);
+        Swal.fire({
+          title: "Petición correcta.",
+          text: "Producto reservado correctamente.",
+          icon: 'success'
+        });
+        navigate("/home");
+      }
+      setLoading(false);
     } else {
-      handleReserve(res.data, idProduct);
+      setErrors({...checkNulls(), ...checkErrors()});
       Swal.fire({
-        title: "Petición correcta.",
-        text: "Producto reservado correctamente.",
-        icon: 'success'
+        title: "Error al enviar",
+        text: "Comprueba que no existan errores en el formulario.",
+        icon: "error"
       });
-      navigate("/home");
     }
-    setLoading(false);
   }
+
+  useEffect(() => {
+    setErrors(checkErrors());
+  }, [ci]);
 
   return (
     <>
       <div className='two-columns'>
-        <Inputcontainer>
-          <label>CI</label>
-          <input 
-            disabled={!!sale}
-            style={{ textAlign: "center" }} 
-            value={ci} 
-            onChange={(e) => setCi(e.target.value)} 
-            type="text" 
-          />
-        </Inputcontainer> 
-        <SelectContainer small>
-          <label>Cantidad*</label>
-          <select 
-            disabled={!!sale}
-            value={amount} 
-            onChange={e => setAmount(e.target.value)}
-          >
-            {
-              sale ?
-              <option>{sale?.amount}</option> :
-              new Array(stock - quantitySold).fill("option").map((v, i) => (
-                <option key={i} value={i + 1}>{i + 1}</option>
-              ))
-            }
-          </select>
-        </SelectContainer> 
-      </div>  
+        <InputText
+          text='CI*'
+          state={ci || ""}
+          handleChange={(e) => setCi(e.target.value)}
+          style={{ textAlign: "center" }}
+          disabled={!!sale}
+          error={errors.ci}
+        />
+        <InputSelect 
+          text='Cantidad*'
+          state={amount}
+          handleChange={e => setAmount(e.target.value)}
+          options={
+            sale ? [{ 
+              value: sale.amount,
+              text: sale.amount 
+            }] :
+            Array.from(Array(quantityLeft).keys()).map(v => ({
+              value: v + 1,
+              text: v + 1
+            }))
+          }
+          disabled={!!sale}
+          danger={(!sale && Number(quantityUrl) > (quantityLeft) && `Se querían ${quantityUrl} pero solo quedan ${quantityLeft}`) || ""}
+          small
+        />
+      </div> 
       <Button 
         onClick={handleSendReserve}
         disabled={loading}
       >
         {loading ? "Cargando..." : sale?.reserved ? "Cancelar reserva" : "Añadir reserva"}
       </Button>
-      {/* <Button>Vender</Button>  */}
     </>
   )
 }

@@ -3,14 +3,17 @@ import ClothMapper from '../index/clothMapper'
 import { useUser } from '../../context/user'
 import styled from 'styled-components';
 import { colors } from '../../style/variables';
+import Loading from '../global/loading';
 
 const UserProducts = () => {
-  const { user } = useUser();
+  const { user, loadingUserdata } = useUser();
 
   return (
     <Container>
       <h2>Mis productos reservados</h2>
       {
+        loadingUserdata ?
+        <Loading /> :
         user?.products.length ?
         <ClothMapper products={user?.bookings || []} /> :
         <CenterText>

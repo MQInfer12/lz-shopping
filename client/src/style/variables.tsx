@@ -24,5 +24,6 @@ export const colors={
     gray800: "#2B384C",
     gray900: "#132238",
     shadow: "0px 3px 18px -6px rgba(0,0,0,0.2)",
-    shadow100: "0px 0px 30px 3px rgba(0,0,0,0.4)"
+    shadow100: "0px 0px 30px 3px rgba(0,0,0,0.4)",
+    yellow: "#db9600"
 }
