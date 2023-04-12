@@ -21,8 +21,8 @@ const UserData = () => {
     setLoading(true);
     const res = await updateUser(String(user?.ci), form);
     setUser({
+      ...user,
       ...res.data,
-      products: user.products
     });
     setLoading(false);
     Swal.fire({
