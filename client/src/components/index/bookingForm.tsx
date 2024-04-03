@@ -47,7 +47,7 @@ const BookingForm = () => {
     const message = `Hola!%20quiero%20reservar%20este%20producto:%0a*${
       selected?.name
     }*%20${createEmojis(selected)}%0a${baseUrl}/%23/view/${codedProductId}`;
-    window.open(`https://wa.me/59176407344?text=${message}`, "_blank");
+    window.open(`https://wa.me/59175971222?text=${message}`, "_blank");
 
     /* const nullErrors = checkNulls();
     if(!Object.keys(nullErrors).length && !Object.keys(errors).length) {
