@@ -11,7 +11,7 @@ app.get("/index", async (req: Request, res: Response) => {
       clients: true,
     },
     orderBy: {
-      id: "asc",
+      added: "desc",
     },
   });
   const categories = await prisma.category.findMany();
@@ -25,6 +25,9 @@ app.get("/product", async (req: Request, res: Response) => {
   const products = await prisma.product.findMany({
     include: {
       categories: true,
+    },
+    orderBy: {
+      added: "desc",
     },
   });
   res.json(products);

@@ -20,7 +20,7 @@ app.get("/index", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             clients: true,
         },
         orderBy: {
-            id: "asc",
+            added: "desc",
         },
     });
     const categories = yield prisma.category.findMany();
@@ -33,6 +33,9 @@ app.get("/product", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const products = yield prisma.product.findMany({
         include: {
             categories: true,
+        },
+        orderBy: {
+            added: "desc",
         },
     });
     res.json(products);

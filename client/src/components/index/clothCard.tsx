@@ -20,7 +20,12 @@ const ClothCard = ({ product, sale }: Props) => {
       ((product.price - product.discount) / product.price) * 100
     );
   }
-
+  const fechaActual = new Date();
+  const fechaAccion = new Date(product.added);
+  const diferenciaMilisegundos = fechaActual.getTime() - fechaAccion.getTime();
+  const diferenciaDias = Math.floor(
+    diferenciaMilisegundos / (1000 * 60 * 60 * 24)
+  );
   return (
     <ClothCardContainer
       disabled={!sale && disabled}
@@ -30,8 +35,9 @@ const ClothCard = ({ product, sale }: Props) => {
       <div className="imgContainer">
         <img src={product.photo} />
         {!sale && product.discount && (
-          <b className="discount">{discountPercentage}% OFF</b>
+          <b className="discount">-{discountPercentage}%</b>
         )}
+        {diferenciaDias < 3 && <b className="new">¡Nuevo!</b>}
         {product.size && <b className="size">{product.size}</b>}
       </div>
       <h3>{product.name}</h3>
@@ -82,7 +88,7 @@ const ClothCardContainer = styled.div<ClothCardContainerProps>`
   gap: 0.5rem;
   cursor: ${(props) => (props.noHover ? "auto" : "pointer")};
   transition: opacity 0.3s;
-  filter: ${props => props.disabled ? "grayscale(0.8)" : "unset"};
+  filter: ${(props) => (props.disabled ? "grayscale(0.8)" : "unset")};
 
   &:hover {
     opacity: ${(props) => (props.noHover ? "0.8" : "0.6")};
@@ -108,6 +114,16 @@ const ClothCardContainer = styled.div<ClothCardContainerProps>`
       color: ${colors.white};
       padding: 0.25rem 0.5rem;
       border-radius: 0 0.5rem 0 0.5rem;
+    }
+
+    & > .new {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: ${colors.primary400};
+      color: ${colors.white};
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.5rem 0 0.5rem 0;
     }
 
     & > .size {

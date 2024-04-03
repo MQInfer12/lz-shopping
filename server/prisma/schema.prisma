@@ -21,6 +21,7 @@ model Product {
   stock      Int
   photo      String     @db.VarChar(255)
   size       String?    @db.VarChar(4)
+  added      DateTime   @default(now())   
   clients    Sale[]
   categories Category[] @relation("CategoryToProduct")
 }
