@@ -21,11 +21,11 @@ const PageButtons = ({ page, setPage, selectedSale }: Props) => {
         active={page === "category"}
         onClick={() => setPage("category")}
       >Categorías</PageButton>
-      <PageButton 
+      {/* <PageButton 
         disabled={!(page==="sales") && !selectedSale}
         active={page === "sales"}
         onClick={() => setPage("sales")}
-      >Ventas</PageButton>
+      >Ventas</PageButton> */}
     </ButtonsContainer>
   )
 }

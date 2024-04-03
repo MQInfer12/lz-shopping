@@ -1,12 +1,12 @@
-import styled from 'styled-components'
-import { useCloth } from '../../context/cloth'
-import { useData } from '../../context/data'
-import { colors } from '../../style/variables'
-import ClothCard from './clothCard'
-import { Sale } from '../../interfaces/sale'
+import styled from "styled-components";
+import { useCloth } from "../../context/cloth";
+import { useData } from "../../context/data";
+import { colors } from "../../style/variables";
+import ClothCard from "./clothCard";
+import { Sale } from "../../interfaces/sale";
 
 interface Props {
-  sales?: Sale[]
+  sales?: Sale[];
 }
 
 const ClothMapper = ({ sales }: Props) => {
@@ -14,62 +14,70 @@ const ClothMapper = ({ sales }: Props) => {
   const { categoriesSelected, search, sizeSearch, focused } = useCloth();
 
   const filterByCategories = () => {
-    const productJson = allProducts.filter(product => {
+    const productJson = allProducts.sort((a, b) => {
+      if (a.stock === undefined || b.stock === undefined) return 0;
+      return a.stock === 0 ? 1 : b.stock === 0 ? -1 : 0;
+    }); /* .filter(product => {
       const sold = product.clients?.reduce((prev, sale) => prev + sale.amount, 0) || 0;
       return product.stock && product.stock - sold != 0;
-    });
+    }) */
 
-    if(focused) {
+    if (focused) {
       return productJson
-        .filter(product => product.name?.toLowerCase().includes(search.toLowerCase()))
-        .filter(product => sizeSearch ? product.size === sizeSearch : true);
+        .filter((product) =>
+          product.name?.toLowerCase().includes(search.toLowerCase())
+        )
+        .filter((product) => (sizeSearch ? product.size === sizeSearch : true));
     }
 
-    if(!categoriesSelected.length) return productJson;
+    if (!categoriesSelected.length) return productJson;
 
-    const filtered = productJson.filter(product => {
-      let productFlag = false;
-      product.categories?.forEach(category => {
-        const idCategoriesSelected: number[] = categoriesSelected.map(category => category.id);
-        if(idCategoriesSelected.includes(category.id)) {
-          productFlag =  true
-        };
+    const filtered = productJson
+      .filter((product) => {
+        let productFlag = false;
+        product.categories?.forEach((category) => {
+          const idCategoriesSelected: number[] = categoriesSelected.map(
+            (category) => category.id
+          );
+          if (idCategoriesSelected.includes(category.id)) {
+            productFlag = true;
+          }
+        });
+        return productFlag;
       })
-      return productFlag;
-    }).filter(product => product.size?.includes(sizeSearch));
+      .filter((product) => product.size?.includes(sizeSearch));
 
     return filtered;
-  }
+  };
 
   return (
     <>
-      {
-        !filterByCategories().length && 
+      {!filterByCategories().length && (
         <CenterText>
           <p>Pronto tendremos productos en este apartado ♡</p>
         </CenterText>
-      }
+      )}
       <ClothContainer>
-        {
-          sales ?
-          sales.map((sale, i) => (
-            sale.product &&
-            <ClothCard key={sale.id} sale={sale} product={sale.product} />
-          )) :
+        {sales ? (
+          sales.map(
+            (sale, i) =>
+              sale.product && (
+                <ClothCard key={sale.id} sale={sale} product={sale.product} />
+              )
+          )
+        ) : (
           <>
-            {
-              filterByCategories().map((v, i) => (
-                <ClothCard key={v.id} product={v} />
-              ))
-            }
+            {filterByCategories().map((v, i) => (
+              <ClothCard key={v.id} product={v} />
+            ))}
           </>
-        }
+        )}
       </ClothContainer>
     </>
-   )
-}
+  );
+};
 
-export default ClothMapper
+export default ClothMapper;
 
 const ClothContainer = styled.div`
   /* max-width: 1300px; */

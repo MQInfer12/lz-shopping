@@ -1,75 +1,91 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useCloth } from '../../context/cloth'
-import { Product } from '../../interfaces/product'
-import { colors } from '../../style/variables'
-import { Sale } from '../../interfaces/sale'
+import React from "react";
+import styled from "styled-components";
+import { useCloth } from "../../context/cloth";
+import { Product } from "../../interfaces/product";
+import { colors } from "../../style/variables";
+import { Sale } from "../../interfaces/sale";
 
 interface Props {
-  product: Product
-  sale?: Sale
+  product: Product;
+  sale?: Sale;
 }
 
 const ClothCard = ({ product, sale }: Props) => {
-  const { selectCloth } = useCloth(); 
+  const { selectCloth } = useCloth();
   let discountPercentage: number = 0;
-  if(product.discount && product.price) {
-    discountPercentage = Math.round((product.price - product.discount) / product.price * 100);
+  const disabled = product.stock === 0;
+
+  if (product.discount && product.price) {
+    discountPercentage = Math.round(
+      ((product.price - product.discount) / product.price) * 100
+    );
   }
 
   return (
-    <ClothCardContainer noHover={!!sale} onClick={() => selectCloth(product)}>
-      <div className='imgContainer'>
+    <ClothCardContainer
+      disabled={!sale && disabled}
+      noHover={!!sale}
+      onClick={() => selectCloth(product)}
+    >
+      <div className="imgContainer">
         <img src={product.photo} />
-        {!sale && product.discount && <b className='discount'>{discountPercentage}% OFF</b>}
-        {product.size && <b className='size'>{product.size}</b>}
+        {!sale && product.discount && (
+          <b className="discount">{discountPercentage}% OFF</b>
+        )}
+        {product.size && <b className="size">{product.size}</b>}
       </div>
       <h3>{product.name}</h3>
-      {
-        !sale &&
+      {!sale && (
         <div className="text">
           {product.discount && <p>Bs. {product.discount}</p>}
-          <P striked={!!product.discount}>Bs. {product.price}</P>
+          <P striked={!!product.discount}>
+            {disabled ? "Agotado" : `Bs. ${product.price}`}
+          </P>
         </div>
-      }
-      {
-        sale &&
+      )}
+      {sale && (
         <>
-        <div className="text">
-          <p>{sale.amount} unidad{sale.amount > 1 && "es"}</p>
-        </div>
-        <div className="text">
-          <p>{
-            new Date(sale.datetime).getDate() + "-" + 
-            (new Date(sale.datetime).getMonth() + 1) + "-" +
-            new Date(sale.datetime).getFullYear()
-          }</p>
-        </div>
+          <div className="text">
+            <p>
+              {sale.amount} unidad{sale.amount > 1 && "es"}
+            </p>
+          </div>
+          <div className="text">
+            <p>
+              {new Date(sale.datetime).getDate() +
+                "-" +
+                (new Date(sale.datetime).getMonth() + 1) +
+                "-" +
+                new Date(sale.datetime).getFullYear()}
+            </p>
+          </div>
         </>
-      }
+      )}
     </ClothCardContainer>
-  )
-}
+  );
+};
 
-export default ClothCard
+export default ClothCard;
 
 interface ClothCardContainerProps {
-  noHover: boolean
+  noHover: boolean;
+  disabled: boolean;
 }
 
 const ClothCardContainer = styled.div<ClothCardContainerProps>`
   padding: 1rem;
   background-color: ${colors.white};
   box-shadow: ${colors.shadow};
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
-  gap: .5rem;
-  cursor: ${props => props.noHover ? "auto" : "pointer"};
+  gap: 0.5rem;
+  cursor: ${(props) => (props.noHover ? "auto" : "pointer")};
   transition: opacity 0.3s;
+  filter: ${props => props.disabled ? "grayscale(0.8)" : "unset"};
 
   &:hover {
-    opacity: ${props => props.noHover ? "0.8" : "0.6"};
+    opacity: ${(props) => (props.noHover ? "0.8" : "0.6")};
   }
 
   & > .imgContainer {
@@ -81,7 +97,7 @@ const ClothCardContainer = styled.div<ClothCardContainerProps>`
       height: 100%;
       width: 100%;
       object-fit: cover;
-      border-radius: .5rem;
+      border-radius: 0.5rem;
     }
 
     & > .discount {
@@ -122,23 +138,23 @@ const ClothCardContainer = styled.div<ClothCardContainerProps>`
     white-space: nowrap;
 
     @media screen and (max-width: 450px) {
-      gap: .5rem;
+      gap: 0.5rem;
     }
 
     & > p {
       color: ${colors.gray400};
 
       @media screen and (max-width: 600px) {
-        font-size: .8rem;
+        font-size: 0.8rem;
       }
     }
   }
 `;
 
 interface PProps {
-  striked: boolean
+  striked: boolean;
 }
 
 const P = styled.p<PProps>`
-  text-decoration: ${props => props.striked && "line-through"};
+  text-decoration: ${(props) => props.striked && "line-through"};
 `;

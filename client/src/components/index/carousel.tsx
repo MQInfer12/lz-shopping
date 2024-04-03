@@ -1,27 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { colors } from '../../style/variables'
-import Carousel1 from '../../assets/carousel1.jpg'
-import Carousel2 from '../../assets/carousel2.jpg'
-import Carousel3 from '../../assets/carousel3.jpg'
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { colors } from "../../style/variables";
+import Carousel1 from "../../assets/carousel1.jpg";
+import Carousel2 from "../../assets/carousel2.jpg";
+import Carousel3 from "../../assets/carousel3.jpg";
 
 const Carousel = () => {
   const [index, setIndex] = useState(0);
 
-  const items = [{
-    text: "Encuentra prendas en nuestro catálogo.",
-    src: Carousel1
-  }, {
-    text: "Reserva tus prendas favoritas.",
-    src: Carousel2
-  }, {
-    text: "Mira tu historial de compras.",
-    src: Carousel3
-  }];
+  const items = [
+    {
+      text: "Encuentra hermosas prendas en nuestro catálogo.",
+      src: Carousel1,
+    },
+    {
+      text: "Pide la reserva de tus prendas favoritas.",
+      src: Carousel2,
+    },
+    {
+      text: "Mira nuestros descuentos actuales.",
+      src: Carousel3,
+    },
+  ];
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIndex(old => (old + 1) % 3);
+      setIndex((old) => (old + 1) % 3);
     }, 4000);
 
     return () => clearTimeout(timer);
@@ -29,26 +33,30 @@ const Carousel = () => {
 
   const handleClick = (i: number) => {
     setIndex(i);
-  }
+  };
 
   return (
     <CarouselContainer>
-      {
-        items.map((v, i) => (
-          <CarouselItem key={i} active={index === i} className="carousel-item">
-            <img src={v.src} alt={"carousel" + 1} />
-            <h2>{v.text}</h2>
-          </CarouselItem>
-        ))
-      }
+      {items.map((v, i) => (
+        <CarouselItem key={i} active={index === i} className="carousel-item">
+          <img src={v.src} alt={"carousel" + 1} />
+          <h2>{v.text}</h2>
+        </CarouselItem>
+      ))}
       <div className="buttons">
-        {items.map((v, i) => <CarouselButton key={i} onClick={() => handleClick(i)} active={index === i}></CarouselButton>)}
+        {items.map((v, i) => (
+          <CarouselButton
+            key={i}
+            onClick={() => handleClick(i)}
+            active={index === i}
+          ></CarouselButton>
+        ))}
       </div>
     </CarouselContainer>
-  )
-}
+  );
+};
 
-export default Carousel
+export default Carousel;
 
 const CarouselContainer = styled.div`
   position: relative;
@@ -65,12 +73,12 @@ const CarouselContainer = styled.div`
     bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
-    gap: .5rem;
+    gap: 0.5rem;
   }
 `;
 
 interface CarouselActiveProps {
-  active: boolean
+  active: boolean;
 }
 
 const CarouselItem = styled.div<CarouselActiveProps>`
@@ -79,9 +87,13 @@ const CarouselItem = styled.div<CarouselActiveProps>`
   padding: 2rem 4rem;
   width: 100%;
   color: ${colors.white};
-  background:linear-gradient(0deg, ${colors.primary600rgb} 0%, ${colors.primary400rgb} 100%);
+  background: linear-gradient(
+    0deg,
+    ${colors.primary600rgb} 0%,
+    ${colors.primary400rgb} 100%
+  );
   transition: all 1s;
-  opacity: ${props => props.active ? "1"  : "0"};
+  opacity: ${(props) => (props.active ? "1" : "0")};
   isolation: isolate;
   border-radius: 1rem;
 
@@ -110,11 +122,12 @@ const CarouselItem = styled.div<CarouselActiveProps>`
 `;
 
 const CarouselButton = styled.button<CarouselActiveProps>`
-  width: ${props => props.active ? "1.5rem" : ".5rem"};
-  height: .5rem;
-  border-radius: .25rem;
+  width: ${(props) => (props.active ? "1.5rem" : ".5rem")};
+  height: 0.5rem;
+  border-radius: 0.25rem;
   border: none;
-  background-color: ${props => props.active ? colors.primary500 : colors.white};
+  background-color: ${(props) =>
+    props.active ? colors.primary500 : colors.white};
   box-shadow: ${colors.shadow100};
   transition: all 1s;
   cursor: pointer;

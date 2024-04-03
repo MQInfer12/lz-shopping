@@ -5,10 +5,7 @@ import { useData } from "../../context/data";
 import useCloudinary from "../../hooks/useCloudinary";
 import { postProduct, putProduct } from "../../services/product";
 import { Button } from "../../style/buttons";
-import {
-  Inputcontainer,
-  SelectContainer,
-} from "../../style/input";
+import { Inputcontainer, SelectContainer } from "../../style/input";
 import Loading from "../global/loading";
 import CategorySelector from "./categorySelector";
 import PageTemplate from "./pageTemplate";
@@ -47,9 +44,9 @@ const initialForm = {
 };
 
 interface Props {
-  selectedSale: Product | null
-  setSelectedSale: React.Dispatch<React.SetStateAction<Product | null>>
-  setPage: React.Dispatch<React.SetStateAction<HomePage>>
+  selectedSale: Product | null;
+  setSelectedSale: React.Dispatch<React.SetStateAction<Product | null>>;
+  setPage: React.Dispatch<React.SetStateAction<HomePage>>;
 }
 
 const ProductCrud = ({ setSelectedSale, selectedSale, setPage }: Props) => {
@@ -62,55 +59,55 @@ const ProductCrud = ({ setSelectedSale, selectedSale, setPage }: Props) => {
 
   const checkNulls = () => {
     const nullErrors: any = {};
-    if(form.name === null) {
+    if (form.name === null) {
       nullErrors.name = "Este espacio es requerido";
-      setForm(old => ({...old, name: ""}));
+      setForm((old) => ({ ...old, name: "" }));
     }
-    if(form.photo === null) {
+    if (form.photo === null && !form.id) {
       nullErrors.img = "Este espacio es requerido";
     }
     return nullErrors;
-  }
+  };
 
   const checkErrors = () => {
     let newErrors: any = {};
-    if(form.name != null && !form.name.trim()) {
+    if (form.name != null && !form.name.trim()) {
       newErrors.name = "Este espacio es requerido";
-    } 
-    if(!form.price.trim()) {
+    }
+    if (!form.price.trim()) {
       newErrors.price = "Este espacio es requerido";
-    } else if(Number(form.price) <= 0) {
+    } else if (Number(form.price) <= 0) {
       newErrors.price = "Este precio no es válido";
     }
-    if(Number(form.discount) >= Number(form.price)) {
+    if (Number(form.discount) >= Number(form.price)) {
       newErrors.discount = "El descuento tiene que ser menor que el precio";
-    } 
-    if(Number(form.discount) < 0) {
+    }
+    if (Number(form.discount) < 0) {
       newErrors.discount = "Este descuento no es válido";
     }
-    if(!form.stock.trim()) {
+    if (!form.stock.trim()) {
       newErrors.stock = "Este espacio es requerido";
     } else if (Number(form.stock) < 0) {
       newErrors.stock = "El stock tiene que ser cero o más";
     }
     return newErrors;
-  }
+  };
 
   const changeInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let dataUrl: string = "";
     let file: File;
-    if(e.target.files) {
+    if (e.target.files) {
       file = e.target.files[0];
-      dataUrl = await readFile(file) as string;
+      dataUrl = (await readFile(file)) as string;
     }
     setForm((old) => {
       return {
         ...old,
         photo: file || null,
-        photoPreview: dataUrl
-      }}
-    );
-  }
+        photoPreview: dataUrl,
+      };
+    });
+  };
 
   const readFile = async (file: File) => {
     return new Promise((res, rej) => {
@@ -118,13 +115,13 @@ const ProductCrud = ({ setSelectedSale, selectedSale, setPage }: Props) => {
       fileReader.readAsDataURL(file);
       fileReader.addEventListener("load", () => {
         res(fileReader.result);
-      })
+      });
     });
-  }
+  };
 
   const handleSend = async () => {
     const nullErrors = checkNulls();
-    if(!Object.keys(nullErrors).length && !Object.keys(errors).length) {
+    if (!Object.keys(nullErrors).length && !Object.keys(errors).length) {
       setLoading(true);
       let cloudinaryRes: any;
       if (form.photo) {
@@ -134,7 +131,7 @@ const ProductCrud = ({ setSelectedSale, selectedSale, setPage }: Props) => {
         const res = await postProduct({
           ...form,
           photo: cloudinaryRes.url,
-          photoPreview: ""
+          photoPreview: "",
         });
         addProduct(res.data);
       } else {
@@ -142,7 +139,7 @@ const ProductCrud = ({ setSelectedSale, selectedSale, setPage }: Props) => {
           ...form,
           stock: String(Number(form.stock) + form.quantitySold),
           photo: cloudinaryRes?.url,
-          photoPreview: ""
+          photoPreview: "",
         });
         editProduct(res.data);
       }
@@ -152,14 +149,14 @@ const ProductCrud = ({ setSelectedSale, selectedSale, setPage }: Props) => {
       Swal.fire({
         title: "Petición correcta",
         text: `Se ${form.id ? "editó" : "añadió"} el producto correctamente.`,
-        icon: "success"
+        icon: "success",
       });
     } else {
-      setErrors({...checkNulls(), ...checkErrors()});
+      setErrors({ ...checkNulls(), ...checkErrors() });
       Swal.fire({
         title: "Error al enviar",
         text: "Comprueba que no existan errores en el formulario.",
-        icon: "error"
+        icon: "error",
       });
     }
   };
@@ -176,7 +173,10 @@ const ProductCrud = ({ setSelectedSale, selectedSale, setPage }: Props) => {
       initialForm={initialForm}
     >
       <div className="inputsContainer">
-        <label className={`img-wrapper${errors.img ? " img-error" : ""}`} htmlFor="formFile">
+        <label
+          className={`img-wrapper${errors.img ? " img-error" : ""}`}
+          htmlFor="formFile"
+        >
           <img src={form.photoPreview || Placeholder} />
           <progress max="100" value={progress} />
           <Inputcontainer hide>
@@ -191,74 +191,103 @@ const ProductCrud = ({ setSelectedSale, selectedSale, setPage }: Props) => {
             </div>
           </Inputcontainer>
         </label>
-        <InputText 
+        <InputText
           text="Nombre*"
           state={form.name || ""}
-          handleChange={(e) => setForm((old) => ({ ...old, name: e.target.value }))}
+          handleChange={(e) =>
+            setForm((old) => ({ ...old, name: e.target.value }))
+          }
           error={errors.name}
         />
         <div className="two-columns">
           <InputNumber
             name="Precio*"
             state={form.price}
-            handleChange={(e) => setForm((old) => ({ ...old, price: e.target.value }))}
-            handlePlus={() => setForm((old) => ({...old, price: String(Number(old.price) + 1)}))}
-            handleMinus={() => setForm((old) => ({...old, price: String(Number(old.price) - 1)}))}
+            handleChange={(e) =>
+              setForm((old) => ({ ...old, price: e.target.value }))
+            }
+            handlePlus={() =>
+              setForm((old) => ({
+                ...old,
+                price: String(Number(old.price) + 1),
+              }))
+            }
+            handleMinus={() =>
+              setForm((old) => ({
+                ...old,
+                price: String(Number(old.price) - 1),
+              }))
+            }
             error={errors.price}
           />
           <InputNumber
             name="Descuento"
             state={form.discount}
-            handleChange={(e) => setForm((old) => ({ ...old, discount: e.target.value }))}
-            handlePlus={() => setForm((old) => ({...old, discount: String(Number(old.discount) + 1)}))}
-            handleMinus={() => setForm((old) => ({...old, discount: String(Number(old.discount) - 1)}))}
+            handleChange={(e) =>
+              setForm((old) => ({ ...old, discount: e.target.value }))
+            }
+            handlePlus={() =>
+              setForm((old) => ({
+                ...old,
+                discount: String(Number(old.discount) + 1),
+              }))
+            }
+            handleMinus={() =>
+              setForm((old) => ({
+                ...old,
+                discount: String(Number(old.discount) - 1),
+              }))
+            }
             error={errors.discount}
           />
         </div>
         <div className="two-columns">
-          <InputSelect 
+          <InputSelect
             text="Talla"
             state={form.size}
-            handleChange={(e) => setForm((old) => ({ ...old, size: e.target.value }))}
+            handleChange={(e) =>
+              setForm((old) => ({ ...old, size: e.target.value }))
+            }
             options={[
-              { text: "Sin talla", value: ""},
-              { text: "XS", value: "XS"},
-              { text: "S", value: "S"},
-              { text: "M", value: "M"},
-              { text: "L", value: "L"},
-              { text: "XL", value: "XL"},
-              { text: "XXL", value: "XXL"},
-              { text: "XXXL", value: "XXXL"},
+              { text: "Sin talla", value: "" },
+              { text: "XS", value: "XS" },
+              { text: "S", value: "S" },
+              { text: "M", value: "M" },
+              { text: "L", value: "L" },
+              { text: "XL", value: "XL" },
+              { text: "XXL", value: "XXL" },
+              { text: "XXXL", value: "XXXL" },
             ]}
           />
-          <InputNumber
+          {/* <InputNumber
             name="Stock*"
             state={form.stock}
             handleChange={(e) => setForm((old) => ({ ...old, stock: e.target.value }))}
             handlePlus={() => setForm((old) => ({...old, stock: String(Number(old.stock) + 1)}))}
             handleMinus={() => setForm((old) => ({...old, stock: String(Number(old.stock) - 1)}))}
             error={errors.stock}
-          />
+          /> */}
         </div>
         <Inputcontainer>
           <label>Categorías</label>
           <CategorySelector form={form} setForm={setForm} />
         </Inputcontainer>
-        <Button disabled={loading} onClick={handleSend}> 
+        <Button disabled={loading} onClick={handleSend}>
           {loading ? "Cargando..." : form.id ? "Editar" : "Añadir"}
         </Button>
       </div>
-      {loadingIndex ? 
-        <Loading /> : 
-        <ProductTable  
+      {loadingIndex ? (
+        <Loading />
+      ) : (
+        <ProductTable
           setPage={setPage}
-          initialForm={initialForm} 
-          form={form} 
-          setForm={setForm} 
+          initialForm={initialForm}
+          form={form}
+          setForm={setForm}
           setSelectedSale={setSelectedSale}
           selectedSale={selectedSale}
         />
-      }
+      )}
     </PageTemplate>
   );
 };

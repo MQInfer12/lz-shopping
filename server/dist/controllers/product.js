@@ -13,31 +13,31 @@ const express_1 = require("express");
 const client_1 = require("@prisma/client");
 const app = (0, express_1.Router)();
 const prisma = new client_1.PrismaClient();
-app.get('/index', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/index", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const products = yield prisma.product.findMany({
         include: {
             categories: true,
-            clients: true
+            clients: true,
         },
         orderBy: {
-            id: "asc"
-        }
+            id: "asc",
+        },
     });
     const categories = yield prisma.category.findMany();
     res.json({
         products,
-        categories
+        categories,
     });
 }));
-app.get('/product', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/product", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const products = yield prisma.product.findMany({
         include: {
-            categories: true
-        }
+            categories: true,
+        },
     });
     res.json(products);
 }));
-app.post('/product', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/product", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const categories = req.body.categories;
     const product = yield prisma.product.create({
         data: {
@@ -48,33 +48,53 @@ app.post('/product', (req, res) => __awaiter(void 0, void 0, void 0, function* (
             discount: Number(req.body.discount) ? Number(req.body.discount) : null,
             size: req.body.size ? req.body.size : null,
             categories: {
-                connect: categories.map(id => ({ id }))
-            }
-        }
+                connect: categories.map((id) => ({ id })),
+            },
+        },
     });
     const newProduct = yield prisma.product.findUnique({
         where: {
-            id: product.id
+            id: product.id,
         },
         include: {
             categories: true,
-            clients: true
-        }
+            clients: true,
+        },
     });
-    res.json({ message: 'created succesfully', data: newProduct });
+    res.json({ message: "created succesfully", data: newProduct });
 }));
-app.put('/product/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.put("/product/toggle/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const product = yield prisma.product.findUnique({
+        where: {
+            id: parseInt(req.params.id),
+        },
+    });
+    const updated = yield prisma.product.update({
+        where: {
+            id: product === null || product === void 0 ? void 0 : product.id,
+        },
+        include: {
+            categories: true,
+            clients: true,
+        },
+        data: {
+            stock: (product === null || product === void 0 ? void 0 : product.stock) === 0 ? 1 : 0,
+        },
+    });
+    res.json({ message: "updated succesfully", data: updated });
+}));
+app.put("/product/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const product = yield prisma.product.findUnique({
         select: {
             categories: {
                 select: {
-                    id: true
-                }
-            }
+                    id: true,
+                },
+            },
         },
         where: {
-            id: parseInt(req.params.id)
-        }
+            id: parseInt(req.params.id),
+        },
     });
     const categories = req.body.categories;
     const disconnectids = product === null || product === void 0 ? void 0 : product.categories.filter((v, i) => !categories.includes(v.id));
@@ -87,31 +107,31 @@ app.put('/product/:id', (req, res) => __awaiter(void 0, void 0, void 0, function
             discount: Number(req.body.discount) ? Number(req.body.discount) : null,
             size: req.body.size ? req.body.size : null,
             categories: {
-                connect: categories.map(id => ({ id })),
-                disconnect: disconnectids
-            }
+                connect: categories.map((id) => ({ id })),
+                disconnect: disconnectids,
+            },
         },
         where: {
-            id: parseInt(req.params.id)
-        }
+            id: parseInt(req.params.id),
+        },
     });
     const newProduct = yield prisma.product.findUnique({
         where: {
-            id: updated.id
+            id: updated.id,
         },
         include: {
             categories: true,
-            clients: true
-        }
+            clients: true,
+        },
     });
-    res.json({ message: 'updated succesfully', data: newProduct });
+    res.json({ message: "updated succesfully", data: newProduct });
 }));
-app.delete('/product/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.delete("/product/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const deleted = yield prisma.product.delete({
         where: {
-            id: parseInt(req.params.id)
-        }
+            id: parseInt(req.params.id),
+        },
     });
-    res.json({ message: 'deleted succesfully', data: deleted });
+    res.json({ message: "deleted succesfully", data: deleted });
 }));
 module.exports = app;

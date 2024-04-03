@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components';
-import { Button, StyledA } from '../../style/buttons';
-import { Inputcontainer, SelectContainer } from '../../style/input';
-import { useCloth } from '../../context/cloth';
-import code from '../../utilities/code';
-import { colors } from '../../style/variables';
-import { useUser } from '../../context/user';
-import InputText from '../global/inputText';
-import { InputSelect } from '../global/inputSelect';
-import Swal from 'sweetalert2';
-import { createEmojis } from '../../utilities/createEmojis';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { Button, StyledA } from "../../style/buttons";
+import { Inputcontainer, SelectContainer } from "../../style/input";
+import { useCloth } from "../../context/cloth";
+import code from "../../utilities/code";
+import { colors } from "../../style/variables";
+import { useUser } from "../../context/user";
+import InputText from "../global/inputText";
+import { InputSelect } from "../global/inputSelect";
+import Swal from "sweetalert2";
+import { createEmojis } from "../../utilities/createEmojis";
 
 const BookingForm = () => {
   const { user } = useUser();
@@ -18,29 +18,38 @@ const BookingForm = () => {
   const { selected } = useCloth();
   const [errors, setErrors] = useState<any>({});
 
-  const quantitySold = selected?.clients?.reduce((ac, sale) => ac + sale.amount, 0) || 0;
-  const quantityLeft = (selected?.stock) && (selected?.stock - quantitySold);
+  const quantitySold =
+    selected?.clients?.reduce((ac, sale) => ac + sale.amount, 0) || 0;
+  const quantityLeft = selected?.stock; /*  && selected?.stock - quantitySold */
+  const agotado = quantityLeft === 0;
 
   const checkNulls = () => {
     const nullErrors: any = {};
-    if(ci === null) {
+    if (ci === null) {
       nullErrors.ci = "Este espacio es requerido";
     }
     return nullErrors;
-  }
+  };
 
   const checkErrors = () => {
     let newErrors: any = {};
-    if(ci != null && !ci.trim()) {
+    if (ci != null && !ci.trim()) {
       newErrors.ci = "Este espacio es requerido";
-    } else if(ci != null && !/^\d+$/.test(ci)) {
+    } else if (ci != null && !/^\d+$/.test(ci)) {
       newErrors.ci = "Este espacio solo puede tener números";
     }
     return newErrors;
-  }
+  };
 
   const handleToWhatsapp = () => {
-    const nullErrors = checkNulls();
+    const codedProductId = code(String(selected?.id));
+    const baseUrl = window.location.origin;
+    const message = `Hola!%20quiero%20reservar%20este%20producto:%0a*${
+      selected?.name
+    }*%20${createEmojis(selected)}%0a${baseUrl}/%23/view/${codedProductId}`;
+    window.open(`https://wa.me/59176407344?text=${message}`, "_blank");
+
+    /* const nullErrors = checkNulls();
     if(!Object.keys(nullErrors).length && !Object.keys(errors).length) {
       const codedProductId = code(String(selected?.id));
       const codedQuantity = code(quantity);
@@ -54,8 +63,8 @@ const BookingForm = () => {
         text: "Comprueba que no existan errores en el formulario.",
         icon: "error"
       });
-    }
-  }
+    } */
+  };
 
   useEffect(() => {
     setErrors(checkErrors());
@@ -63,10 +72,10 @@ const BookingForm = () => {
 
   return (
     <FormContainer>
-      {
-        quantityLeft ?
-        <><p>¡Pide tu reserva ahora!</p>
-        <div className="row">
+      {!agotado ? (
+        <>
+          <p>¡Pide tu reserva ahora!</p>
+          {/* <div className="row">
           {
             !user &&
             <InputText 
@@ -92,19 +101,21 @@ const BookingForm = () => {
               small
             />
           }
-        </div>
-        <Button 
-          onClick={handleToWhatsapp}
-        >
-          Contáctame <i className="fa-brands fa-whatsapp"></i>
-        </Button></> :
-        <p>El producto está agotado</p>
-      }
+        </div> */}
+          <Button onClick={handleToWhatsapp}>
+            Contáctame <i className="fa-brands fa-whatsapp"></i>
+          </Button>
+        </>
+      ) : (
+        <>
+          <p>Este producto se encuentra agotado.</p>
+        </>
+      )}
     </FormContainer>
-  )
-}
+  );
+};
 
-export default BookingForm
+export default BookingForm;
 
 const FormContainer = styled.div`
   display: flex;

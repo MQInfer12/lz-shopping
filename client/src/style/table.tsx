@@ -27,7 +27,7 @@ export const Table = styled.table`
     color: ${colors.gray900};
     font-weight: 500;
     border-bottom: 1px solid ${colors.gray200};
-    padding: 1rem 2.5rem 1rem 1rem;
+    padding: .5rem 1rem .5rem 1rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

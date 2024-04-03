@@ -1,46 +1,53 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import { useCloth } from '../../context/cloth'
-import { colors } from '../../style/variables'
+import { useState } from "react";
+import styled from "styled-components";
+import { useCloth } from "../../context/cloth";
+import { colors } from "../../style/variables";
 
 interface Props {
-  viewImage: boolean
-  setViewImage: React.Dispatch<React.SetStateAction<boolean>>
+  viewImage: boolean;
+  setViewImage: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ProductView = ({ setViewImage, viewImage }: Props) => {
   const { selected: product } = useCloth();
 
-  const categories: string[] = product?.categories?.map(categorie => categorie.name) || [];
+  const categories: string[] =
+    product?.categories?.map((categorie) => categorie.name) || [];
+
+  const agotado = product?.stock === 0;
 
   return (
     <ProductViewContainer>
-      <div 
-        onClick={() => setViewImage(old => !old)} 
+      <div
+        onClick={() => setViewImage((old) => !old)}
         className={`img-container${viewImage ? " fullscreen" : ""}`}
       >
         <img src={product?.photo} />
       </div>
-      <div className='desc-container'>
+      <div className="desc-container">
         <small>
-          {
-            categories.length ?
-            new Intl.ListFormat('es').format(categories) :
-            "Sin categoría"
-          }
+          {categories.length
+            ? new Intl.ListFormat("es").format(categories)
+            : "Sin categoría"}
         </small>
         <h3>{product?.name}</h3>
-        {product?.size && <small className='right'>Talla {product?.size}</small>}
+        {product?.size && (
+          <small className="right">Talla {product?.size}</small>
+        )}
       </div>
-      <div className='text'>
-        {product?.discount && <p className='not'>{product?.price} Bs.</p>}
-        <p className='featured'>{product?.discount ? product?.discount : product?.price} Bs.</p>
+      <div className="text">
+        {product?.discount && <p className="not">{product?.price} Bs.</p>}
+        <p className="featured">
+          {agotado
+            ? "Agotado"
+            : `${product?.discount ? product?.discount : product?.price} Bs.`}
+        </p>
       </div>
     </ProductViewContainer>
-  )
-}
+  );
+};
 
-export default ProductView
+export default ProductView;
 
 const ProductViewContainer = styled.div`
   display: flex;
@@ -69,7 +76,7 @@ const ProductViewContainer = styled.div`
       box-shadow: ${colors.shadow};
     }
   }
-  
+
   & > .fullscreen {
     top: 0;
     min-width: 100%;
@@ -86,12 +93,12 @@ const ProductViewContainer = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    gap: 0.5rem;
     padding-top: 18.5rem;
 
     & > small {
       text-transform: uppercase;
-      font-size: .875rem;
+      font-size: 0.875rem;
       color: ${colors.gray400};
       max-width: 300px;
       white-space: nowrap;
@@ -100,7 +107,7 @@ const ProductViewContainer = styled.div`
     }
 
     & > .right {
-      padding-top: .5rem;
+      padding-top: 0.5rem;
       max-width: unset;
       text-align: end;
     }
@@ -128,10 +135,10 @@ const ProductViewContainer = styled.div`
 
     & > .featured {
       align-self: flex-end;
-      padding: .5rem 1rem;
+      padding: 0.5rem 1rem;
       background-color: ${colors.primary500};
       color: ${colors.white};
-      border-radius: .5rem;
+      border-radius: 0.5rem;
     }
   }
 `;
